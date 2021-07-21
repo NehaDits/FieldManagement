@@ -1,7 +1,6 @@
 ﻿using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.Interfaces;
 using FieldMgt.Repository.UOW;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace FieldMgt.Repository.Repository.Exceptions
@@ -13,6 +12,12 @@ namespace FieldMgt.Repository.Repository.Exceptions
         {
             _dbContext = dbContext;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task SaveLogs(ExceptionLog model)
         {
             await InsertAsync(model);
