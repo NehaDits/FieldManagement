@@ -14,7 +14,11 @@ using FieldMgt.Core.DTOs;
 using Microsoft.EntityFrameworkCore;
 using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.DTOs.Request;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;
+=======
+using FieldMgt.Repository.Enums;
+>>>>>>> remotes/origin/main
 
 namespace FieldMgt.Repository.Repository
 {
@@ -24,22 +28,31 @@ namespace FieldMgt.Repository.Repository
 
         private IConfiguration _configuration;
         private ApplicationDbContext _dbContext;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="dbcontext"></param>
+        /// <param name="configuration"></param>
         public UserRepository(UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
             _dbContext = dbcontext;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<UserManagerReponse> RegisterUserAsync(RegisterUserDTO model)
         {
-            if (model == null)
-            {
-                throw new NullReferenceException("Register Model is Empty");
-            }
             if (model.Password != model.ConfirmPassword)
                 return new UserManagerReponse
                 {
-                    Message = "Confirm Password doesn't match Password",
+                    Message = ResponseMessages.PasswordNotMatched,
                     IsSuccess = false
                 };
             var identityUser = new ApplicationUser
@@ -56,7 +69,7 @@ namespace FieldMgt.Repository.Repository
             {
                 return new UserManagerReponse
                 {
-                    Message = "User Created Successfully",
+                    Message = ResponseMessages.UserCreated,
                     IsSuccess = true,
                     Id = identityUser.Id
                  };
@@ -65,6 +78,7 @@ namespace FieldMgt.Repository.Repository
          {    
         return new UserManagerReponse
             {
+<<<<<<< HEAD
                 Message = "User not created",
                 IsSuccess = false,
                 Errors = result.Errors.Select(e => e.Description)
@@ -72,13 +86,30 @@ namespace FieldMgt.Repository.Repository
         }        
 }
         public async Task<LoginManagerResponse> LoginUserAsync([FromBody] LoginViewDTO model)
+=======
+                return new UserManagerReponse
+                {
+                    Message = ResponseMessages.UserNotCreated,
+                    IsSuccess = false,
+                    Errors = result.Errors.Select(e => e.Description)
+                };
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<LoginManagerResponse> LoginUserAsync(LoginViewDTO model)
+>>>>>>> remotes/origin/main
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null || user.IsDeleted == true)
             {
                 return new LoginManagerResponse
                 {
-                    Message = "User doesn't exist",
+                    Message = ResponseMessages.UserNotExist,
                     IsSuccess = false
                 };
             }
@@ -86,7 +117,7 @@ namespace FieldMgt.Repository.Repository
             {
                 return new LoginManagerResponse
                 {
-                    Message = "User has been disabled by the Admin",
+                    Message = ResponseMessages.UserAccountIsDisable,
                     IsSuccess = false
                 };
             }
@@ -94,7 +125,7 @@ namespace FieldMgt.Repository.Repository
             if (!result)
                 return new LoginManagerResponse
                 {
-                    Message = "Invalid Password",
+                    Message = ResponseMessages.InvalidPassword,
                     IsSuccess = false
                 };
 
@@ -104,7 +135,7 @@ namespace FieldMgt.Repository.Repository
             {
                 return new LoginManagerResponse
                 {
-                    Message = "User is not assigned a role to Login",
+                    Message = ResponseMessages.RoleNotAssignedToLogin,
                     IsSuccess = false
                 };
             }
@@ -134,6 +165,13 @@ namespace FieldMgt.Repository.Repository
                 Role = userrole
             };
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
         public async Task<string> DeleteUser(string userName, string deletedBy)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);

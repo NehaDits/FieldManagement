@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System;
 using FieldMgt.Core.DTOs.Request;
 using System.Threading;
+using FieldMgt.Repository.Common.StoreProcedures;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -17,29 +18,15 @@ namespace FieldMgt.Repository.Repository
         {
             _dbContext = dbContext;
         }
-        public async Task<ContactDetail> SaveContactDetails(CreateContactDetailDTO addressDetail)
-        {
-            var response = await SingleAsync<ContactDetail>("sp_SaveContactDetail", addressDetail);
-            return response;
-        }
+        public async Task<ContactDetail> SaveContactDetails(CreateContactDetailDTO addressDetail) => await SingleAsync<ContactDetail>(StoreProcedures.SaveContactDetail, addressDetail);
+
         public ContactDetail DeleteContact(int contactId, string deletedBy)
         {
-            try
-            {
-                var contact = _dbContext.ContactDetails.Where(a => a.ContactDetailId == contactId).Single();
-                if (!(contact == null || contact.IsDeleted == true))
-                {
-                    contact.IsDeleted = true;
-                    contact.DeletedBy = deletedBy;
-                    contact.DeletedOn = System.DateTime.Now;
-                    return Update(contact);
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var contact = _dbContext.ContactDetails.Where(a => a.ContactDetailId == contactId).Single();
+            contact.IsDeleted = true;
+            contact.DeletedBy = deletedBy;
+            contact.DeletedOn = System.DateTime.Now;
+            return Update(contact);
         }
     }
 }

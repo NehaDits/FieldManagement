@@ -35,16 +35,14 @@ namespace FieldMgt.Controllers
         [Route("api/auth/Register")]
         public async Task<IActionResult> RegisterAsync([FromBody]CreateEmployeeDTO model,CancellationToken cancellationToken)
         {
-            try
-            {
                 RegisterUserDTO registerDTO = new RegisterUserDTO();
                 registerDTO.Email = model.Email;
                 registerDTO.Password = model.Password;
                 registerDTO.ConfirmPassword = model.ConfirmPassword;
                 registerDTO.CreatedBy = _currentUserService.GetUserId();
                 registerDTO.CreatedOn = System.DateTime.Now;
-                    var result = await _userRepository.RegisterUserAsync(registerDTO);
-                    if (result.IsSuccess)
+                var result = await _userRepository.RegisterUserAsync(registerDTO);
+                if (result.IsSuccess)
                     {                        
                         CreateAddressDTO permanentAddressModelDTO = new CreateAddressDTO();
                         permanentAddressModelDTO.Address = model.PermanentAddress;
@@ -75,9 +73,9 @@ namespace FieldMgt.Controllers
                         contactModelDTO.AlternateEmail = model.AlternateEmail;
                         contactModelDTO.CreatedBy= _currentUserService.GetUserId();
                         contactModelDTO.CreatedOn= System.DateTime.Now;
-                    
-                        ContactDetail contactPayload = _mapper.Map<CreateContactDetailDTO, ContactDetail>(contactModelDTO);
+                         ContactDetail contactPayload = _mapper.Map<CreateContactDetailDTO, ContactDetail>(contactModelDTO);
                         //var contactResponse = _uow.ContactDetailRepositories.SaveContactDetails(contactPayload);
+<<<<<<< Updated upstream
                     RegistrationDTO modelDTO = new RegistrationDTO();
                     modelDTO.EmployeeId = null;
                     modelDTO.Email = model.Email;
@@ -99,6 +97,29 @@ namespace FieldMgt.Controllers
                     Staff payload = _mapper.Map<RegistrationDTO, Staff>(modelDTO);
                     await _uow.StaffRepositories.CreateStaffAsync(payload);
                     var result1 = await _uow.SaveAsync();
+=======
+                        RegistrationDTO modelDTO = new RegistrationDTO();
+                        modelDTO.EmployeeId = null;
+                        modelDTO.Email = model.Email;
+                        modelDTO.FirstName = model.FirstName;
+                        modelDTO.LastName = model.LastName;         
+                        modelDTO.Gender = model.Gender;
+                        modelDTO.DOB = model.DOB;
+                        modelDTO.PermanentAddressId =19;
+                        modelDTO.CorrespondenceAddressId = 20;
+                        modelDTO.ContactDetailId = 12;
+                        //modelDTO.PermanentAddressId = permanentAddressResponse.Id;
+                        //modelDTO.CorrespondenceAddressId = correspondenceAddressResponse.Id;
+                        //modelDTO.ContactDetailId = contactResponse.Id;
+                        modelDTO.IsActive = true;
+                        modelDTO.UserId = result.Id;
+                        modelDTO.Designation = model.Designation;
+                        modelDTO.CreatedOn = System.DateTime.Now;
+                        modelDTO.CreatedBy = _currentUserService.GetUserId();
+                        Staff payload = _mapper.Map<RegistrationDTO, Staff>(modelDTO);
+                        await _uow.StaffRepositories.CreateStaffAsync(payload);
+                        var result1 = await _uow.SaveAsync1();
+>>>>>>> Stashed changes
                         if (result1.Equals(1))
                         {
                             return Ok(result);//status code 200
@@ -109,18 +130,22 @@ namespace FieldMgt.Controllers
                         }
                 }
                 return BadRequest("Some Properties are not valid"); //status Code 400
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
         }
         [HttpPost]
         [Route("Login")]
+<<<<<<< Updated upstream
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> LoginUserAsync([FromBody] LoginViewDTO model) => BaseResult(await _userRepository.LoginUserAsync(model));
 
+=======
+        public async Task<IActionResult> LoginUserAsync([FromBody] LoginViewDTO model)
+        {
+                var result = await _userRepository.LoginUserAsync(model);
+                return Ok(result);//status code 200
+            
+        }
+>>>>>>> Stashed changes
         [Route("DeleteUser")]
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]

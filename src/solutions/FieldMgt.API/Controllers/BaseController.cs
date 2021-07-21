@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FieldMgt.API.Controllers
 {
     public class BaseController : ControllerBase
     {
+        private readonly IHttpContextAccessor _httpContext;
         protected IActionResult BaseResult(int response)
         {
             if (response > 0)
@@ -26,6 +25,13 @@ namespace FieldMgt.API.Controllers
         {
             return Ok(response);
         }
+<<<<<<< HEAD
         
+=======
+        public string GetUserId()
+        {
+            return _httpContext.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+>>>>>>> remotes/origin/main
     }
 }

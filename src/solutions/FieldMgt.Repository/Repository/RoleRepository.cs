@@ -8,11 +8,15 @@ using Microsoft.AspNetCore.Identity;
 using FieldMgt.Core.DTOs;
 using FieldMgt.Core.DTOs.Response;
 using System.Threading;
+<<<<<<< HEAD
 using System;
+=======
+using FieldMgt.Repository.Enums;
+>>>>>>> remotes/origin/main
 
 namespace FieldMgt.Repository.Repository
 {
-    public class RoleRepository:IRoleRepository
+    public class RoleRepository : IRoleRepository
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _dbContext;
@@ -35,13 +39,26 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public async Task AddRoleAsync(string role)
         {
+<<<<<<< HEAD
             try
             {
                 IdentityRole userRole = new IdentityRole(role);
                 var result = await _roleManager.CreateAsync(userRole);
+=======
+            IdentityRole userRole = new IdentityRole(role);
+            var result = await _roleManager.CreateAsync(userRole);
+            if (result.Succeeded)
+            {
+                return new UserManagerReponse
+                {
+                    Message = ResponseMessages.RoleCreated,
+                    IsSuccess = true
+                };
+>>>>>>> remotes/origin/main
             }
             catch(Exception ex)
             {
+<<<<<<< HEAD
                 throw ex;
             }
             //if (result.Succeeded)
@@ -58,6 +75,12 @@ namespace FieldMgt.Repository.Repository
             //    IsSuccess = false,
             //    Errors = result.Errors.Select(e => e.Description)
             //};
+=======
+                Message = ResponseMessages.RoleNotCreated,
+                IsSuccess = false,
+                Errors = result.Errors.Select(e => e.Description)
+            };
+>>>>>>> remotes/origin/main
         }
         /// <summary>
         /// Displays the list of roles from database table
@@ -66,8 +89,8 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public IEnumerable<string> ListRoles()
         {
-           var roles= _dbContext.Roles.ToList();
-            foreach(var role in roles)
+            var roles = _dbContext.Roles.ToList();
+            foreach (var role in roles)
             {
                 yield return role.Name;
             }
@@ -81,6 +104,7 @@ namespace FieldMgt.Repository.Repository
         public async Task EditUserRoles(string userName, string role)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
+<<<<<<< HEAD
             var roles=_roleManager.FindByNameAsync(role);
             string roleName = roles.Result.Name.ToString();
             var result = await _userManager.AddToRoleAsync(user, roleName);
@@ -99,6 +123,24 @@ namespace FieldMgt.Repository.Repository
             //        Message = result.ToString()
             //    };
             //}
+=======
+            var roles = await _roleManager.FindByNameAsync(role);
+            if (roles == null)
+            {
+                return new UserManagerReponse
+                {
+                    Message = ResponseMessages.RoleNotExit,
+                };
+            }
+            else
+            {
+                var result = await _userManager.AddToRoleAsync(user, roles.Name);
+                return new UserManagerReponse
+                {
+                    Message = result.ToString()
+                };
+            }
+>>>>>>> remotes/origin/main
         }
         /// <summary>
         /// Removes user from a role
@@ -109,6 +151,7 @@ namespace FieldMgt.Repository.Repository
         public async Task RemoveUserRoles(string userName, string role)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
+<<<<<<< HEAD
             var roles = _roleManager.FindByNameAsync(role);
             string roleName = roles.Result.Name.ToString();
             var result = await _userManager.RemoveFromRoleAsync(user, roleName);
@@ -130,6 +173,26 @@ namespace FieldMgt.Repository.Repository
             //        IsSuccess = true
             //    };
             //}
+=======
+            var roles = await _roleManager.FindByNameAsync(role);
+            if (roles == null)
+            {
+                return new UserManagerReponse
+                {
+                    Message = ResponseMessages.RoleNotExit,
+                    IsSuccess = false
+                };
+            }
+            else
+            {
+                var result = await _userManager.RemoveFromRoleAsync(user, roles.Name);
+                return new UserManagerReponse
+                {
+                    Message = result.ToString(),
+                    IsSuccess = true
+                };
+            }
+>>>>>>> remotes/origin/main
         }
     }
 }
