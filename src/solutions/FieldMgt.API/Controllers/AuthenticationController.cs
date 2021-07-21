@@ -76,6 +76,7 @@ namespace FieldMgt.Controllers
                          ContactDetail contactPayload = _mapper.Map<CreateContactDetailDTO, ContactDetail>(contactModelDTO);
                         //var contactResponse = _uow.ContactDetailRepositories.SaveContactDetails(contactPayload);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     RegistrationDTO modelDTO = new RegistrationDTO();
                     modelDTO.EmployeeId = null;
                     modelDTO.Email = model.Email;
@@ -98,6 +99,8 @@ namespace FieldMgt.Controllers
                     await _uow.StaffRepositories.CreateStaffAsync(payload);
                     var result1 = await _uow.SaveAsync();
 =======
+=======
+>>>>>>> Stashed changes
                         RegistrationDTO modelDTO = new RegistrationDTO();
                         modelDTO.EmployeeId = null;
                         modelDTO.Email = model.Email;
@@ -119,6 +122,9 @@ namespace FieldMgt.Controllers
                         Staff payload = _mapper.Map<RegistrationDTO, Staff>(modelDTO);
                         await _uow.StaffRepositories.CreateStaffAsync(payload);
                         var result1 = await _uow.SaveAsync1();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                         if (result1.Equals(1))
                         {
