@@ -27,7 +27,7 @@ namespace FieldMgt.Repository.Repository
         {
             _userManager = userManager;
             _configuration = configuration;
-            _dbContext = dbcontext;            
+            _dbContext = dbcontext;
         }
         public async Task<UserManagerReponse> RegisterUserAsync(RegisterUserDTO model)
         {
@@ -46,9 +46,9 @@ namespace FieldMgt.Repository.Repository
                 Email = model.Email,
                 UserName = model.Email,
                 CreatedBy = model.CreatedBy,
-                CreatedOn=model.CreatedOn,
+                CreatedOn = model.CreatedOn,
                 IsActive = true,
-                IsDeleted =false
+                IsDeleted = false
             };
             var result = await _userManager.CreateAsync(identityUser, model.Password);
             if (result.Succeeded)
@@ -58,18 +58,18 @@ namespace FieldMgt.Repository.Repository
                     Message = "User Created Successfully",
                     IsSuccess = true,
                     Id = identityUser.Id
-                 };
-             }
-        else
-         {    
-        return new UserManagerReponse
+                };
+            }
+            else
             {
-                Message = "User not created",
-                IsSuccess = false,
-                Errors = result.Errors.Select(e => e.Description)
-            };
-        }        
-}
+                return new UserManagerReponse
+                {
+                    Message = "User not created",
+                    IsSuccess = false,
+                    Errors = result.Errors.Select(e => e.Description)
+                };
+            }
+        }
         public async Task<LoginManagerResponse> LoginUserAsync(LoginViewDTO model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -121,7 +121,7 @@ namespace FieldMgt.Repository.Repository
                 claims: claims,
                 expires: DateTime.Now.AddDays(30),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
-            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);                                                 
+            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
 
             var flag = await _userManager.IsInRoleAsync(user, "Admin");
             return new LoginManagerResponse
@@ -136,7 +136,7 @@ namespace FieldMgt.Repository.Repository
         public async Task<string> DeleteUser(string userName, string deletedBy)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
-            if(user.IsDeleted==true || user==null)
+            if (user.IsDeleted == true || user == null)
             {
                 return null;
             }
@@ -150,8 +150,8 @@ namespace FieldMgt.Repository.Repository
                 await _dbContext.SaveChangesAsync();
                 return user.Id;
             }
-            
+
         }
-       
+
     }
 }

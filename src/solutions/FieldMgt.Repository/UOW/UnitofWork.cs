@@ -11,13 +11,11 @@ namespace FieldMgt.Repository.UOW
     public class UnitofWork : IUnitofWork
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IMapper _mapper;
         public UnitofWork(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             LeadServices = new LeadRepository(_dbContext);
             LeadContactRepositories = new LeadContactRepository(_dbContext);
-            //EmployeeRepositories = new StaffRepository(_dbContext);
             VendorRepositories = new VendorRepository(_dbContext);
             StaffRepositories = new StaffRepository(_dbContext);
             AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);

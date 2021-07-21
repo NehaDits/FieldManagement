@@ -8,6 +8,7 @@ using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.DTOs.Request;
 using System;
 using FieldMgt.API.Infrastructure.MiddleWares.Exceptions;
+using System.Threading;
 
 namespace FieldMgt.Controllers
 {
@@ -28,7 +29,7 @@ namespace FieldMgt.Controllers
         }        
         [HttpPost]
         [Route("api/auth/Register")]
-        public async Task<IActionResult> RegisterAsync([FromBody]CreateEmployeeDTO model)
+        public async Task<IActionResult> RegisterAsync([FromBody]CreateEmployeeDTO model,CancellationToken cancellationToken)
         {
             try
             {

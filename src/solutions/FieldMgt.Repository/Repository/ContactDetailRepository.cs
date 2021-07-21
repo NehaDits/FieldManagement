@@ -6,6 +6,7 @@ using FieldMgt.Repository.UOW;
 using System.Threading.Tasks;
 using System;
 using FieldMgt.Core.DTOs.Request;
+using System.Threading;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -31,8 +32,7 @@ namespace FieldMgt.Repository.Repository
                     contact.IsDeleted = true;
                     contact.DeletedBy = deletedBy;
                     contact.DeletedOn = System.DateTime.Now;
-                    var contact1 = Update(contact);
-                    return contact;
+                    return Update(contact);
                 }
                 return null;
             }

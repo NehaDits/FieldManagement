@@ -4,6 +4,7 @@ using FieldMgt.Core.Interfaces;
 using FieldMgt.Core.DomainModels;
 using FieldMgt.Repository.UOW;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -14,24 +15,9 @@ namespace FieldMgt.Repository.Repository
         {
             _dbContext = dbContext;
         }
-        public async Task CreateVendorAsync(Vendor model)
-        {
-            await InsertAsync(model);
-        }
-        public IEnumerable<Vendor> GetVendorsAsync()
-        {
-            var vendors = _dbContext.Vendors.Where(a => a.IsDeleted == true).ToList();
-            return vendors;
-        }
-        public Vendor GetVendorbyIdAsync(int id)
-        {
-            var result = _dbContext.Vendors.FirstOrDefault(l => l.VendorId == id);
-            return result;
-        }
-        public async Task<Vendor> UpdateVendorStatusAsync(Vendor vendor)
-        {
-            var response = await SingleAsync<Vendor>("sp_UpdateVendorDetail", vendor);
-            return response;
-        }
+        public async Task CreateVendorAsync(Vendor model) => await InsertAsync(model);
+        public IEnumerable<Vendor> GetVendorsAsync() => _dbContext.Vendors.Where(a => a.IsDeleted == true).ToList();
+        public Vendor GetVendorbyIdAsync(int id) => _dbContext.Vendors.FirstOrDefault(l => l.VendorId == id);
+        public async Task<Vendor> UpdateVendorStatusAsync(Vendor vendor) => await SingleAsync<Vendor>("sp_UpdateVendorDetail", vendor);
     }
 }

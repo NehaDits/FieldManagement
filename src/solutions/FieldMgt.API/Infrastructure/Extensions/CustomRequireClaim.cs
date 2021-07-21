@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace FieldMgt.API.Infrastructure.Extensions
 {
+    /// <summary>
+    /// Give meaningfull name and add comment details
+    /// </summary>
     public class CustomRequireClaim:IAuthorizationRequirement
     {
         public CustomRequireClaim(string claimType)
@@ -21,6 +24,9 @@ namespace FieldMgt.API.Infrastructure.Extensions
 
         public string ClaimType { get; }
     }
+    /// <summary>
+    /// Give meaningfull name and add comment details
+    /// </summary>
     public class CustomRequireClaimHandler : AuthorizationHandler<CustomRequireClaim>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomRequireClaim requirement)
@@ -33,6 +39,9 @@ namespace FieldMgt.API.Infrastructure.Extensions
             return Task.CompletedTask;
         }
     }
+    /// <summary>
+    /// Give meaningfull name and add comment details
+    /// </summary>
     public static class AuthorizationPolicyBuilderExtensions
     { 
         public static AuthorizationPolicyBuilder RequireCustomClaim(this AuthorizationPolicyBuilder builder, string claimType)
