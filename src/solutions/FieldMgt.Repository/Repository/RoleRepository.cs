@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using FieldMgt.Core.DTOs;
 using FieldMgt.Core.DTOs.Response;
 using System.Threading;
+using System;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -32,24 +33,31 @@ namespace FieldMgt.Repository.Repository
         /// <paramtype="string"></paramtype>
         /// <paramname ="role"></param>
         /// <returns></returns>
-        public async Task<UserManagerReponse> AddRoleAsync(string role)
+        public async Task AddRoleAsync(string role)
         {
-            IdentityRole userRole = new IdentityRole(role) ;
-            var result = await _roleManager.CreateAsync(userRole);
-            if (result.Succeeded)
+            try
             {
-                return new UserManagerReponse
-                {
-                    Message = "Role Created Successfully",
-                    IsSuccess = true
-                };
+                IdentityRole userRole = new IdentityRole(role);
+                var result = await _roleManager.CreateAsync(userRole);
             }
-            return new UserManagerReponse
+            catch(Exception ex)
             {
-                Message = "Role not created",
-                IsSuccess = false,
-                Errors = result.Errors.Select(e => e.Description)
-            };
+                throw ex;
+            }
+            //if (result.Succeeded)
+            //{
+            //    return new UserManagerReponse
+            //    {
+            //        Message = "Role Created Successfully",
+            //        IsSuccess = true
+            //    };
+            //}
+            //return new UserManagerReponse
+            //{
+            //    Message = "Role not created",
+            //    IsSuccess = false,
+            //    Errors = result.Errors.Select(e => e.Description)
+            //};
         }
         /// <summary>
         /// Displays the list of roles from database table
@@ -70,25 +78,27 @@ namespace FieldMgt.Repository.Repository
         /// <paramname="userName"></paramname>
         /// <paramname="role"></paramname>
         /// <returns></returns>
-        public async Task<UserManagerReponse> EditUserRoles(string userName, string role)
+        public async Task EditUserRoles(string userName, string role)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
             var roles=_roleManager.FindByNameAsync(role);
-            if(roles.Result==null)
-            {
-                return new UserManagerReponse
-                {
-                    Message = "Role doesn't exist"
-                };
-            }
-            else { 
             string roleName = roles.Result.Name.ToString();
-            var result=await _userManager.AddToRoleAsync(user, roleName);            
-                return new UserManagerReponse
-                {
-                    Message = result.ToString()
-                };
-            }
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            //if (roles.Result==null)
+            //{
+            //    return new UserManagerReponse
+            //    {
+            //        Message = "Role doesn't exist"
+            //    };
+            //}
+            //else { 
+            //string roleName = roles.Result.Name.ToString();
+            //var result=await _userManager.AddToRoleAsync(user, roleName);            
+            //    return new UserManagerReponse
+            //    {
+            //        Message = result.ToString()
+            //    };
+            //}
         }
         /// <summary>
         /// Removes user from a role
@@ -96,28 +106,30 @@ namespace FieldMgt.Repository.Repository
         /// <paramname="userName"></paramname>
         /// <paramname="role"></paramname>
         /// <returns></returns>
-        public async Task<UserManagerReponse> RemoveUserRoles(string userName, string role)
+        public async Task RemoveUserRoles(string userName, string role)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
             var roles = _roleManager.FindByNameAsync(role);
-            if (roles.Result == null)
-            {
-                return new UserManagerReponse
-                {
-                    Message = "Role doesn't exist",
-                    IsSuccess=false
-                };
-            }
-            else
-            {
-                string roleName = roles.Result.Name.ToString();
-                var result = await _userManager.RemoveFromRoleAsync(user, roleName);
-                return new UserManagerReponse
-                {
-                    Message = result.ToString(),
-                    IsSuccess = true
-                };
-            }
+            string roleName = roles.Result.Name.ToString();
+            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            //if (roles.Result == null)
+            //{
+            //    return new UserManagerReponse
+            //    {
+            //        Message = "Role doesn't exist",
+            //        IsSuccess=false
+            //    };
+            //}
+            //else
+            //{
+            //string roleName = roles.Result.Name.ToString();
+            //var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            //    return new UserManagerReponse
+            //    {
+            //        Message = result.ToString(),
+            //        IsSuccess = true
+            //    };
+            //}
         }
     }
 }

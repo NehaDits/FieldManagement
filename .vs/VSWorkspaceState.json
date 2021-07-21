@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\solutions",
+    "\\src\\solutions\\FieldMgt.API",
+    "\\src\\solutions\\FieldMgt.Core",
+    "\\src\\solutions\\FieldMgt.Core\\DTOs",
+    "\\src\\solutions\\FieldMgt.Core\\DTOs\\Request",
+    "\\src\\solutions\\FieldMgt.Repository",
+    "\\src\\solutions\\FieldMgt.Repository\\Mappers",
+    "\\src\\solutions\\FieldMgt.Repository\\Mappers\\User"
+  ],
+  "SelectedNode": "\\src\\solutions\\FieldMgt.API\\Controllers\\BaseController.cs",
+  "PreviewInSolutionExplorer": false
+}

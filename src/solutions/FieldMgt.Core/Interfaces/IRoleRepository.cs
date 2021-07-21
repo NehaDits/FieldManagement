@@ -7,9 +7,9 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface IRoleRepository
     {
-        Task<UserManagerReponse> AddRoleAsync(string role);
+        Task AddRoleAsync(string role);
         IEnumerable<string> ListRoles();
-        Task<UserManagerReponse> EditUserRoles(string userName, string role);
-        Task<UserManagerReponse> RemoveUserRoles(string userName, string role);
+        Task EditUserRoles(string userName, string role);
+        Task RemoveUserRoles(string userName, string role);
     }
 }

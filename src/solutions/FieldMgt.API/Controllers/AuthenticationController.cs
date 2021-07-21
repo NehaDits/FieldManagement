@@ -8,12 +8,13 @@ using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.DTOs.Request;
 using System;
 using FieldMgt.API.Infrastructure.MiddleWares.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FieldMgt.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]    
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : BaseController
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -112,24 +113,16 @@ namespace FieldMgt.Controllers
         }
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> LoginUserAsync([FromBody] LoginViewDTO model)
-        {
-            try
-            {
-                var result = await _userRepository.LoginUserAsync(model);
-                return Ok(result);//status code 200
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException(ex.Message);
-            }
-        }
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> LoginUserAsync([FromBody] LoginViewDTO model) => BaseResult(await _userRepository.LoginUserAsync(model));
+
         [Route("DeleteUser")]
         [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Vendor), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteUser(string userName)
         {
-            try
-            {
                 var deletedBy = _currentUserService.GetUserId();
                 var resultUser = await _userRepository.DeleteUser(userName, deletedBy);
                 if (resultUser!=null)
@@ -172,12 +165,6 @@ namespace FieldMgt.Controllers
                 {
                     return BadRequest("User Doesn't Exist");
                 }
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-            
         }
     }
 }

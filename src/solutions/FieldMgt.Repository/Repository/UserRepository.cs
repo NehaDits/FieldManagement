@@ -70,7 +70,7 @@ namespace FieldMgt.Repository.Repository
             };
         }        
 }
-        public async Task<LoginManagerResponse> LoginUserAsync(LoginViewDTO model)
+        public async Task<LoginManagerResponse> LoginUserAsync([FromBody] LoginViewDTO model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null || user.IsDeleted == true)
@@ -142,6 +142,7 @@ namespace FieldMgt.Repository.Repository
             }
             else
             {
+                var deletedBy = _currentUserService.GetUserId();
                 user.IsDeleted = true;
                 user.DeletedBy = deletedBy;
                 user.DeletedOn = System.DateTime.Now;
