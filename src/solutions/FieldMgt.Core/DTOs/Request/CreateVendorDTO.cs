@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace FieldMgt.Core.DTOs.Request
 {
-    public class CreateVendorDTO:BaseCreateVendorModel
+    public class CreateVendorDTO : BaseCreateVendorModel
     {
         public string VendorCompanyName { get; set; }
         public string VendorOwnerorMD { get; set; }
@@ -25,15 +22,11 @@ namespace FieldMgt.Core.DTOs.Request
         public int PermanentState { get; set; }
         public int PermanentCountry { get; set; }
         public string PermanentZipCode { get; set; }
-        [Phone(ErrorMessage = "Please Enter valid Phone Number")]
         public string PrimaryPhone { get; set; }
-        [Phone(ErrorMessage = "Please Enter valid Phone Number")]
         public string AlternatePhone { get; set; }
         [StringLength(100, MinimumLength = 8)]
-        [EmailAddress(ErrorMessage = "Please Enter valid Email Address")]
         public string PrimaryEmail { get; set; }
         [StringLength(100, MinimumLength = 8)]
-        [EmailAddress(ErrorMessage = "Please Enter valid Email Address")]
         public string AlternateEmail { get; set; }
         [DefaultValue(true)]
         public bool? IsActive { get; set; }

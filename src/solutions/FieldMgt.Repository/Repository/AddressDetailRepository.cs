@@ -6,21 +6,32 @@ using System.Threading.Tasks;
 using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Repository.Common.StoreProcedures;
+using FieldMgt.Core.UOW;
+using AutoMapper;
+
 namespace FieldMgt.Repository.Repository
 {
     public class AddressDetailRepository : GenericRepository<AddressDetail>, IAddressDetailRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        public AddressDetailRepository(ApplicationDbContext dbContext) : base(dbContext)
+        private readonly IUnitofWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public AddressDetailRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         /// <summary>
         /// Save Vendor Address
         /// </summary>
         /// <param name="model">typeof CreateAddressDTO</param>
         /// <returns>It is returning AdressDetail object</returns>
-        public async Task<AddressDetail> SaveAddress(CreateAddressDTO model) => await SingleAsync<AddressDetail>(StoreProcedures.SaveAddressDetail, model);
+        public async Task<AddressDetail> SaveAddress(CreateVendorDTO model)
+        {
+            CreateAddressDTO createAddressDTO = _mapper.Map<CreateVendorDTO, CreateAddressDTO>(model);
+            return await SingleAsync<AddressDetail>(StoreProcedures.SaveAddressDetail, createAddressDTO);
+        }
 
         /// <summary>
         /// Soft delete vendor address
@@ -42,6 +53,26 @@ namespace FieldMgt.Repository.Repository
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<int> Save(CreateVendorDTO model)
+        {
+            CreateContactDetailDTO createContactDetailDTO = _mapper.Map<CreateVendorDTO, CreateContactDetailDTO>(model);
+            Vendor vendor = _mapper.Map<CreateVendorDTO, Vendor>(model);
+
+            var addressResponse = await _unitOfWork.AddressRepositories.SaveAddress(model);
+            var conteactDetailResponse = await _unitOfWork.ContactDetailRepositories.SaveContactDetails(createContactDetailDTO);
+            vendor.PermanentAddressId = addressResponse.AddressDetailId;
+            vendor.ContactDetailId = conteactDetailResponse.ContactDetailId;
+            await _unitOfWork.VendorRepositories.CreateVendorAsync(vendor);
+
+            return await _unitOfWork.SaveAsync();
+
         }
     }
 }

@@ -4,13 +4,15 @@ using System.Threading.Tasks;
 using FieldMgt.Core.DomainModels;
 using FieldMgt.Repository.Repository;
 using FieldMgt.Core.UOW;
+using AutoMapper;
 
 namespace FieldMgt.Repository.UOW
 {
     public class UnitofWork : IUnitofWork
     {
-        private readonly ApplicationDbContext _dbContext;        
-        public UnitofWork(ApplicationDbContext dbContext)
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
+        public UnitofWork(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             LeadServices = new LeadRepository(_dbContext);
@@ -18,7 +20,7 @@ namespace FieldMgt.Repository.UOW
             //EmployeeRepositories = new StaffRepository(_dbContext);
             VendorRepositories = new VendorRepository(_dbContext);
             StaffRepositories = new StaffRepository(_dbContext);
-            AddressRepositories = new AddressDetailRepository(_dbContext);
+            AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);
         }
         public ILeadRepository LeadServices { get; }
@@ -33,23 +35,8 @@ namespace FieldMgt.Repository.UOW
         public IAddressDetailRepository AddressRepositories { get; }  
         public IContactDetailRepository ContactDetailRepositories { get; }
 
-        public async Task SaveAsync()
-        {
-            using (_dbContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    await _dbContext.SaveChangesAsync();
-                    _dbContext.Database.CommitTransaction();
-                }
-                catch (Exception ex)
-                {
-                    _dbContext.Database.RollbackTransaction();
-                    throw new Exception(ex.Message);
-                }
-            }
-        }
-        public async Task<int> SaveAsync1()
+    
+        public async Task<int> SaveAsync()
         {
             using (_dbContext.Database.BeginTransaction())
             {

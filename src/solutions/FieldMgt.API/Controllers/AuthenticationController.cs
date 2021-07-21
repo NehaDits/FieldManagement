@@ -26,7 +26,6 @@ namespace FieldMgt.Controllers
             _currentUserService = currentUserService;
             _uow = uow;
         }        
-        //[Authorize(Policy = "Admin")]
         [HttpPost]
         [Route("api/auth/Register")]
         public async Task<IActionResult> RegisterAsync([FromBody]CreateEmployeeDTO model)
@@ -94,7 +93,7 @@ namespace FieldMgt.Controllers
                     modelDTO.CreatedBy = _currentUserService.GetUserId();
                     Staff payload = _mapper.Map<RegistrationDTO, Staff>(modelDTO);
                     await _uow.StaffRepositories.CreateStaffAsync(payload);
-                    var result1 = await _uow.SaveAsync1();
+                    var result1 = await _uow.SaveAsync();
                         if (result1.Equals(1))
                         {
                             return Ok(result);//status code 200
@@ -159,7 +158,7 @@ namespace FieldMgt.Controllers
                     {
 
                     }
-                    var result = await _uow.SaveAsync1();
+                    var result = await _uow.SaveAsync();
                     if (!(result.Equals(0)))
                     {
                         return Ok(result);//status code 200

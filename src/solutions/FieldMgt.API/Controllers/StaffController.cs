@@ -12,19 +12,14 @@ namespace FieldMgt.API.Controllers
     public class StaffController : ControllerBase
     {
         private readonly IUnitofWork _uow;
-        private readonly IMapper _mapper;
-        public StaffController(IUnitofWork uow,IMapper mapper)
+        public StaffController(IUnitofWork uow)
         {
             _uow = uow;
-            _mapper = mapper;
         }
         
         [Route("~/api/Staff/List")]
         [HttpGet]
-        public IEnumerable<Staff> GetStaff()
-        {
-            return  _uow.StaffRepositories.GetStaff();
-        }
+        public IEnumerable<Staff> GetStaff() => _uow.StaffRepositories.GetStaff();
         [Route("~/api/Staff/ById/{id}")]
         [HttpGet]
         public IActionResult GetStaffbyId(int id)
@@ -34,17 +29,17 @@ namespace FieldMgt.API.Controllers
             {
                 return BadRequest("Staff Member doesnt exist");
             }
-            return Ok(result);//status code 200
+            return Ok(result);
         }    
         [Route("~/api/Staff/Update")]
         [HttpPatch]
         public async Task<IActionResult> UpdateStaffAsync(Staff model)
         {
-            var updated= _uow.StaffRepositories.UpdateStaffAsync(model);
-            var result = await _uow.SaveAsync1();
+            _uow.StaffRepositories.UpdateStaffAsync(model);
+            var result = await _uow.SaveAsync();
             if (result.Equals(1))
             {
-                return Ok(result);//status code 200
+                return Ok(result);
             }
             else
             {

@@ -6,7 +6,9 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface IAddressDetailRepository
     {
-        Task<AddressDetail> SaveAddress(CreateAddressDTO model);
-        AddressDetail DeleteAddress(int addressId, string deletedBy);        
+        Task<AddressDetail> SaveAddress(CreateVendorDTO model);
+        AddressDetail DeleteAddress(int addressId, string deletedBy);
+
+        Task<int> Save(CreateVendorDTO model);
     }
 }

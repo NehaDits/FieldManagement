@@ -48,7 +48,7 @@ namespace FieldMgt.Controllers
             modelDTO.CreatedOn = System.DateTime.Now;
             Lead payload = _mapper.Map<CreateLeadDTO, Lead>(modelDTO);
             await _uow.LeadServices.CreateLeadAsync(payload);
-            var result = await _uow.SaveAsync1();
+            var result = await _uow.SaveAsync();
             if (result.Equals(1))
             {
                 return Ok(result);//status code 200
