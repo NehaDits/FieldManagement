@@ -7,6 +7,7 @@ using FieldMgt.API.Infrastructure.Services;
 using System.Threading.Tasks;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.DTOs.Response;
+using System.Threading;
 
 namespace FieldMgt.Controllers
 {
@@ -26,7 +27,7 @@ namespace FieldMgt.Controllers
         [Route("~/api/Lead/Create")]
         [HttpPost]
         //[Authorize(Policy = "Sales Operation")]
-        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model)
+        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model, CancellationToken cancellationToken)
         {
             CreateLeadDTO modelDTO = new CreateLeadDTO();
             modelDTO.FirstName = model.FirstName;

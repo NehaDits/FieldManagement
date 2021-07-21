@@ -5,5 +5,14 @@ namespace FieldMgt.Repository.Utils
     public static class Utilities
     {
         public static bool IsSuccess(string input) => input.Equals(ResponseMessages.Success);
+
+        public static bool IsNotNull(object input)
+        {
+            return input != null || input != null;
+        }
+        public static bool IsNull(object input)
+        {
+            return input == null || input == null;
+        }
     }
 }

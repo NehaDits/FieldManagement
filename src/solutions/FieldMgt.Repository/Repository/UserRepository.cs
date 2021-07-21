@@ -14,6 +14,7 @@ using FieldMgt.Core.DTOs;
 using Microsoft.EntityFrameworkCore;
 using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.DTOs.Request;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -27,7 +28,7 @@ namespace FieldMgt.Repository.Repository
         {
             _userManager = userManager;
             _configuration = configuration;
-            _dbContext = dbcontext;            
+            _dbContext = dbcontext;
         }
         public async Task<UserManagerReponse> RegisterUserAsync(RegisterUserDTO model)
         {
@@ -46,9 +47,9 @@ namespace FieldMgt.Repository.Repository
                 Email = model.Email,
                 UserName = model.Email,
                 CreatedBy = model.CreatedBy,
-                CreatedOn=model.CreatedOn,
+                CreatedOn = model.CreatedOn,
                 IsActive = true,
-                IsDeleted =false
+                IsDeleted = false
             };
             var result = await _userManager.CreateAsync(identityUser, model.Password);
             if (result.Succeeded)
@@ -121,7 +122,7 @@ namespace FieldMgt.Repository.Repository
                 claims: claims,
                 expires: DateTime.Now.AddDays(30),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
-            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);                                                 
+            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
 
             var flag = await _userManager.IsInRoleAsync(user, "Admin");
             return new LoginManagerResponse
@@ -136,13 +137,13 @@ namespace FieldMgt.Repository.Repository
         public async Task<string> DeleteUser(string userName, string deletedBy)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
-            if(user.IsDeleted==true || user==null)
+            if (user.IsDeleted == true || user == null)
             {
                 return null;
             }
             else
             {
-                var deletedBy = _currentUserService.GetUserId();
+                //var deletedBy = _currentUserService.GetUserId();
                 user.IsDeleted = true;
                 user.DeletedBy = deletedBy;
                 user.DeletedOn = System.DateTime.Now;
@@ -151,8 +152,8 @@ namespace FieldMgt.Repository.Repository
                 await _dbContext.SaveChangesAsync();
                 return user.Id;
             }
-            
+
         }
-       
+
     }
 }

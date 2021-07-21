@@ -8,6 +8,8 @@ using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Repository.Common.StoreProcedures;
 using FieldMgt.Core.UOW;
 using AutoMapper;
+using System.Threading;
+using Dapper;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -27,7 +29,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model">typeof CreateAddressDTO</param>
         /// <returns>It is returning AdressDetail object</returns>
-        public async Task<AddressDetail> SaveAddress(CreateVendorDTO model)
+        public async Task<AddressDetail> SaveAddressAsync(CreateVendorDTO model)
         {
             CreateAddressDTO createAddressDTO = _mapper.Map<CreateVendorDTO, CreateAddressDTO>(model);
             return await SingleAsync<AddressDetail>(StoreProcedures.SaveAddressDetail, createAddressDTO);
@@ -65,7 +67,7 @@ namespace FieldMgt.Repository.Repository
             CreateContactDetailDTO createContactDetailDTO = _mapper.Map<CreateVendorDTO, CreateContactDetailDTO>(model);
             Vendor vendor = _mapper.Map<CreateVendorDTO, Vendor>(model);
 
-            var addressResponse = await _unitOfWork.AddressRepositories.SaveAddress(model);
+            var addressResponse = await _unitOfWork.AddressRepositories.SaveAddressAsync(model);
             var conteactDetailResponse = await _unitOfWork.ContactDetailRepositories.SaveContactDetails(createContactDetailDTO);
             vendor.PermanentAddressId = addressResponse.AddressDetailId;
             vendor.ContactDetailId = conteactDetailResponse.ContactDetailId;

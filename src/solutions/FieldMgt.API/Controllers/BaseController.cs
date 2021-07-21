@@ -15,7 +15,7 @@ namespace FieldMgt.API.Controllers
             else
                 return BadRequest();
         }
-        protected IActionResult Result<T>(T response)
+        protected IActionResult BaseResult<T>(T response)
         {
             if (response == null)
                 return Ok(response);
@@ -26,9 +26,6 @@ namespace FieldMgt.API.Controllers
         {
             return Ok(response);
         }
-        public string GetUserId()
-        {
-            return _httpContext.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-        }
+        
     }
 }

@@ -11,7 +11,11 @@ namespace FieldMgt.API.Infrastructure.Factories.PathProvider
         {
             _hostEnvironment = environment;
         }
-
+        /// <summary>
+        /// Give comment details
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public string MapPath(string path)
         {
             string filePath = Path.Combine(_hostEnvironment.ContentRootPath, path);

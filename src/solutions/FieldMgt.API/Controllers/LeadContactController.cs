@@ -6,6 +6,7 @@ using FieldMgt.Core.DomainModels;
 using System.Collections.Generic;
 using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.DTOs.Request;
+using System.Threading;
 
 namespace FieldMgt.API.Controllers
 {
@@ -24,7 +25,7 @@ namespace FieldMgt.API.Controllers
         }
         [Route("/api/LeadContact/AddContact")]
         [HttpPost]
-        public IActionResult CreateLeadContactAsync(CreateLeadContactDTO model, int leadId)
+        public IActionResult CreateLeadContactAsync(CreateLeadContactDTO model,CancellationToken cancellationToken, int leadId)
         {
             CreateLeadContactDTO modelDTO = new CreateLeadContactDTO();
             modelDTO.LeadId = leadId;
