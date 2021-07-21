@@ -94,3 +94,4 @@ C:\Harpreet\Projects\FieldManagement\FieldManagement\FieldManagement\src\tests\V
 C:\Harpreet\Projects\FieldManagement\FieldManagement\FieldManagement\src\tests\Vendor\Respositories\AddressDetails\AddressDetailTestCases\obj\Debug\netcoreapp3.1\AddressDetailTestCases.dll
 C:\Harpreet\Projects\FieldManagement\FieldManagement\FieldManagement\src\tests\Vendor\Respositories\AddressDetails\AddressDetailTestCases\obj\Debug\netcoreapp3.1\AddressDetailTestCases.pdb
 C:\Harpreet\Projects\FieldManagement\FieldManagement\FieldManagement\src\tests\Vendor\Respositories\AddressDetails\AddressDetailTestCases\obj\Debug\netcoreapp3.1\AddressDetailTestCases.genruntimeconfig.cache
+C:\Harpreet\Projects\FieldManagement\FieldManagement\FieldManagement\src\tests\Vendor\Respositories\AddressDetails\AddressDetailTestCases\obj\Debug\netcoreapp3.1\AddressDetailTestCases.csprojAssemblyReference.cache
