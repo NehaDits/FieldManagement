@@ -6,6 +6,8 @@ using FieldMgt.Repository.UOW;
 using System.Threading.Tasks;
 using System;
 using FieldMgt.Core.DTOs.Request;
+using System.Threading;
+using FieldMgt.Repository.Common.StoreProcedures;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -16,30 +18,26 @@ namespace FieldMgt.Repository.Repository
         {
             _dbContext = dbContext;
         }
-        public async Task<ContactDetail> SaveContactDetails(CreateContactDetailDTO addressDetail)
-        {
-            var response = await SingleAsync<ContactDetail>("sp_SaveContactDetail", addressDetail);
-            return response;
-        }
+        /// <summary>
+        /// To save the contact details
+        /// </summary>
+        /// <param name="addressDetail"></param>
+        /// <returns></returns>
+        public async Task<ContactDetail> SaveContactDetails(CreateContactDetailDTO addressDetail) => await SingleAsync<ContactDetail>(StoreProcedures.SaveContactDetail, addressDetail);
+
+        /// <summary>
+        /// Delete the contact details from Contact detail table
+        /// </summary>
+        /// <param name="contactId"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
         public ContactDetail DeleteContact(int contactId, string deletedBy)
         {
-            try
-            {
-                var contact = _dbContext.ContactDetails.Where(a => a.ContactDetailId == contactId).Single();
-                if (!(contact == null || contact.IsDeleted == true))
-                {
-                    contact.IsDeleted = true;
-                    contact.DeletedBy = deletedBy;
-                    contact.DeletedOn = System.DateTime.Now;
-                    var contact1 = Update(contact);
-                    return contact;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var contact = _dbContext.ContactDetails.Where(a => a.ContactDetailId == contactId).Single();
+            contact.IsDeleted = true;
+            contact.DeletedBy = deletedBy;
+            contact.DeletedOn = System.DateTime.Now;
+            return Update(contact);
         }
     }
 }

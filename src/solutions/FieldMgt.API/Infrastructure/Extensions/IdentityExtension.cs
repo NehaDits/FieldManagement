@@ -16,14 +16,6 @@ namespace FieldMgt.API.Infrastructure.Extensions
 
         public static void AddIdentity(this IServiceCollection services, IConfiguration Configuration)
         {
-            //services.AddIdentity<IdentityUser, IdentityRole>(options =>
-            //{
-            //    options.Password.RequireDigit = true;
-            //    options.Password.RequireLowercase = true;
-            //    options.Password.RequiredLength = 6;
-            //}).AddRoles<IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            // .AddDefaultTokenProviders();
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -55,25 +47,9 @@ namespace FieldMgt.API.Infrastructure.Extensions
             });
             services.AddAuthorization(config =>
             {
-                //var defaultAuthBuilder = new AuthorizationPolicyBuilder();
-                //var defaultAuthPolicy = defaultAuthBuilder
-                //.RequireAuthenticatedUser()
-                //.RequireClaim(ClaimTypes.Role)
-                //.Build();
-                //config.DefaultPolicy = defaultAuthPolicy;
-
-                //can be used
-                //config.AddPolicy("Claim.Role", policyBuilder =>
-                //{ 
-                // policyBuilder.AddRequirements(new CustomRequireClaim(ClaimTypes.Role));
-                //});
                 config.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Admin"));
                 config.AddPolicy("Operation Staff", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Operation Staff"));
                 config.AddPolicy("Sales Operation", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Sales Operation"));
-                //config.AddPolicy("Claim.Role", policyBuilder =>
-                //{
-                //    policyBuilder.RequireCustomClaim(ClaimTypes.Role);
-                //});
             });
 
         }

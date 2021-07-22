@@ -12,6 +12,12 @@ namespace FieldMgt.Repository.Repository.Exceptions
         {
             _dbContext = dbContext;
         }
+
+        /// <summary>
+        /// To save the logs in the database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task SaveLogs(ExceptionLog model)
         {
             await InsertAsync(model);

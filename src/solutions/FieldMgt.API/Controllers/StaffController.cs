@@ -1,8 +1,10 @@
-﻿using AutoMapper;
-using FieldMgt.Core.DomainModels;
+﻿using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.UOW;
+using FieldMgt.Repository.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace FieldMgt.API.Controllers
@@ -12,43 +14,45 @@ namespace FieldMgt.API.Controllers
     public class StaffController : ControllerBase
     {
         private readonly IUnitofWork _uow;
-        private readonly IMapper _mapper;
-        public StaffController(IUnitofWork uow,IMapper mapper)
+        public StaffController(IUnitofWork uow)
         {
             _uow = uow;
-            _mapper = mapper;
         }
         
-        [Route("~/api/Staff/List")]
+        [Route("List")]
         [HttpGet]
-        public IEnumerable<Staff> GetStaff()
-        {
-            return  _uow.StaffRepositories.GetStaff();
-        }
-        [Route("~/api/Staff/ById/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<Staff>), StatusCodes.Status200OK)]
+        public IEnumerable<Staff> GetStaff() => _uow.StaffRepositories.GetStaff();
+
+        [Route("ById/{id}")]
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
         public IActionResult GetStaffbyId(int id)
         {
             var result = _uow.StaffRepositories.GetStaffbyId(id);
             if (result == null)
             {
-                return BadRequest("Staff Member doesnt exist");
+                return BadRequest(ResponseMessages.StaffNotExist);
             }
-            return Ok(result);//status code 200
+            return Ok(result);
         }    
-        [Route("~/api/Staff/Update")]
+        [Route("Update")]
         [HttpPatch]
+        [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateStaffAsync(Staff model)
         {
-            var updated= _uow.StaffRepositories.UpdateStaffAsync(model);
-            var result = await _uow.SaveAsync1();
+            _uow.StaffRepositories.UpdateStaffAsync(model);
+            var result = await _uow.SaveAsync();
             if (result.Equals(1))
             {
-                return Ok(result);//status code 200
+                return Ok(result);
             }
             else
             {
-                return BadRequest("User can not be deleted");
+                return BadRequest(ResponseMessages.UserNotUpdated);
             }
 
         }

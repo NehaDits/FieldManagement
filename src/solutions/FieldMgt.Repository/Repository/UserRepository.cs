@@ -14,6 +14,7 @@ using FieldMgt.Core.DTOs;
 using Microsoft.EntityFrameworkCore;
 using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Repository.Enums;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -23,22 +24,31 @@ namespace FieldMgt.Repository.Repository
 
         private IConfiguration _configuration;
         private ApplicationDbContext _dbContext;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="dbcontext"></param>
+        /// <param name="configuration"></param>
         public UserRepository(UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
-            _dbContext = dbcontext;            
+            _dbContext = dbcontext;
         }
+
+        /// <summary>
+        /// To use for user registeration
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<UserManagerReponse> RegisterUserAsync(RegisterUserDTO model)
         {
-            if (model == null)
-            {
-                throw new NullReferenceException("Register Model is Empty");
-            }
             if (model.Password != model.ConfirmPassword)
                 return new UserManagerReponse
                 {
-                    Message = "Confirm Password doesn't match Password",
+                    Message = ResponseMessages.PasswordNotMatched,
                     IsSuccess = false
                 };
             var identityUser = new ApplicationUser
@@ -46,30 +56,36 @@ namespace FieldMgt.Repository.Repository
                 Email = model.Email,
                 UserName = model.Email,
                 CreatedBy = model.CreatedBy,
-                CreatedOn=model.CreatedOn,
+                CreatedOn = model.CreatedOn,
                 IsActive = true,
-                IsDeleted =false
+                IsDeleted = false
             };
             var result = await _userManager.CreateAsync(identityUser, model.Password);
             if (result.Succeeded)
             {
                 return new UserManagerReponse
                 {
-                    Message = "User Created Successfully",
+                    Message = ResponseMessages.UserCreated,
                     IsSuccess = true,
                     Id = identityUser.Id
-                 };
-             }
-        else
-         {    
-        return new UserManagerReponse
+                };
+            }
+            else
             {
-                Message = "User not created",
-                IsSuccess = false,
-                Errors = result.Errors.Select(e => e.Description)
-            };
-        }        
-}
+                return new UserManagerReponse
+                {
+                    Message = ResponseMessages.UserNotCreated,
+                    IsSuccess = false,
+                    Errors = result.Errors.Select(e => e.Description)
+                };
+            }
+        }
+
+        /// <summary>
+        /// Use for login
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<LoginManagerResponse> LoginUserAsync(LoginViewDTO model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -77,7 +93,7 @@ namespace FieldMgt.Repository.Repository
             {
                 return new LoginManagerResponse
                 {
-                    Message = "User doesn't exist",
+                    Message = ResponseMessages.UserNotExist,
                     IsSuccess = false
                 };
             }
@@ -85,7 +101,7 @@ namespace FieldMgt.Repository.Repository
             {
                 return new LoginManagerResponse
                 {
-                    Message = "User has been disabled by the Admin",
+                    Message = ResponseMessages.UserAccountIsDisable,
                     IsSuccess = false
                 };
             }
@@ -93,7 +109,7 @@ namespace FieldMgt.Repository.Repository
             if (!result)
                 return new LoginManagerResponse
                 {
-                    Message = "Invalid Password",
+                    Message = ResponseMessages.InvalidPassword,
                     IsSuccess = false
                 };
 
@@ -103,7 +119,7 @@ namespace FieldMgt.Repository.Repository
             {
                 return new LoginManagerResponse
                 {
-                    Message = "User is not assigned a role to Login",
+                    Message = ResponseMessages.RoleNotAssignedToLogin,
                     IsSuccess = false
                 };
             }
@@ -121,7 +137,7 @@ namespace FieldMgt.Repository.Repository
                 claims: claims,
                 expires: DateTime.Now.AddDays(30),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
-            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);                                                 
+            string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
 
             var flag = await _userManager.IsInRoleAsync(user, "Admin");
             return new LoginManagerResponse
@@ -133,10 +149,17 @@ namespace FieldMgt.Repository.Repository
                 Role = userrole
             };
         }
+
+        /// <summary>
+        /// soft delete user 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
         public async Task<string> DeleteUser(string userName, string deletedBy)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
-            if(user.IsDeleted==true || user==null)
+            if (user.IsDeleted == true || user == null)
             {
                 return null;
             }
@@ -150,8 +173,8 @@ namespace FieldMgt.Repository.Repository
                 await _dbContext.SaveChangesAsync();
                 return user.Id;
             }
-            
+
         }
-       
+
     }
 }

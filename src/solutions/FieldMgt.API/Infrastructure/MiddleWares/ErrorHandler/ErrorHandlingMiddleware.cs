@@ -15,10 +15,11 @@ using FieldMgt.API.Infrastructure.MiddleWares.Exceptions;
 using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.Interfaces;
 using FieldMgt.Core.DomainModels;
+using System.Threading;
+using FieldMgt.Repository.Enums;
 
 namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
@@ -55,7 +56,6 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
             long ExceptionId = DateTime.Now.Ticks;
             string Message = String.Empty;
             string BrowserName = "Firefox";
-            // string BrowserName = detector.Browser.Name;
             string Log = String.Empty;
             Message = exception.Message;
 
@@ -69,7 +69,7 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
                 if (exceptionType == typeof(UnauthorizedAccessException))
                 {
                     statusCode = HttpStatusCode.Forbidden;
-                    Log = "You are not authorized";
+                    Log = ResponseMessages.UserNotAuthorize;
                 }
                 else if (exceptionType == typeof(BadRequestException))
                 {
@@ -79,14 +79,12 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
                 else if (exceptionType == typeof(NotFoundException))
                 {
                     statusCode = HttpStatusCode.NotFound;
-                    //response=new FieldMgtExceptions(new{ exceptionuserId = CurrentUserId,ErrorCode=statusCode.ToString(),ErrorDetails=Message,ErrorMessage=Message,ExceptionId=ExceptionId.ToString(),Browser=BrowserName});
-                    //response = new FieldMgtExceptions(new {Err UserId=UserId, Id = ExceptionId, Browser = BrowserName, Status = statusCode, Error = Message });
                     Log = JsonConvert.SerializeObject(new { Id = ExceptionId, Browser = BrowserName, Status = statusCode, Error = Message });
                 }
                 else
                 {
                     statusCode = HttpStatusCode.InternalServerError;
-                    Log = "Some unknown error occoured";
+                    Log = ResponseMessages.UnknownError;
                 }
                 _exceptionService.SaveLogs(new ExceptionLog() { Browser = BrowserName, ExceptionBy = CurrentUserId, ExceptionId = ExceptionId.ToString(), ErrorMessage = Message, ErrorCode = statusCode.ToString(), ErrorDetails = exception.StackTrace.ToString() });
             }

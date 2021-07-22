@@ -6,55 +6,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace FieldMgt.Repository.Repository
 {
     public class StaffRepository: GenericRepository<Staff>, IStaffRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        //private readonly IUnitofWork _uow;
         public StaffRepository(ApplicationDbContext dbContext):base(dbContext)
         {
             _dbContext = dbContext;
         }
-        public async Task CreateStaffAsync(Staff model)
-        {
-             await InsertAsync(model);
-        }
-        public Staff GetStaffbyId(int id)
-        {
-            return GetById(id);
-        }
-        public IEnumerable<Staff> GetStaff()
-        {
-            var emp = _dbContext.Staffs.Where(a => a.IsDeleted == true).ToList();
-            return emp;
-        }
+        /// <summary>
+        /// Create the staff
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task CreateStaffAsync(Staff model) => await InsertAsync(model);
+
+        /// <summary>
+        /// Get the particular staff by his id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Staff GetStaffbyId(int id) => GetById(id);
+
+        /// <summary>
+        /// Get lsit of staff
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Staff> GetStaff() => _dbContext.Staffs.Where(a => a.IsDeleted == true).ToList();
+
+        /// <summary>
+        /// soft delete staff
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
         public Staff DeleteStaff(string staffId, string deletedBy)
         {
-            try
-            {
-                //var emp = _dbContext.Staffs.FirstOrDefault();
-                //commented to create the db
-                var emp = _dbContext.Staffs.Where(a => a.UserId == staffId).Single();
-                if (!(emp == null || emp.IsDeleted == true))
-                {
-                    emp.IsDeleted = true;
-                    emp.DeletedBy = deletedBy;
-                    emp.DeletedOn = System.DateTime.Now;
-                    var emp1 = Update(emp);
-                    return emp;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var currentStaff = _dbContext.Staffs.SingleOrDefault(a => a.UserId == staffId);
+            currentStaff.IsDeleted = true;
+            currentStaff.DeletedBy = deletedBy;
+            currentStaff.DeletedOn = System.DateTime.Now;
+            return Update(currentStaff);
         }
-        public Staff UpdateStaffAsync(Staff model)
-        {
-            return Update(model);
-        }
+
+        /// <summary>
+        /// update the staff detail
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public Staff UpdateStaffAsync(Staff model) => Update(model);
     }
 }

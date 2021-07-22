@@ -6,6 +6,10 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
 {
     public class CreateLogFiles
     {
+        /// <summary>
+        /// Create the log file if not exist
+        /// </summary>
+        /// <param name="pathProvider"></param>
         public static void CreateFileIfNotExist(IPathProvider pathProvider)
         {
             string FolderPath = pathProvider.MapPath("Logs");
@@ -17,6 +21,10 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
                     File.Create(FilePath);
             }
         }
+        /// <summary>
+        /// use to log the error 
+        /// </summary>
+        /// <param name="pathProvider"></param>
         public static void Log(IPathProvider pathProvider, string message)
         {
             string FolderPath = pathProvider.MapPath("Logs");

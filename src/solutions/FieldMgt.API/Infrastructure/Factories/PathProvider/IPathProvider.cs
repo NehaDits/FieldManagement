@@ -7,6 +7,11 @@ namespace FieldMgt.API.Infrastructure.Factories.PathProvider
 {
     public interface IPathProvider
     {
+        /// <summary>
+        /// Give comment details
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         string MapPath(string path);
     }
 }

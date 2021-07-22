@@ -6,7 +6,9 @@ using AutoMapper;
 using FieldMgt.API.Infrastructure.Services;
 using System.Threading.Tasks;
 using FieldMgt.Core.DTOs.Request;
-using FieldMgt.Core.DTOs.Response;
+using System.Threading;
+using FieldMgt.Repository.Enums;
+using System.Net;
 
 namespace FieldMgt.Controllers
 {
@@ -23,10 +25,11 @@ namespace FieldMgt.Controllers
             _mapper = mapper;
             _currentUserService = currentUserService;
         }
-        [Route("~/api/Lead/Create")]
+        [Route("Create")]
         [HttpPost]
-        //[Authorize(Policy = "Sales Operation")]
-        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model)
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model, CancellationToken cancellationToken)
         {
             CreateLeadDTO modelDTO = new CreateLeadDTO();
             modelDTO.FirstName = model.FirstName;
@@ -48,36 +51,41 @@ namespace FieldMgt.Controllers
             modelDTO.CreatedOn = System.DateTime.Now;
             Lead payload = _mapper.Map<CreateLeadDTO, Lead>(modelDTO);
             await _uow.LeadServices.CreateLeadAsync(payload);
-            var result = await _uow.SaveAsync1();
+            var result = await _uow.SaveAsync();
             if (result.Equals(1))
             {
                 return Ok(result);//status code 200
             }
             else
             {
-                return BadRequest("Lead can not be created");
+                return BadRequest(ResponseMessages.LeadNotCreated);
             }
         }        
-        [Route("~/api/Lead/GetList")]
-        [HttpGet]        
+        [Route("GetList")]
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IEnumerable<Lead> GetLeadsAsync()
         {
             return _uow.LeadServices.GetLeadsAsync();
         }
-        [Route("~/api/Lead/ById{id}")]
+        [Route("ById{id}")]
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult GetLeadByIdAsync(int id)
         {
             var result= _uow.LeadServices.GetLeadbyIdAsync(id);
             if (result == null)
             {
-                return BadRequest("Lead Contact doesnt exist");
+                return BadRequest(ResponseMessages.LeadNotFound);
             }
             return Ok(result);//status code 200
         }
-        [Route("~/api/Lead/Update")]
+        [Route("Update")]
         [HttpPatch]
-        //[Authorize(Policy = "Operation Staff")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public Lead UpdateLeadStatusAsync(Lead lead)
         {
             var updatedLead= _uow.LeadServices.UpdateLeadStatusAsync(lead);
