@@ -1,24 +1,20 @@
-﻿using System;
+﻿using FieldMgt.Core.DomainModels;
+using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
+using FieldMgt.Core.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using System.Text;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using FieldMgt.Core.Interfaces;
-using FieldMgt.Core.DomainModels;
-using System.Collections.Generic;
-using FieldMgt.Core.DTOs;
-using Microsoft.EntityFrameworkCore;
-using FieldMgt.Core.DTOs.Response;
-using FieldMgt.Core.DTOs.Request;
-<<<<<<< HEAD
-using Microsoft.AspNetCore.Mvc;
-=======
+using System.Threading.Tasks;
 using FieldMgt.Repository.Enums;
->>>>>>> remotes/origin/main
+using System.Net;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -43,18 +39,12 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-        /// 
+        /// Create a User with given UserName and Password
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<UserManagerReponse> RegisterUserAsync(RegisterUserDTO model)
+        public async Task RegisterUserAsync(RegisterUserDTO model)
         {
-            if (model.Password != model.ConfirmPassword)
-                return new UserManagerReponse
-                {
-                    Message = ResponseMessages.PasswordNotMatched,
-                    IsSuccess = false
-                };
             var identityUser = new ApplicationUser
             {
                 Email = model.Email,
@@ -64,45 +54,15 @@ namespace FieldMgt.Repository.Repository
                 IsActive = true,
                 IsDeleted = false
             };
-            var result = await _userManager.CreateAsync(identityUser, model.Password);
-            if (result.Succeeded)
-            {
-                return new UserManagerReponse
-                {
-                    Message = ResponseMessages.UserCreated,
-                    IsSuccess = true,
-                    Id = identityUser.Id
-                 };
-             }
-        else
-         {    
-        return new UserManagerReponse
-            {
-<<<<<<< HEAD
-                Message = "User not created",
-                IsSuccess = false,
-                Errors = result.Errors.Select(e => e.Description)
-            };
+            var result = await _userManager.CreateAsync(identityUser, model.Password);         
         }        
-}
-        public async Task<LoginManagerResponse> LoginUserAsync([FromBody] LoginViewDTO model)
-=======
-                return new UserManagerReponse
-                {
-                    Message = ResponseMessages.UserNotCreated,
-                    IsSuccess = false,
-                    Errors = result.Errors.Select(e => e.Description)
-                };
-            }
-        }
 
         /// <summary>
-        /// 
+        /// Logins a user and Generates a JWT authentication Token
         /// </summary>
         /// <param name="model"></param>
-        /// <returns></returns>
+        /// <returns>JWT Token</returns>
         public async Task<LoginManagerResponse> LoginUserAsync(LoginViewDTO model)
->>>>>>> remotes/origin/main
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null || user.IsDeleted == true)
@@ -167,21 +127,16 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-        /// 
+        /// Soft delete a User
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="deletedBy"></param>
         /// <returns></returns>
         public async Task<string> DeleteUser(string userName, string deletedBy)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
-            if (user.IsDeleted == true || user == null)
+            try
             {
-                return null;
-            }
-            else
-            {
-                //var deletedBy = _currentUserService.GetUserId();
+                var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
                 user.IsDeleted = true;
                 user.DeletedBy = deletedBy;
                 user.DeletedOn = System.DateTime.Now;
@@ -190,7 +145,10 @@ namespace FieldMgt.Repository.Repository
                 await _dbContext.SaveChangesAsync();
                 return user.Id;
             }
-
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
     }

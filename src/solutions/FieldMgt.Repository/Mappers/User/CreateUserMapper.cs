@@ -8,6 +8,7 @@ namespace FieldMgt.Repository.Mappers.UserMapping
     {
         public CreateUserMapper()
         {
+            CreateMap<CreateEmployeeDTO, RegisterUserDTO>().ReverseMap();
             CreateMap<CreateEmployeeDTO, CreateAddressDTO>().ReverseMap();
             CreateMap<CreateEmployeeDTO, CreateContactDetailDTO>().ReverseMap();
             CreateMap<CreateEmployeeDTO, Staff>().ReverseMap();

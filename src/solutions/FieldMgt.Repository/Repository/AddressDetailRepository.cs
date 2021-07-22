@@ -8,8 +8,6 @@ using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Repository.Common.StoreProcedures;
 using FieldMgt.Core.UOW;
 using AutoMapper;
-using System.Threading;
-using Dapper;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -25,7 +23,7 @@ namespace FieldMgt.Repository.Repository
             _mapper = mapper;
         }
         /// <summary>
-        /// Save Vendor Address
+        /// Save Address for Vendor, Staff Member, Service Providers
         /// </summary>
         /// <param name="model">typeof CreateAddressDTO</param>
         /// <returns>It is returning AdressDetail object</returns>
@@ -62,7 +60,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<int> Save(CreateVendorDTO model)
+        public async Task<int>Save(CreateVendorDTO model)
         {
             CreateContactDetailDTO createContactDetailDTO = _mapper.Map<CreateVendorDTO, CreateContactDetailDTO>(model);
             Vendor vendor = _mapper.Map<CreateVendorDTO, Vendor>(model);

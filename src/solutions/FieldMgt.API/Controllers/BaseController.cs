@@ -25,13 +25,11 @@ namespace FieldMgt.API.Controllers
         {
             return Ok(response);
         }
-<<<<<<< HEAD
-        
-=======
+        [HttpGet]
         public string GetUserId()
         {
             return _httpContext.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
->>>>>>> remotes/origin/main
+
     }
 }
