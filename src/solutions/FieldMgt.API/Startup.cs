@@ -32,7 +32,7 @@ namespace FieldMgt
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase(databaseName: "MockDb"));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase(databaseName: "MockDb"));
             services.AddControllers();
             services.AddHttpClient();
             services.AddSwaggerGen(c =>

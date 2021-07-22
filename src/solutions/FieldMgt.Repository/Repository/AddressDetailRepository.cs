@@ -51,9 +51,8 @@ namespace FieldMgt.Repository.Repository
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception (ex.Message);
             }
-<<<<<<< HEAD
         }
 
         /// <summary>
@@ -71,12 +70,7 @@ namespace FieldMgt.Repository.Repository
             vendor.PermanentAddressId = addressResponse.AddressDetailId;
             vendor.ContactDetailId = conteactDetailResponse.ContactDetailId;
             await _unitOfWork.VendorRepositories.CreateVendorAsync(vendor);
-
-            return await _unitOfWork.SaveAsync();
-
-        }
-=======
-        }        
->>>>>>> main
+            return await _unitOfWork.SaveAsync();        
+        }  
     }
 }

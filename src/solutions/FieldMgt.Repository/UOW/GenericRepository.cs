@@ -8,6 +8,7 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using Dapper;
 using System.Threading;
+using System;
 
 namespace FieldMgt.Repository.UOW
 {
@@ -23,27 +24,67 @@ namespace FieldMgt.Repository.UOW
 
         public void Delete(object obj)
         {
-            TEntity entityToDelete = _dbSet.Find(obj);
-            _dbContext.Entry(obj).State = EntityState.Deleted;
-           _dbSet.Remove(entityToDelete);
+            try
+            {
+                TEntity entityToDelete = _dbSet.Find(obj);
+                _dbContext.Entry(obj).State = EntityState.Deleted;
+                _dbSet.Remove(entityToDelete);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
         public IEnumerable<TEntity> GetAll()
-        {            
-            return _dbSet.AsNoTracking().ToList();
+        {
+            try
+            {
+                return _dbSet.AsNoTracking().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
         public TEntity GetById(object id)
-        {            
-            return _dbSet.Find(id);
+        {
+            try
+            {
+                return _dbSet.Find(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
         public async Task InsertAsync(TEntity entity)
         {
-            await _dbSet.AddAsync(entity);           
+            try
+            {
+                await _dbSet.AddAsync(entity);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
         public TEntity Update(TEntity entity)
-        {            
-            _dbSet.Attach(entity);
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            return entity;
+        {
+            try
+            {
+                _dbSet.Attach(entity);
+                _dbContext.Entry(entity).State = EntityState.Modified;
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
         private IDbConnection CreateConnection()
         {
@@ -60,11 +101,18 @@ namespace FieldMgt.Repository.UOW
         /// <returns></returns>
         protected async Task<IEnumerable<T>> CollectionsAsync<T>(string sql, object parameters = null)
         {
-            using (var connection = CreateConnection())
+            try
             {
-                var QueryResponse = await connection.QueryAsync<T>(sql: sql, param: parameters, commandType: CommandType.StoredProcedure);
+                using (var connection = CreateConnection())
+                {
+                    var QueryResponse = await connection.QueryAsync<T>(sql: sql, param: parameters, commandType: CommandType.StoredProcedure);
 
-                return QueryResponse;
+                    return QueryResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
         /// <summary>
@@ -76,10 +124,18 @@ namespace FieldMgt.Repository.UOW
         /// <returns></returns>
         protected async Task<T> SingleAsync<T>(string sql, object parameters = null)
         {
-            using (var connection = CreateConnection())
+            try
             {
-                return await connection.QuerySingleAsync<T>(new CommandDefinition(commandText:sql,parameters:parameters,commandType: CommandType.StoredProcedure));
+                using (var connection = CreateConnection())
+                {
+                    return await connection.QuerySingleAsync<T>(new CommandDefinition(commandText: sql, parameters: parameters, commandType: CommandType.StoredProcedure));
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
         /// <summary>
         /// Used to perform insert, update, delete
@@ -90,11 +146,19 @@ namespace FieldMgt.Repository.UOW
         /// <returns></returns>
         protected async Task<T> CommandAsync<T>(string sql, object parameters = null)
         {
-            using (var connection = CreateConnection())
+            try
             {
-                var QueryResponse = await connection.QuerySingleAsync<T>(sql: sql, param: parameters, commandType: CommandType.StoredProcedure);
-                return QueryResponse;
+                using (var connection = CreateConnection())
+                {
+                    var QueryResponse = await connection.QuerySingleAsync<T>(sql: sql, param: parameters, commandType: CommandType.StoredProcedure);
+                    return QueryResponse;
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
     }
 }

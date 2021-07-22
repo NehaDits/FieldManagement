@@ -40,12 +40,12 @@ namespace FieldMgt.Repository.Repository
             try
             {
                 IdentityRole userRole = new IdentityRole(role);
-                var result = await _roleManager.CreateAsync(userRole);
+                var result = await _roleManager.CreateAsync(userRole);               
             }
             catch (Exception ex)
             {
-                throw ex;
-            }               
+                throw new Exception (ex.Message);
+            }
         }
         /// <summary>
         /// Displays the list of roles from database table
@@ -68,10 +68,17 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public async Task EditUserRoles(string userName, string role)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
-            var roles=_roleManager.FindByNameAsync(role);
-            string roleName = roles.Result.Name.ToString();
-            var result = await _userManager.AddToRoleAsync(user, roleName);
+            try
+            {
+                var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
+                var roles = _roleManager.FindByNameAsync(role);
+                string roleName = roles.Result.Name.ToString();
+                var result = await _userManager.AddToRoleAsync(user, roleName);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }            
         }
         /// <summary>
         /// Removes user from a role
@@ -81,10 +88,17 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public async Task RemoveUserRoles(string userName, string role)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
-            var roles = _roleManager.FindByNameAsync(role);
-            string roleName = roles.Result.Name.ToString();
-            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            try
+            {
+                var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
+                var roles = _roleManager.FindByNameAsync(role);
+                string roleName = roles.Result.Name.ToString();
+                var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

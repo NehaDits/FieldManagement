@@ -39,15 +39,12 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-<<<<<<< HEAD
         /// Create a User with given UserName and Password
-=======
         /// To use for user registeration
->>>>>>> main
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task RegisterUserAsync(RegisterUserDTO model)
+        public async Task<string> RegisterUserAsync(CreateEmployeeDTO model)
         {
             var identityUser = new ApplicationUser
             {
@@ -58,15 +55,13 @@ namespace FieldMgt.Repository.Repository
                 IsActive = true,
                 IsDeleted = false
             };
-            var result = await _userManager.CreateAsync(identityUser, model.Password);         
+            var result = await _userManager.CreateAsync(identityUser, model.Password);
+            return  identityUser.Id;
         }        
 
         /// <summary>
-<<<<<<< HEAD
         /// Logins a user and Generates a JWT authentication Token
-=======
         /// Use for login
->>>>>>> main
         /// </summary>
         /// <param name="model"></param>
         /// <returns>JWT Token</returns>
@@ -135,11 +130,8 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-<<<<<<< HEAD
         /// Soft delete a User
-=======
         /// soft delete user 
->>>>>>> main
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="deletedBy"></param>

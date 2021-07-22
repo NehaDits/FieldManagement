@@ -6,5 +6,6 @@
         public static string SaveContactDetail = "sp_SaveContactDetail";
         public static string SaveVendorDetail = "sp_SaveVendorDetail";
         public static string UpdateVendorDetail = "sp_UpdateVendorDetail";
+        public static string CreateStaff = "sp_CreateStaffMember";
     }
 }

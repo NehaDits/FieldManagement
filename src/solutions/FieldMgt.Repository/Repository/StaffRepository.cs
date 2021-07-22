@@ -5,8 +5,10 @@ using FieldMgt.Repository.UOW;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FieldMgt.Repository.Common.StoreProcedures;
 using System;
 using System.Threading;
+using FieldMgt.Core.DTOs.Request;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -22,7 +24,18 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task CreateStaffAsync(Staff model) => await InsertAsync(model);
+        public async Task CreateStaffAsync(CreateEmployeeDTO model)
+        {
+            try
+            {
+                await SingleAsync<Staff>(StoreProcedures.CreateStaff, model);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+        }
 
         /// <summary>
         /// Get the particular staff by his id

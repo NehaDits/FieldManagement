@@ -12,8 +12,10 @@ namespace FieldMgt.Core.DomainModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ContactDetailId { get; set; }
         [Phone]
+        [Column(TypeName = "nvarchar(14)")]
         public string PrimaryPhone { get; set; }
         [Phone]
+        [Column(TypeName = "nvarchar(14)")]
         public string AlternatePhone { get; set; }
         [Column(TypeName = "nvarchar(100)")]
         public string PrimaryEmail { get; set; }

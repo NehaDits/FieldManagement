@@ -1,4 +1,5 @@
 ﻿using FieldMgt.Core.DomainModels;
+using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.DTOs.Response;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,7 +9,7 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface IStaffRepository
     {
-        Task CreateStaffAsync(Staff model);
+        Task CreateStaffAsync(CreateEmployeeDTO model);
         IEnumerable<Staff> GetStaff();
         Staff GetStaffbyId(int id);
         Staff DeleteStaff(string userName, string deletedBy);
