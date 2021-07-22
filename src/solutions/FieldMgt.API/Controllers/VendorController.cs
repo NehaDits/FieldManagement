@@ -29,7 +29,7 @@ namespace FieldMgt.API.Controllers
         [Route("Create")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateVendorAsync([FromBody] CreateVendorDTO model, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateVendorAsync([FromBody] CreateVendorDTO model)
         => BaseResult(await _uow.VendorRepositories.Save(model));
 
         /// <summary>

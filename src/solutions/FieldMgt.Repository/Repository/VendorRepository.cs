@@ -9,7 +9,7 @@ using FieldMgt.Repository.Common.StoreProcedures;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.UOW;
 using AutoMapper;
-
+using System;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -30,7 +30,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task CreateVendorAsync(Vendor model) => await SingleAsync<Vendor>(StoreProcedures.SaveVendorDetail, model); //=> await InsertAsync(model);
+        //public async Task CreateVendorAsync(Vendor model) => await SingleAsync<Vendor>(StoreProcedures.SaveVendorDetail, model); //=> await InsertAsync(model);
 
         /// <summary>
         /// To get the details of vendor
@@ -57,16 +57,16 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<int> Save(CreateVendorDTO model)
+        public async Task<Vendor> Save(CreateVendorDTO model)
         {
-            CreateContactDetailDTO createContactDetailDTO = _mapper.Map<CreateVendorDTO, CreateContactDetailDTO>(model);
-            Vendor vendor = _mapper.Map<CreateVendorDTO, Vendor>(model);
-            var addressResponse = await _unitOfWork.AddressRepositories.SaveAddressAsync(model);
-            var contactDetailResponse = await _unitOfWork.ContactDetailRepositories.SaveContactDetails(createContactDetailDTO);
-            vendor.PermanentAddressId = addressResponse.AddressDetailId;
-            vendor.ContactDetailId = contactDetailResponse.ContactDetailId;
-            await _unitOfWork.VendorRepositories.CreateVendorAsync(vendor);
-            return await _unitOfWork.SaveAsync();
+            try
+            {
+                return await CommandAsync<Vendor>(StoreProcedures.SaveVendorDetail, model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

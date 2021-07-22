@@ -16,7 +16,7 @@ namespace FieldMgt.API.Controllers
         }
         protected IActionResult BaseResult<T>(T response)
         {
-            if (response == null)
+            if (response != null)
                 return Ok(response);
             else
                 return BadRequest();

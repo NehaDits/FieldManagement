@@ -9,5 +9,6 @@ namespace FieldMgt.Core.Interfaces
     {
         Task<AddressDetail> SaveAddressAsync(CreateVendorDTO model);
         AddressDetail DeleteAddress(int addressId, string deletedBy);
+        //Task<Vendor> CreateVendorAsync(CreateVendorDTO model);
     }
 }
