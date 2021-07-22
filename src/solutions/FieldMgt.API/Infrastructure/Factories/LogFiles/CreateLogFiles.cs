@@ -7,7 +7,7 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
     public class CreateLogFiles
     {
         /// <summary>
-        /// Give comment details
+        /// Create the log file if not exist
         /// </summary>
         /// <param name="pathProvider"></param>
         public static void CreateFileIfNotExist(IPathProvider pathProvider)
@@ -22,7 +22,7 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
             }
         }
         /// <summary>
-        /// Give comment details
+        /// use to log the error 
         /// </summary>
         /// <param name="pathProvider"></param>
         public static void Log(IPathProvider pathProvider, string message)

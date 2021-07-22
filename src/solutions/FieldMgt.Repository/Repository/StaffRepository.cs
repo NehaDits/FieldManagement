@@ -18,27 +18,27 @@ namespace FieldMgt.Repository.Repository
             _dbContext = dbContext;
         }
         /// <summary>
-        /// 
+        /// Create the staff
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         public async Task CreateStaffAsync(Staff model) => await InsertAsync(model);
 
         /// <summary>
-        /// 
+        /// Get the particular staff by his id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public Staff GetStaffbyId(int id) => GetById(id);
 
         /// <summary>
-        /// 
+        /// Get lsit of staff
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Staff> GetStaff() => _dbContext.Staffs.Where(a => a.IsDeleted == true).ToList();
 
         /// <summary>
-        /// 
+        /// soft delete staff
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="deletedBy"></param>
@@ -53,7 +53,7 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-        /// 
+        /// update the staff detail
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>

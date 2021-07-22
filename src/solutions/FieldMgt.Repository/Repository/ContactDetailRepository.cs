@@ -18,8 +18,19 @@ namespace FieldMgt.Repository.Repository
         {
             _dbContext = dbContext;
         }
+        /// <summary>
+        /// To save the contact details
+        /// </summary>
+        /// <param name="addressDetail"></param>
+        /// <returns></returns>
         public async Task<ContactDetail> SaveContactDetails(CreateContactDetailDTO addressDetail) => await SingleAsync<ContactDetail>(StoreProcedures.SaveContactDetail, addressDetail);
 
+        /// <summary>
+        /// Delete the contact details from Contact detail table
+        /// </summary>
+        /// <param name="contactId"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
         public ContactDetail DeleteContact(int contactId, string deletedBy)
         {
             var contact = _dbContext.ContactDetails.Where(a => a.ContactDetailId == contactId).Single();

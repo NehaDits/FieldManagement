@@ -53,6 +53,7 @@ namespace FieldMgt.Repository.Repository
             {
                 throw ex;
             }
+<<<<<<< HEAD
         }
 
         /// <summary>
@@ -74,5 +75,8 @@ namespace FieldMgt.Repository.Repository
             return await _unitOfWork.SaveAsync();
 
         }
+=======
+        }        
+>>>>>>> main
     }
 }

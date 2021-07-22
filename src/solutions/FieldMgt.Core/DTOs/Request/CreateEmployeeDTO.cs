@@ -31,13 +31,9 @@ namespace FieldMgt.Core.DTOs.Request
         [DefaultValue(true)]
         public bool IsActive { get; set; }
         public string UserId { get; set; }
-        [Phone(ErrorMessage = "Please Enter valid Phone Number")]
         public string PrimaryPhone { get; set; }
-        [Phone(ErrorMessage = "Please Enter valid Phone Number")]
         public string AlternatePhone { get; set; }
-        [EmailAddress(ErrorMessage = "Please Enter valid Email Address")]
         public string PrimaryEmail { get; set; }
-        [EmailAddress(ErrorMessage = "Please Enter valid Email Address")]
         public string AlternateEmail { get; set; }
         public int Designation { get; set; }
         public string CreatedBy { get; set; }

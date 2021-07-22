@@ -39,7 +39,11 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Create a User with given UserName and Password
+=======
+        /// To use for user registeration
+>>>>>>> main
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -58,7 +62,11 @@ namespace FieldMgt.Repository.Repository
         }        
 
         /// <summary>
+<<<<<<< HEAD
         /// Logins a user and Generates a JWT authentication Token
+=======
+        /// Use for login
+>>>>>>> main
         /// </summary>
         /// <param name="model"></param>
         /// <returns>JWT Token</returns>
@@ -127,7 +135,11 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// Soft delete a User
+=======
+        /// soft delete user 
+>>>>>>> main
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="deletedBy"></param>

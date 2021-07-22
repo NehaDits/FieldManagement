@@ -16,6 +16,7 @@ using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.Interfaces;
 using FieldMgt.Core.DomainModels;
 using System.Threading;
+using FieldMgt.Repository.Enums;
 
 namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
 {
@@ -68,7 +69,7 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
                 if (exceptionType == typeof(UnauthorizedAccessException))
                 {
                     statusCode = HttpStatusCode.Forbidden;
-                    Log = "You are not authorized";
+                    Log = ResponseMessages.UserNotAuthorize;
                 }
                 else if (exceptionType == typeof(BadRequestException))
                 {
@@ -83,7 +84,7 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
                 else
                 {
                     statusCode = HttpStatusCode.InternalServerError;
-                    Log = "Some unknown error occoured";
+                    Log = ResponseMessages.UnknownError;
                 }
                 _exceptionService.SaveLogs(new ExceptionLog() { Browser = BrowserName, ExceptionBy = CurrentUserId, ExceptionId = ExceptionId.ToString(), ErrorMessage = Message, ErrorCode = statusCode.ToString(), ErrorDetails = exception.StackTrace.ToString() });
             }

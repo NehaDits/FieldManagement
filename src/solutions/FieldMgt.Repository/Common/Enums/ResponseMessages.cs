@@ -21,5 +21,15 @@ namespace FieldMgt.Repository.Enums
         public static string UserAccountIsDisable = "User has been disabled by the Admin";
         public static string InvalidPassword = "Invalid Password";
         public static string RoleNotAssignedToLogin = "User is not assigned a role to Login";
+        public static string LeadContactNotExist = "Lead Contact doesnt exist";
+        public static string LeadContactNotCreated = "Lead contact not created";
+        public static string LeadNotFound = "Lead doesn't exist";
+        public static string LeadNotCreated = "Lead can not be created";
+        public static string UnableToCreateStaff = "Unable to create Staff";
+        public static string StaffNotExist ="Staff Member doesnt exist";
+        public static string UserNotDeleted = "User can not be deleted";
+        public static string UserNotUpdated = "User can not be updated";
+        public static string UserNotAuthorize = "You are not authorized";
+        public static string UnknownError = "Some unknown error occoured";
     }
 }

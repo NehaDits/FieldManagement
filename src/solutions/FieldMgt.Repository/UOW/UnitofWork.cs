@@ -14,9 +14,10 @@ namespace FieldMgt.Repository.UOW
         public UnitofWork(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+
             LeadServices = new LeadRepository(_dbContext);
             LeadContactRepositories = new LeadContactRepository(_dbContext);
-            VendorRepositories = new VendorRepository(_dbContext);
+            VendorRepositories = new VendorRepository(_dbContext, this,mapper);
             StaffRepositories = new StaffRepository(_dbContext);
             AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);
