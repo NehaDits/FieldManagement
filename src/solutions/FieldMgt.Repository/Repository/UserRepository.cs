@@ -39,7 +39,7 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-        /// 
+        /// To use for user registeration
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -82,7 +82,7 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-        /// 
+        /// Use for login
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -151,7 +151,7 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-        /// 
+        /// soft delete user 
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="deletedBy"></param>

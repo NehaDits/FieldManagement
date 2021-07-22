@@ -17,27 +17,27 @@ namespace FieldMgt.Repository.Repository
         }
 
         /// <summary>
-        /// 
+        /// To Create lead 
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         public async Task CreateLeadAsync(Lead model) => await InsertAsync(model);
 
         /// <summary>
-        /// 
+        /// Get the list of leads
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Lead> GetLeadsAsync() => GetAll();
 
         /// <summary>
-        /// 
+        /// Get the single records of lead
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public Lead GetLeadbyIdAsync(int id) => _dbContext.Leads.FirstOrDefault(l => l.LeadId == id);
 
         /// <summary>
-        /// 
+        /// Update the single records of leads
         /// </summary>
         /// <param name="lead"></param>
         /// <returns></returns>

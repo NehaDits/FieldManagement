@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FieldMgt.Core.DTOs;
 using FieldMgt.Core.UOW;
 using AutoMapper;
 using FieldMgt.Core.DomainModels;
@@ -7,6 +6,8 @@ using System.Collections.Generic;
 using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.DTOs.Request;
 using System.Threading;
+using FieldMgt.Repository.Enums;
+using System.Net;
 
 namespace FieldMgt.API.Controllers
 {
@@ -16,15 +17,15 @@ namespace FieldMgt.API.Controllers
     {
         private readonly IUnitofWork _uow;
         private readonly IMapper _mapper;
-        private readonly ICurrentUserService _currentUserService;
-        public LeadContactController(IUnitofWork uow, IMapper mapper, ICurrentUserService currentUserService)
+        public LeadContactController(IUnitofWork uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
-            _currentUserService = currentUserService;
         }
-        [Route("/api/LeadContact/AddContact")]
+        [Route("AddContact")]
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult CreateLeadContactAsync(CreateLeadContactDTO model,CancellationToken cancellationToken, int leadId)
         {
             CreateLeadContactDTO modelDTO = new CreateLeadContactDTO();
@@ -51,29 +52,35 @@ namespace FieldMgt.API.Controllers
             }
             else
             {
-                return BadRequest("Employee can not be created");
+                return BadRequest(ResponseMessages.LeadContactNotCreated);
             }
         }
-        [Route("~/api/LeadContact/List")]
+        [Route("List")]
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IEnumerable<LeadContact> GetLeadContactsAsync()
         {
 
             return _uow.LeadContactRepositories.GetLeadsAsync();
         }
-        [Route("~/api/LeadContact/ById/{id}")]
+        [Route("ById/{id}")]
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult GetLeadByIdAsync(int id)
         {
             var result = _uow.LeadContactRepositories.GetLeadContactbyIdAsync(id);
             if (result == null)
             {
-                return BadRequest("Lead Contact doesnt exist");
+                return BadRequest(ResponseMessages.LeadContactNotExist);
             }
             return Ok(result);
         }
-        [Route("~/api/LeadContact/Update")]
+        [Route("Update")]
         [HttpPatch]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public LeadContact UpdateLeadStatusAsync(LeadContact leadContact)
         {
             var updated = _uow.LeadContactRepositories.UpdateLeadContactStatusAsync(leadContact);

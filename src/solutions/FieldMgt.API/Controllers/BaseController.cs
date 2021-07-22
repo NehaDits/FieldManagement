@@ -25,6 +25,7 @@ namespace FieldMgt.API.Controllers
         {
             return Ok(response);
         }
+        [HttpGet]
         public string GetUserId()
         {
             return _httpContext.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);

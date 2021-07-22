@@ -1,8 +1,10 @@
-﻿using AutoMapper;
-using FieldMgt.Core.DomainModels;
+﻿using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.UOW;
+using FieldMgt.Repository.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace FieldMgt.API.Controllers
@@ -17,22 +19,29 @@ namespace FieldMgt.API.Controllers
             _uow = uow;
         }
         
-        [Route("~/api/Staff/List")]
+        [Route("List")]
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<Staff>), StatusCodes.Status200OK)]
         public IEnumerable<Staff> GetStaff() => _uow.StaffRepositories.GetStaff();
-        [Route("~/api/Staff/ById/{id}")]
+
+        [Route("ById/{id}")]
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
         public IActionResult GetStaffbyId(int id)
         {
             var result = _uow.StaffRepositories.GetStaffbyId(id);
             if (result == null)
             {
-                return BadRequest("Staff Member doesnt exist");
+                return BadRequest(ResponseMessages.StaffNotExist);
             }
             return Ok(result);
         }    
-        [Route("~/api/Staff/Update")]
+        [Route("Update")]
         [HttpPatch]
+        [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateStaffAsync(Staff model)
         {
             _uow.StaffRepositories.UpdateStaffAsync(model);
@@ -43,7 +52,7 @@ namespace FieldMgt.API.Controllers
             }
             else
             {
-                return BadRequest("User can not be deleted");
+                return BadRequest(ResponseMessages.UserNotUpdated);
             }
 
         }
