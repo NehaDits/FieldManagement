@@ -21,7 +21,12 @@ namespace FieldMgt.Repository.UOW
             _dbContext = dbContext;
             _dbSet = _dbContext.Set<TEntity>();
         }
-
+        /// <summary>
+        /// Deletes an Entity 
+        /// </summary>
+        /// <typeparamname="obj"></typeparam>
+        /// <paramname="Object"></param>
+        /// <returns></returns>
         public void Delete(object obj)
         {
             try
@@ -36,6 +41,11 @@ namespace FieldMgt.Repository.UOW
             }
 
         }
+        /// <summary>
+        /// Get all records
+        /// </summary>
+        /// <paramname=""></param>
+        /// <returns>TEntity</returns>
         public IEnumerable<TEntity> GetAll()
         {
             try
@@ -48,6 +58,12 @@ namespace FieldMgt.Repository.UOW
             }
 
         }
+        /// <summary>
+        /// Get all records by a primary key field
+        /// </summary>
+        /// <typeparamname="Object"></typeparam>
+        /// <paramname="id"></param>
+        /// <returns>TEntity</returns>
         public TEntity GetById(object id)
         {
             try
@@ -60,6 +76,12 @@ namespace FieldMgt.Repository.UOW
             }
 
         }
+        /// <summary>
+        /// Inserts a record
+        /// </summary>
+        /// <typeparamname="TEntity"></typeparam>
+        /// <paramname="entity"></param>
+        /// <returns>Task</returns>
         public async Task InsertAsync(TEntity entity)
         {
             try
@@ -72,6 +94,12 @@ namespace FieldMgt.Repository.UOW
             }
 
         }
+        /// <summary>
+        /// Updates a record
+        /// </summary>
+        /// <typeparamname="TEntity"></typeparam>
+        /// <paramname="entity"></param>
+        /// <returns>TEntity</returns>
         public TEntity Update(TEntity entity)
         {
             try
@@ -86,12 +114,17 @@ namespace FieldMgt.Repository.UOW
             }
 
         }
+        /// <summary>
+        /// Generates a connection string
+        /// </summary>
+        /// <typeparamname=""></typeparam>
+        /// <paramname=""></param>
+        /// <returns></returns>
         private IDbConnection CreateConnection()
         {
             string cn = _dbContext.Database.GetDbConnection().ConnectionString;
             return new SqlConnection(cn);
-        }
-        
+        }        
         /// <summary>
         /// Return the collection of T type
         /// </summary>

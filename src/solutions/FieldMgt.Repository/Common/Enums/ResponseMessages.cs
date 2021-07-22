@@ -14,7 +14,6 @@ namespace FieldMgt.Repository.Enums
         public static string RoleNotCreated = "Role not created";
         public static string RoleNotExit = "Role doesn't exist";
         public static string PasswordNotMatched = "Confirm Password doesn't match Password";
-
         public static string UserCreated = "User Created Successfully";
         public static string UserNotCreated = "User Not Created";
         public static string UserNotExist = "User Not Exist";

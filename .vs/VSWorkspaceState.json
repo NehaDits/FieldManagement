@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\solutions"
+    "\\src\\solutions",
+    "\\src\\solutions\\FieldMgt.Repository",
+    "\\src\\solutions\\FieldMgt.Repository\\Repository"
   ],
-  "SelectedNode": "\\src\\solutions\\FieldMgt.sln",
+  "SelectedNode": "\\src\\solutions\\FieldMgt.Repository\\Repository\\UserRepository.cs",
   "PreviewInSolutionExplorer": false
 }

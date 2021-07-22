@@ -34,6 +34,7 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task RemoveUserRoles(string userName, string role)=> await _roleService.RemoveUserRoles(userName, role);    
 
+        [HttpPost]
         [Route("AddRole")]        
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
