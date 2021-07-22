@@ -7,10 +7,10 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface IVendorRepository
     {
-        Task CreateVendorAsync(Vendor model);
+        //Task CreateVendorAsync(CreateVendorDTO model);
         IEnumerable<Vendor> GetVendorsAsync();
         Vendor GetVendorbyIdAsync(int id);
         Task<Vendor> UpdateVendorStatusAsync(Vendor lead);
-        Task<int> Save(CreateVendorDTO model);
+        Task<Vendor> Save(CreateVendorDTO model);
     }
 }

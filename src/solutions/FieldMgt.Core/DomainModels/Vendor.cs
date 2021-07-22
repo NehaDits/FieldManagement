@@ -32,7 +32,7 @@ namespace FieldMgt.Core.DomainModels
         [ForeignKey("ContactDetailId")]
         public ContactDetail ContactDetail { get; set; }
         [DefaultValue(true)]
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         [Column(TypeName = "nvarchar(255)")]
         public string CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
