@@ -38,7 +38,7 @@ namespace FieldMgt.Core.DTOs.Request
     }
     public class BaseRegistration
     {
-        public int? EmployeeId { get; set; }
+        //public int? EmployeeId { get; set; }
     }
 }
 
