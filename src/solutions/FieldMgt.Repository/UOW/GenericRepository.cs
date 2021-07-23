@@ -82,11 +82,13 @@ namespace FieldMgt.Repository.UOW
         /// <typeparamname="TEntity"></typeparam>
         /// <paramname="entity"></param>
         /// <returns>Task</returns>
-        public async Task InsertAsync(TEntity entity)
+        public async Task<TEntity> InsertAsync(TEntity entity)
         {
             try
             {
-                await _dbSet.AddAsync(entity);
+                var entity1= await _dbSet.AddAsync(entity);
+                var entityToReturn = entity1.Entity;
+                return entityToReturn;
             }
             catch (Exception ex)
             {

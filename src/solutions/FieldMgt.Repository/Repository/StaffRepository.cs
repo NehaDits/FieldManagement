@@ -9,32 +9,36 @@ using FieldMgt.Repository.Common.StoreProcedures;
 using System;
 using System.Threading;
 using FieldMgt.Core.DTOs.Request;
+using AutoMapper;
 
 namespace FieldMgt.Repository.Repository
 {
     public class StaffRepository: GenericRepository<Staff>, IStaffRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        public StaffRepository(ApplicationDbContext dbContext):base(dbContext)
+        private readonly IMapper _mapper;
+        public StaffRepository(ApplicationDbContext dbContext, IMapper mapper) :base(dbContext)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
         /// <summary>
         /// Create the staff
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task CreateStaffAsync(CreateEmployeeDTO model)
+        public async Task<Staff> CreateStaffAsync(CreateEmployeeDTO model)
         {
             try
-            {
-                await SingleAsync<Staff>(StoreProcedures.CreateStaff, model);
+            {                 
+                var staff = _mapper.Map<CreateEmployeeDTO, RegistrationDTO>(model);
+                return await CommandAsync<Staff>(StoreProcedures.CreateStaff, staff);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
+
         }
 
         /// <summary>

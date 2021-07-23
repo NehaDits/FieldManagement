@@ -58,7 +58,7 @@ namespace FieldMgt.Repository.Repository
         /// <param name="model"></param>
         /// <returns></returns>
         public async Task<Vendor> Save(CreateVendorDTO model)
-        {
+        {            
             try
             {
                 return await CommandAsync<Vendor>(StoreProcedures.SaveVendorDetail, model);

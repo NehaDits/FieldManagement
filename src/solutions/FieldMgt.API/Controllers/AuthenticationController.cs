@@ -35,15 +35,17 @@ namespace FieldMgt.Controllers
         [Route("Register")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<string> RegisterAsync([FromBody] CreateEmployeeDTO model)
+        public async Task<IActionResult> RegisterAsync([FromBody] CreateEmployeeDTO model)
         {
             try
             {                
-                model.CreatedBy =GetUserId();
+                //model.CreatedBy =GetUserId();
                 model.CreatedOn = System.DateTime.Now;
                 var result = await _userRepository.RegisterUserAsync(model);
+                //var staff = _mapper.Map<CreateEmployeeDTO, RegistrationDTO>(model);
                 model.UserId = result;
-                return result;
+                return BaseResult(await _uow.StaffRepositories.CreateStaffAsync(model));
+                //return result;
             }
             catch (Exception ex)
             {

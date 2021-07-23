@@ -69,7 +69,7 @@ namespace FieldMgt.Repository.Repository
             var conteactDetailResponse = await _unitOfWork.ContactDetailRepositories.SaveContactDetails(createContactDetailDTO);
             vendor.PermanentAddressId = addressResponse.AddressDetailId;
             vendor.ContactDetailId = conteactDetailResponse.ContactDetailId;
-            await _unitOfWork.VendorRepositories.CreateVendorAsync(vendor);
+            //await _unitOfWork.VendorRepositories.Save(vendor);
             return await _unitOfWork.SaveAsync();        
         }  
     }

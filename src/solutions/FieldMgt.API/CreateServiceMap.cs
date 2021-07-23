@@ -3,7 +3,7 @@ using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
 using System.ComponentModel;
 
-namespace FieldMgt.Repository.AutoMapper
+namespace FieldMgt
 {
     public class CreateServiceMap : Profile
     {

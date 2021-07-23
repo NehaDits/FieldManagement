@@ -9,10 +9,12 @@ namespace FieldMgt.Repository.Mappers.UserMapping
         public CreateUserMapper()
         {
             CreateMap<CreateEmployeeDTO, RegisterUserDTO>().ReverseMap();
-            CreateMap<CreateEmployeeDTO, CreateAddressDTO>().ReverseMap();
+            CreateMap<CreateEmployeeDTO, AddressDetail>().ReverseMap();
             CreateMap<CreateEmployeeDTO, CreateContactDetailDTO>().ReverseMap();
             CreateMap<CreateEmployeeDTO, Staff>().ReverseMap();
             CreateMap<CreateEmployeeDTO, ApplicationUser>().ReverseMap();
+            CreateMap<CreateEmployeeDTO, CreateAddressDTO>().ReverseMap();
+            CreateMap<CreateAddressDTO, AddressDetail>().ReverseMap();
         }
         
     }

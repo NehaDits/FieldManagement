@@ -3,9 +3,11 @@
     "",
     "\\src",
     "\\src\\solutions",
+    "\\src\\solutions\\FieldMgt.API",
+    "\\src\\solutions\\FieldMgt.API\\Controllers",
     "\\src\\solutions\\FieldMgt.Repository",
     "\\src\\solutions\\FieldMgt.Repository\\Repository"
   ],
-  "SelectedNode": "\\src\\solutions\\FieldMgt.Repository\\Repository\\UserRepository.cs",
+  "SelectedNode": "\\src\\solutions\\FieldMgt.sln",
   "PreviewInSolutionExplorer": false
 }
