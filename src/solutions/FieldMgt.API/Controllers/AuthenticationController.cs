@@ -42,10 +42,8 @@ namespace FieldMgt.Controllers
                 //model.CreatedBy =GetUserId();
                 model.CreatedOn = System.DateTime.Now;
                 var result = await _userRepository.RegisterUserAsync(model);
-                //var staff = _mapper.Map<CreateEmployeeDTO, RegistrationDTO>(model);
                 model.UserId = result;
                 return BaseResult(await _uow.StaffRepositories.CreateStaffAsync(model));
-                //return result;
             }
             catch (Exception ex)
             {

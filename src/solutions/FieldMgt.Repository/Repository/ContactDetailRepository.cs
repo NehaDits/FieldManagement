@@ -31,13 +31,23 @@ namespace FieldMgt.Repository.Repository
         /// <param name="contactId"></param>
         /// <param name="deletedBy"></param>
         /// <returns></returns>
-        public ContactDetail DeleteContact(int contactId, string deletedBy)
+        public void DeleteContact(int contactId, string deletedBy)
         {
-            var contact = _dbContext.ContactDetails.Where(a => a.ContactDetailId == contactId).Single();
-            contact.IsDeleted = true;
-            contact.DeletedBy = deletedBy;
-            contact.DeletedOn = System.DateTime.Now;
-            return Update(contact);
+            try
+            {
+                if (contactId != 0)
+                {
+                    var contact = _dbContext.ContactDetails.Where(a => a.ContactDetailId == contactId).Single();
+                    contact.IsDeleted = true;
+                    contact.DeletedBy = deletedBy;
+                    contact.DeletedOn = System.DateTime.Now;
+                    Update(contact);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

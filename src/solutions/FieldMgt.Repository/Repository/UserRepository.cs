@@ -45,13 +45,7 @@ namespace FieldMgt.Repository.Repository
         /// <param name="model"></param>
         /// <returns></returns>
         public async Task<string> RegisterUserAsync(CreateEmployeeDTO model)
-        {
-            if (model == null)
-            {
-                throw new NullReferenceException("Register Model is Empty");
-            }
-            if (model.Password != model.ConfirmPassword)
-                return  "Confirm Password doesn't match Password";
+        {  
             var identityUser = new ApplicationUser
             {
                 Email = model.Email,
@@ -68,20 +62,8 @@ namespace FieldMgt.Repository.Repository
             }
             else
             {
-                return "User not created";
+                return ResponseMessages.UserNotCreated;
             }
-            //var identityUser = new ApplicationUser
-            //{
-            //    Email = model.Email,
-            //    UserName = model.Email,
-            //    CreatedBy = model.CreatedBy,
-            //    CreatedOn = model.CreatedOn,
-            //    IsActive = true,
-            //    IsDeleted = false
-            //};
-            //var result = await _userManager.CreateAsync(identityUser, model.Password);
-            
-            //return  identityUser.Id;
         }        
 
         /// <summary>

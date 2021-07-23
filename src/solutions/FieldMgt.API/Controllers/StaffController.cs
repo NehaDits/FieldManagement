@@ -11,7 +11,7 @@ namespace FieldMgt.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StaffController : ControllerBase
+    public class StaffController : BaseController
     {
         private readonly IUnitofWork _uow;
         public StaffController(IUnitofWork uow)
@@ -47,6 +47,32 @@ namespace FieldMgt.API.Controllers
             _uow.StaffRepositories.UpdateStaffAsync(model);
             var result = await _uow.SaveAsync();
             if (result.Equals(1))
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(ResponseMessages.UserNotUpdated);
+            }
+
+        }
+        [Route("Delete/{staffId}")]
+        [HttpPatch]
+        [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> DeleteStaff(int staffId)
+        {
+            //var deletedBy = GetUserId();
+            string deletedBy= "ef909433-f28e-40a9-ab89-fe81b99ca1e3";
+            var staff=_uow.StaffRepositories.DeleteStaff(staffId,deletedBy);
+            int permanentAddress = (int)staff.PermanentAddressId;
+            int correspondenceAddress = (int)staff.CorrespondenceAddressId;
+            int contactDetail = (int)staff.ContactDetailId;
+            _uow.AddressRepositories.DeleteAddress(permanentAddress,deletedBy);
+            _uow.AddressRepositories.DeleteAddress(correspondenceAddress, deletedBy);
+            _uow.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
+            var result = await _uow.SaveAsync();
+            if (result>0)
             {
                 return Ok(result);
             }

@@ -39,15 +39,18 @@ namespace FieldMgt.Repository.Repository
         /// <param name="addressId">addressId</param>
         /// <param name="deletedBy">deletedBy</param>
         /// <returns>AddressDetail object</returns>
-        public AddressDetail DeleteAddress(int addressId, string deletedBy)
+        public void DeleteAddress(int addressId, string deletedBy)
         {
             try
             {
-                AddressDetail address = _dbContext.AddressDetails.FirstOrDefault(a => a.AddressDetailId == addressId);
-                address.IsDeleted = true;
-                address.DeletedBy = deletedBy;
-                address.DeletedOn = DateTime.Now;
-                return Update(address);
+                if(addressId!=0)
+                {
+                    AddressDetail address = _dbContext.AddressDetails.FirstOrDefault(a => a.AddressDetailId == addressId);
+                    address.IsDeleted = true;
+                    address.DeletedBy = deletedBy;
+                    address.DeletedOn = DateTime.Now;
+                    Update(address);
+                }               
             }
             catch (Exception ex)
             {
