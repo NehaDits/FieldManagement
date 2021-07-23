@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FieldMgt.Core.DTOs.Request;
 using System.Net;
 using Microsoft.AspNetCore.Http;
-using System.Threading;
 
 namespace FieldMgt.API.Controllers
 {
@@ -62,11 +61,31 @@ namespace FieldMgt.API.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPatch]
-        [Route("Update/{id}")]
+        [Route("Update/{VendorId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Vendor), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateVendorStatusAsync(Vendor vendor, CancellationToken cancellationToken)
-            => BaseResult<Vendor>(await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor));
+        public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor, int Vendorid)
+        {
+            vendor.VendorId = Vendorid;
+            var vendorDetail= await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor);
+            return vendorDetail;
+        }
+            //=> BaseResult<Vendor>(await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor));
 
+        [HttpPost]
+        [Route("test")]
+        public async Task<IActionResult> CreateVendor([FromBody] CreateVendorDTO model)
+        { 
+            var res= await _uow.VendorRepositories.AddVendor(model);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("DeleteVendor/VendorId")]
+        public async Task<Vendor> DeleteVendor(int vendorId)
+        {
+            var deletedBy = GetUserId();
+            return await _uow.VendorRepositories.DeleteVendor(vendorId, deletedBy);
+        }
     }
 }

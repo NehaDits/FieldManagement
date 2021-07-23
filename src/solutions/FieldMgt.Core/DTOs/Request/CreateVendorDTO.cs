@@ -14,7 +14,6 @@ namespace FieldMgt.Core.DTOs.Request
         public string VendorIFSCCode { get; set; }
         public string VendorBankName { get; set; }
         public string VendorBankBranch { get; set; }
-        public int AddressType { get; set; }
         [StringLength(100, MinimumLength = 5)]
         public string PermanentAddress { get; set; }
         public int PermanentCity { get; set; }
@@ -40,7 +39,7 @@ namespace FieldMgt.Core.DTOs.Request
     }
     public class BaseCreateVendorModel
     {
-        //public int? VendorId { get; set; }
+        public int? VendorId { get; set; }
         //public int? PermanentAddressId { get; set; }
         //public int? BillingAddressId { get; set; }
         //public int? ContactDetailId { get; set; }
