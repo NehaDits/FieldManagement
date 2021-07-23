@@ -53,7 +53,7 @@ namespace FieldMgt.Repository.Repository
         /// Get lsit of staff
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Staff> GetStaff() => _dbContext.Staffs.Where(a => a.IsDeleted == true).ToList();
+        public IEnumerable<Staff> GetStaff() => _dbContext.Staffs.Where(a => a.IsDeleted == false).ToList();
 
         /// <summary>
         /// soft delete staff when deleting by UserId
