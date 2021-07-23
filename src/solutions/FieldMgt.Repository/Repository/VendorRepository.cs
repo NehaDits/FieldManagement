@@ -8,8 +8,10 @@ using System.Threading;
 using FieldMgt.Repository.Common.StoreProcedures;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.UOW;
-using AutoMapper;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -18,6 +20,7 @@ namespace FieldMgt.Repository.Repository
         private readonly ApplicationDbContext _dbContext;
         private readonly IUnitofWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
         public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
@@ -50,7 +53,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="vendor"></param>
         /// <returns></returns>
-        public async Task<Vendor> UpdateVendorStatusAsync(Vendor vendor) => await SingleAsync<Vendor>(StoreProcedures.UpdateVendorDetail, vendor);
+        public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor) => await CollectionsAsync<Vendor>(StoreProcedures.UpdateVendorDetail, vendor);
 
         /// <summary>
         /// To save the vendor details
@@ -58,15 +61,40 @@ namespace FieldMgt.Repository.Repository
         /// <param name="model"></param>
         /// <returns></returns>
         public async Task<Vendor> Save(CreateVendorDTO model)
-        {            
+        {
             try
             {
-                return await CommandAsync<Vendor>(StoreProcedures.SaveVendorDetail, model);
+                return await CommandAsync<Vendor>(StoreProcedures.UpdateVendorDetail, model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+             }
+        }
+        public async Task<Vendor> DeleteVendor(int vendorId, string deletedBy)
+        {
+            try
+            {
+                var currentVendor = _dbContext.Vendors.SingleOrDefault(a => a.VendorId == vendorId);
+                currentVendor.IsDeleted = true;
+                currentVendor.DeletedBy = deletedBy;
+                currentVendor.DeletedOn = System.DateTime.Now;
+                return Update(currentVendor);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+        public async Task<int> AddVendor(CreateVendorDTO model)
+        {
+            Vendor vendor = new Vendor();
+            vendor.VendorContactPersonName = model.VendorContactPersonName;
+            vendor.VendorCompanyName = model.VendorCompanyName;
+            vendor.BillingAddressId = 1;
+            vendor.VendorBankName = model.VendorBankName;
+            vendor.VendorBankBranch = model.VendorBankBranch;
+            return 0;
         }
     }
 }
