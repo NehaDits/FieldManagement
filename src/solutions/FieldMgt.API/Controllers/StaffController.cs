@@ -1,5 +1,6 @@
 ﻿using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.UOW;
 using FieldMgt.Repository.Enums;
 using Microsoft.AspNetCore.Http;
@@ -30,13 +31,9 @@ namespace FieldMgt.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
-        public CreateEmployeeDTO GetStaffbyId(int id)
+        public StaffListDTO GetStaffbyId(int id)
         {
             var result = _uow.StaffRepositories.GetStaffbyId(id);
-            //if (result == null)
-            //{
-            //    return BadRequest(ResponseMessages.StaffNotExist);
-            //}
             return result;
         }    
         [Route("Update")]

@@ -57,30 +57,29 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public CreateEmployeeDTO GetStaffbyId(int id)
-        //=> GetById(id);
+        public StaffListDTO GetStaffbyId(int id)
         {
-            var masterModel = _dbContext.Staffs.Where(w =>
+            var staffModel = _dbContext.Staffs.Where(w =>
                   w.StaffId.Equals(id)).FirstOrDefault();
             var permanentAddressDetail = _dbContext.AddressDetails.Where(t =>
-              t.AddressDetailId.Equals(masterModel.PermanentAddressId))
+              t.AddressDetailId.Equals(staffModel.PermanentAddressId))
               .FirstOrDefault();
             var correspondenceAddressDetail = _dbContext.AddressDetails.Where(t =>
-              t.AddressDetailId.Equals(masterModel.CorrespondenceAddressId))
+              t.AddressDetailId.Equals(staffModel.CorrespondenceAddressId))
               .FirstOrDefault();
-            var project = _dbContext.ContactDetails.Where(p => p.ContactDetailId == masterModel.ContactDetailId)
+            var contactDetailModel = _dbContext.ContactDetails.Where(p => p.ContactDetailId == staffModel.ContactDetailId)
               .FirstOrDefault();
             var details = (from master in _dbContext.Staffs
                            join detail in _dbContext.AddressDetails
                            on master.PermanentAddressId equals detail.AddressDetailId
                            where master.StaffId == id
-                           //from proj in context.Projects where proj.ProjectId = detail.ProjectId
-                           select new CreateEmployeeDTO()
+                           from proj in _dbContext.ContactDetails where proj.ContactDetailId == master.ContactDetailId
+                           select new StaffListDTO()
                            {
                                PermanentAddress = detail.Address,
                                FirstName=master.FirstName,
                                CorrespondenceAddress=correspondenceAddressDetail.Address,
-                               PrimaryPhone=project.PrimaryPhone
+                               PrimaryPhone=contactDetailModel.PrimaryPhone
 
                                //map field names
                            }).FirstOrDefault();
@@ -92,21 +91,21 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public IEnumerable<Staff> GetStaff() => _dbContext.Staffs.Where(a => a.IsDeleted == false).ToList();
         //{
-        //    var masterModel = _dbContext.Staffs.Where(w =>
+        //    var staffModel = _dbContext.Staffs.Where(w =>
         //          w.StaffId.Equals(staffId)).FirstOrDefault();
         //    var permanentAddressDetail = _dbContext.AddressDetails.Where(t =>
-        //      t.AddressDetailId.Equals(masterModel.PermanentAddressId))
+        //      t.AddressDetailId.Equals(staffModel.PermanentAddressId))
         //      .FirstOrDefault();
         //    var correspondenceAddressDetail = _dbContext.AddressDetails.Where(t =>
-        //      t.AddressDetailId.Equals(masterModel.CorrespondenceAddressId))
+        //      t.AddressDetailId.Equals(staffModel.CorrespondenceAddressId))
         //      .FirstOrDefault();
-        //    var project = _dbContext.ContactDetails.Where(p => p.ContactDetailId == masterModel.ContactDetailId)
+        //    var contactDetailModel = _dbContext.ContactDetails.Where(p => p.ContactDetailId == staffModel.ContactDetailId)
         //      .FirstOrDefault();
         //    var details = (from master in _dbContext.Staffs
         //                   join detail in _dbContext.AddressDetails
         //                   on master.PermanentAddressId equals detail.AddressDetailId
         //                   where master.StaffId == staffId
-        //                   //from proj in context.Projects where proj.ProjectId = detail.ProjectId
+        //                   //from proj in context.contactDetailModels where proj.contactDetailModelId = detail.contactDetailModelId
         //                   select new Staff()
         //                   {
         //                       //map field names
