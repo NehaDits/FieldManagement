@@ -12,6 +12,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using FieldMgt.Core.DTOs.Response;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -39,7 +40,41 @@ namespace FieldMgt.Repository.Repository
         /// To get the details of vendor
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Vendor> GetVendorsAsync() => _dbContext.Vendors.Where(a => a.IsDeleted == true).ToList();
+        public IEnumerable<VendorResponseDTO> GetVendorsAsync()
+        {
+            IEnumerable<VendorResponseDTO> result = (from a in _dbContext.Vendors
+                                                     join c in _dbContext.AddressDetails on a.PermanentAddressId equals c.AddressDetailId
+                                                     join d in _dbContext.AddressDetails on a.BillingAddressId equals d.AddressDetailId
+                                                     join e in _dbContext.ContactDetails on a.ContactDetailId equals e.ContactDetailId
+                                                     where a.IsActive == true
+                                                     select new VendorResponseDTO
+                                                     {
+                                                         VendorAccountNumber = a.VendorAccountNumber,
+                                                         VendorBankBranch = a.VendorBankBranch,
+                                                         VendorBankName = a.VendorBankName,
+                                                         VendorCompanyName = a.VendorCompanyName,
+                                                         VendorContactPersonName = a.VendorContactPersonName,
+                                                         VendorGSTNumber = a.VendorGSTNumber,
+                                                         VendorIFSCCode = a.VendorIFSCCode,
+                                                         VendorOwnerorMD = a.VendorOwnerorMD,
+                                                         VendorId = a.VendorId,
+                                                         AlternateEmail = e.AlternateEmail,
+                                                         PrimaryEmail = e.PrimaryEmail,
+                                                         AlternatePhone = e.AlternatePhone,
+                                                         PrimaryPhone = e.PrimaryPhone,
+                                                         CorrespondenceAddress = d.Address,
+                                                         CorrespondenceCity = d.CityId,
+                                                         CorrespondenceCountry = d.CountryId,
+                                                         CorrespondenceState = d.StateId,
+                                                         CorrespondenceZipCode = d.ZipCode,
+                                                         PermanentZipCode = c.ZipCode,
+                                                         PermanentAddress = c.Address,
+                                                         PermanentCity = c.CityId,
+                                                         PermanentCountry = c.CountryId,
+                                                         PermanentState = c.StateId
+                                                     });
+            return result;
+        }
 
         /// <summary>
         /// To get the sibgle records
