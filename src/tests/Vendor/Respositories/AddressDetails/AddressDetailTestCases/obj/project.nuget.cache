@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "xIo4o3RY95PPNJ6al5Or5a+nmj9KCB2ks2zzgnDFf/SA+0jn/PwECCu/ANsArcCqxwNQX1cb11USUdSkPYelXQ==",
-  "success": true,
+  "dgSpecHash": "z+ZyLm2SnmHmBiBvMPxnvUvO8y2qIMXgP0qG+Xa8Z2jWQkxG6Vhv1aBTJ1Ko2PgvQrK53Vf3BBWcIilwb6eczg==",
+  "success": false,
   "projectFilePath": "C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\tests\\Vendor\\Respositories\\AddressDetails\\AddressDetailTestCases\\AddressDetailTestCases.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ditsd\\.nuget\\packages\\coverlet.collector\\1.3.0\\coverlet.collector.1.3.0.nupkg.sha512",
@@ -98,10 +98,31 @@
   ],
   "logs": [
     {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\tests\\Vendor\\Respositories\\AddressDetails\\AddressDetailTestCases\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project FieldMgt.API is not compatible with netcoreapp3.1 (.NETCoreApp,Version=v3.1). Project FieldMgt.API supports: net5.0 (.NETCoreApp,Version=v5.0)",
+      "libraryId": "FieldMgt.API",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project FieldMgt.Core is not compatible with netcoreapp3.1 (.NETCoreApp,Version=v3.1). Project FieldMgt.Core supports: net5.0 (.NETCoreApp,Version=v5.0)",
+      "libraryId": "FieldMgt.Core",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project FieldMgt.Repository is not compatible with netcoreapp3.1 (.NETCoreApp,Version=v3.1). Project FieldMgt.Repository supports: net5.0 (.NETCoreApp,Version=v5.0)",
+      "libraryId": "FieldMgt.Repository",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
     }
   ]
 }

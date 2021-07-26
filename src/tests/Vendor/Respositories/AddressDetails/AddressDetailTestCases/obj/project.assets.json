@@ -1648,6 +1648,36 @@
         "build": {
           "build/netcoreapp2.1/xunit.runner.visualstudio.props": {}
         }
+      },
+      "FieldMgt.API/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0",
+        "compile": {
+          "bin/placeholder/FieldMgt.API.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FieldMgt.API.dll": {}
+        }
+      },
+      "FieldMgt.Core/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0",
+        "compile": {
+          "bin/placeholder/FieldMgt.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FieldMgt.Core.dll": {}
+        }
+      },
+      "FieldMgt.Repository/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0",
+        "compile": {
+          "bin/placeholder/FieldMgt.Repository.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FieldMgt.Repository.dll": {}
+        }
       }
     }
   },
@@ -5611,10 +5641,28 @@
         "xunit.runner.visualstudio.2.4.3.nupkg.sha512",
         "xunit.runner.visualstudio.nuspec"
       ]
+    },
+    "FieldMgt.API/1.0.0": {
+      "type": "project",
+      "path": "../../../../../solutions/FieldMgt.API/FieldMgt.API.csproj",
+      "msbuildProject": "../../../../../solutions/FieldMgt.API/FieldMgt.API.csproj"
+    },
+    "FieldMgt.Core/1.0.0": {
+      "type": "project",
+      "path": "../../../../../solutions/FieldMgt.Core/FieldMgt.Core.csproj",
+      "msbuildProject": "../../../../../solutions/FieldMgt.Core/FieldMgt.Core.csproj"
+    },
+    "FieldMgt.Repository/1.0.0": {
+      "type": "project",
+      "path": "../../../../../solutions/FieldMgt.Repository/FieldMgt.Repository.csproj",
+      "msbuildProject": "../../../../../solutions/FieldMgt.Repository/FieldMgt.Repository.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "FieldMgt.API >= 1.0.0",
+      "FieldMgt.Core >= 1.0.0",
+      "FieldMgt.Repository >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 16.7.1",
       "coverlet.collector >= 1.3.0",
       "xunit >= 2.4.1",
@@ -5652,7 +5700,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\solutions\\FieldMgt.API\\FieldMgt.API.csproj": {
+              "projectPath": "C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\solutions\\FieldMgt.API\\FieldMgt.API.csproj"
+            },
+            "C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\solutions\\FieldMgt.Core\\FieldMgt.Core.csproj": {
+              "projectPath": "C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\solutions\\FieldMgt.Core\\FieldMgt.Core.csproj"
+            },
+            "C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\solutions\\FieldMgt.Repository\\FieldMgt.Repository.csproj": {
+              "projectPath": "C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\solutions\\FieldMgt.Repository\\FieldMgt.Repository.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -5707,10 +5765,31 @@
   },
   "logs": [
     {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\ditsd\\source\\repos\\FieldManagement\\FieldManagement\\src\\tests\\Vendor\\Respositories\\AddressDetails\\AddressDetailTestCases\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project FieldMgt.API is not compatible with netcoreapp3.1 (.NETCoreApp,Version=v3.1). Project FieldMgt.API supports: net5.0 (.NETCoreApp,Version=v5.0)",
+      "libraryId": "FieldMgt.API",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project FieldMgt.Core is not compatible with netcoreapp3.1 (.NETCoreApp,Version=v3.1). Project FieldMgt.Core supports: net5.0 (.NETCoreApp,Version=v5.0)",
+      "libraryId": "FieldMgt.Core",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project FieldMgt.Repository is not compatible with netcoreapp3.1 (.NETCoreApp,Version=v3.1). Project FieldMgt.Repository supports: net5.0 (.NETCoreApp,Version=v5.0)",
+      "libraryId": "FieldMgt.Repository",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
     }
   ]
 }

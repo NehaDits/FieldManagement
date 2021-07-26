@@ -11,9 +11,9 @@ namespace FieldMgt.Core.Interfaces
     {
         Task<Staff> CreateStaffAsync(CreateEmployeeDTO model);
         IEnumerable<Staff> GetStaff();
-        Staff GetStaffbyId(int id);
+        CreateEmployeeDTO GetStaffbyId(int id);
         Staff DeleteStaffAsUser(string userName, string deletedBy);
         Staff DeleteStaff(int userName, string deletedBy);
-        Staff UpdateStaffAsync(Staff model);
+        Task UpdateStaffAsync(UpdateStaffDTO model);
     }
 }

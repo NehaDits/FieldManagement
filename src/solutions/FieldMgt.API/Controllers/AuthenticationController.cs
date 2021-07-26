@@ -63,8 +63,12 @@ namespace FieldMgt.Controllers
         [ProducesResponseType((int) StatusCodes.Status200OK)]
         public async Task DeleteUser(string userName)
         {
-            var deletedBy = GetUserId();
+            //var deletedBy = GetUserId();
+            var deletedBy = "409d856f-2cdd-47be-ac17-e04694fae805";
             var resultUser = await _userRepository.DeleteUser(userName, deletedBy);
+            //var userId=resultUser.
+            _uow.StaffRepositories.DeleteStaffAsUser(resultUser, deletedBy);
+             await _uow.SaveAsync();
         }
     }
 }
