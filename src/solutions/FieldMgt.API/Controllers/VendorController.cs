@@ -81,7 +81,7 @@ namespace FieldMgt.API.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteVendor/VendorId")]
+        [Route("DeleteVendor/{VendorId}")]
         public async Task<Vendor> DeleteVendor(int vendorId)
         {
             var deletedBy = GetUserId();
