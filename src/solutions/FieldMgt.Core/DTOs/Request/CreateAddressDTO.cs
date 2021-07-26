@@ -9,6 +9,18 @@ namespace FieldMgt.Core.DTOs.Request
     public class CreateAddressDTO:BaseAddressModel
     {
         [StringLength(100, MinimumLength = 5)]
+        public string PermanentAddress { get; set; }
+        public int PermanentCity { get; set; }
+        public int PermanentState { get; set; }
+        public int PermanentCountry { get; set; }
+        public string PermanentZipCode { get; set; }
+        [StringLength(100, MinimumLength = 5)]
+        public string CorrespondenceAddress { get; set; }
+        public int CorrespondenceCity { get; set; }
+        public int CorrespondenceState { get; set; }
+        public int CorrespondenceCountry { get; set; }
+        public string CorrespondenceZipCode { get; set; }
+        [StringLength(100, MinimumLength = 5)]
         public string Address { get; set; }
         public int CityId { get; set; }
         public int StateId { get; set; }
