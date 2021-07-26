@@ -25,7 +25,7 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
         /// use to log the error 
         /// </summary>
         /// <param name="pathProvider"></param>
-        public static void Log(IPathProvider pathProvider, string message)
+        public static void Log(IPathProvider pathProvider, string message,string errordetails)
         {
             string FolderPath = pathProvider.MapPath("Logs");
             string FileName = string.Concat(DateTime.Now.ToString("MMMM_dd_YYYY"), ".txt");
@@ -36,6 +36,7 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
                 writer.WriteLine("");
                 writer.WriteLine($"#########################   {DateTime.Now.ToString("dddd dd MMMM hh:mm:ss")}    ##################################");
                 writer.WriteLine(message);
+                writer.WriteLine(errordetails);
                 writer.Dispose();
 
             }

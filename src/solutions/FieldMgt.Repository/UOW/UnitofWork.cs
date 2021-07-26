@@ -18,22 +18,20 @@ namespace FieldMgt.Repository.UOW
             LeadServices = new LeadRepository(_dbContext);
             LeadContactRepositories = new LeadContactRepository(_dbContext);
             VendorRepositories = new VendorRepository(_dbContext, this,mapper);
-            StaffRepositories = new StaffRepository(_dbContext,mapper);
+            StaffRepositories = new StaffRepository(_dbContext,this,mapper);
             AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);
+            ServiceProviderRepositories = new ServiceProviderRepository(_dbContext);
         }
         public ILeadRepository LeadServices { get; }
         public IUserRepository USerServices { get; }
         public IRoleRepository RoleServices { get; }
         public ILeadContactRepository LeadContactRepositories { get; }
-
         public IVendorRepository VendorRepositories { get; }
-
         public IStaffRepository  StaffRepositories { get; }
-
         public IAddressDetailRepository AddressRepositories { get; }  
         public IContactDetailRepository ContactDetailRepositories { get; }
-
+        public IServiceProviderRepository ServiceProviderRepositories { get; }
     
         public async Task<int> SaveAsync()
         {

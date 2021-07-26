@@ -34,14 +34,11 @@ namespace FieldMgt.Core.DTOs.Request
         public string PrimaryEmail { get; set; }
         public string AlternateEmail { get; set; }
         public int Designation { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime? CreatedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
     public class BaseStaffModel
     {
-        public int? EmployeeId { get; set; }
-        //public int? PermanentAddressId { get; set; }
-        //public int? BillingAddressId { get; set; }
-        //public int? ContactDetailId { get; set; }
+        public int? StaffId { get; set; }
     }
 }

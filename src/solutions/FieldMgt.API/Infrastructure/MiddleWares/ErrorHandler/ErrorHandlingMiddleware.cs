@@ -74,7 +74,7 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
                 else if (exceptionType == typeof(BadRequestException))
                 {
                     statusCode = HttpStatusCode.BadRequest;
-                    Log = JsonConvert.SerializeObject(new { Id = ExceptionId, Browser = BrowserName, Status = statusCode, Error = JsonConvert.DeserializeObject<FieldMgtExceptions>(Message) });
+                    Log = JsonConvert.SerializeObject(new { Id = ExceptionId, Browser = BrowserName, Status = statusCode, Error = Message });
                 }
                 else if (exceptionType == typeof(NotFoundException))
                 {
@@ -88,7 +88,9 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
                 }
                 _exceptionService.SaveLogs(new ExceptionLog() { Browser = BrowserName, ExceptionBy = CurrentUserId, ExceptionId = ExceptionId.ToString(), ErrorMessage = Message, ErrorCode = statusCode.ToString(), ErrorDetails = exception.StackTrace.ToString() });
             }
-            CreateLogFiles.Log(_pathProvider, Log);
+            CreateLogFiles.Log(_pathProvider, Log,exception.StackTrace.ToString());
+            _logger.LogError(exception,exception.Message);
+
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)statusCode;
             return httpContext.Response.WriteAsync(Log);
