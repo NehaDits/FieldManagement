@@ -46,6 +46,7 @@ namespace FieldMgt.Repository.Repository
                           .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
                           .Join(_dbContext.ContactDetails, cd => cd.a.p.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
+                          .Where(x => x.cd.a.p.IsActive == true)
                           .Select(m => new VendorResponseDTO
                           {
                               VendorAccountNumber = m.cd.a.p.VendorAccountNumber,
@@ -105,11 +106,11 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<Vendor> DeleteVendor(int vendorId, string deletedBy)
+        public Vendor DeleteVendor(int vendorId, string deletedBy)
         {
             try
             {
-                var currentVendor = _dbContext.Vendors.SingleOrDefault(a => a.VendorId == vendorId);
+                var currentVendor =_dbContext.Vendors.SingleOrDefault(a => a.VendorId == vendorId);
                 currentVendor.IsDeleted = true;
                 currentVendor.DeletedBy = deletedBy;
                 currentVendor.DeletedOn = System.DateTime.Now;
@@ -119,16 +120,6 @@ namespace FieldMgt.Repository.Repository
             {
                 throw new Exception(ex.Message);
             }
-        }
-        public async Task<int> AddVendor(CreateVendorDTO model)
-        {
-            Vendor vendor = new Vendor();
-            vendor.VendorContactPersonName = model.VendorContactPersonName;
-            vendor.VendorCompanyName = model.VendorCompanyName;
-            vendor.BillingAddressId = 1;
-            vendor.VendorBankName = model.VendorBankName;
-            vendor.VendorBankBranch = model.VendorBankBranch;
-            return 0;
         }
     }
 }

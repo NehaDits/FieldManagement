@@ -13,7 +13,6 @@ namespace FieldMgt.Core.Interfaces
         Vendor GetVendorbyIdAsync(int id);
         Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO lead);
         Task<Vendor> Save(CreateVendorDTO model);
-        Task<int> AddVendor(CreateVendorDTO model);
-        Task<Vendor> DeleteVendor(int vendorId, string deletedBy);
+        Vendor DeleteVendor(int vendorId, string deletedBy);
     }
 }

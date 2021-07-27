@@ -48,7 +48,7 @@ namespace FieldMgt.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ById{id}")]
+        [Route("ById/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Vendor), StatusCodes.Status200OK)]
         public IActionResult GetVendorByIdAsync(int id)
@@ -67,25 +67,22 @@ namespace FieldMgt.API.Controllers
         public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor, int Vendorid)
         {
             vendor.VendorId = Vendorid;
-            var vendorDetail= await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor);
+            var vendorDetail = await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor);
             return vendorDetail;
         }
-            //=> BaseResult<Vendor>(await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor));
+        //=> BaseResult<Vendor>(await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor));
 
-        [HttpPost]
-        [Route("test")]
-        public async Task<IActionResult> CreateVendor([FromBody] CreateVendorDTO model)
-        { 
-            var res= await _uow.VendorRepositories.AddVendor(model);
-            return Ok();
-        }
-
+        /// <summary>
+        /// Soft delete vendor 
+        /// </summary>
+        /// <param name="vendorId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("DeleteVendor/{VendorId}")]
-        public async Task<Vendor> DeleteVendor(int vendorId)
+        public Vendor DeleteVendor(int vendorId)
         {
             var deletedBy = GetUserId();
-            return await _uow.VendorRepositories.DeleteVendor(vendorId, deletedBy);
+            return _uow.VendorRepositories.DeleteVendor(vendorId, deletedBy);
         }
     }
 }
