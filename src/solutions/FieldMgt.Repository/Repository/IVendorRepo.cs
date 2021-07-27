@@ -6,22 +6,22 @@ namespace FieldMgt.Repository.Repository
 {
    public class IVendorRepo: IMockVendorRepository
     {
-        private readonly List<Vendor> _shoppingCart;
+        private readonly List<Vendor> vendorList;
         public IVendorRepo()
         {
-            IEnumerable<Vendor> _shoppingCart = new List<Vendor>()
+            IEnumerable<Vendor> vendorList = new List<Vendor>()
             {
                 new Vendor() { VendorId = 1,
-                    VendorBankName = "Orange Juice", VendorCompanyName="Orange Tree", VendorAccountNumber ="225454422" },
+                    VendorBankName = "PNB", VendorCompanyName="Punjab National Bank", VendorAccountNumber ="225454422" },
                 new Vendor() { VendorId = 2,
-                    VendorBankName = "Orange Juice", VendorCompanyName="Orange Tree", VendorAccountNumber ="225454422" },
+                    VendorBankName = "SBI", VendorCompanyName="State Bank Of India", VendorAccountNumber ="225454422" },
                 new Vendor() { VendorId = 2,
-                    VendorBankName = "Orange Juice", VendorCompanyName="Orange Tree", VendorAccountNumber ="225454422" }
+                    VendorBankName = "Kotak", VendorCompanyName="Kotal", VendorAccountNumber ="225454422" }
             };
         }
         public IEnumerable<Vendor> GetAllItems()
         {
-            return _shoppingCart;
+            return vendorList;
         }
     }
 }
