@@ -38,6 +38,6 @@ namespace FieldMgt.Core.DTOs.Request
     }
     public class BaseStaffModel
     {
-        public int? StaffId { get; set; }
+        public int? ServiceProviderId { get; set; }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FieldMgt.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210719120217_fieldmgt.core.newaddress")]
-    partial class fieldmgtcorenewaddress
+    [Migration("20210727123620_FieldMgt.Core.jfsh")]
+    partial class FieldMgtCorejfsh
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -290,7 +290,7 @@ namespace FieldMgt.Core.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("AlternatePhone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(255)");
@@ -320,7 +320,7 @@ namespace FieldMgt.Core.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PrimaryPhone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(14)");
 
                     b.HasKey("ContactDetailId");
 
@@ -1699,7 +1699,10 @@ namespace FieldMgt.Core.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BillingAddressId")
+                    b.Property<int?>("AddressDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ContactDetailId")
@@ -1729,9 +1732,6 @@ namespace FieldMgt.Core.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PermanentAddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SPCreatedById")
                         .HasColumnType("nvarchar(450)");
 
@@ -1750,11 +1750,9 @@ namespace FieldMgt.Core.Migrations
 
                     b.HasKey("ServiceProviderId");
 
-                    b.HasIndex("BillingAddressId");
+                    b.HasIndex("AddressDetailId");
 
                     b.HasIndex("ContactDetailId");
-
-                    b.HasIndex("PermanentAddressId");
 
                     b.HasIndex("SPCreatedById");
 
@@ -1987,7 +1985,7 @@ namespace FieldMgt.Core.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsActive")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsDeleted")
@@ -3361,19 +3359,13 @@ namespace FieldMgt.Core.Migrations
 
             modelBuilder.Entity("FieldMgt.Core.DomainModels.ServiceProvider", b =>
                 {
-                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "ServiceProviderBillingAddress")
-                        .WithMany("ServiceProviderAddress2Id")
-                        .HasForeignKey("BillingAddressId")
-                        .HasConstraintName("SPBillingAddress_FK");
+                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "AddressDetail")
+                        .WithMany()
+                        .HasForeignKey("AddressDetailId");
 
                     b.HasOne("FieldMgt.Core.DomainModels.ContactDetail", "ContactDetail")
                         .WithMany()
                         .HasForeignKey("ContactDetailId");
-
-                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "ServiceProviderAddress")
-                        .WithMany("ServiceProviderAddress1Id")
-                        .HasForeignKey("PermanentAddressId")
-                        .HasConstraintName("SPPermaAddress_FK");
 
                     b.HasOne("FieldMgt.Core.DomainModels.ApplicationUser", "SPCreatedBy")
                         .WithMany()
@@ -3387,11 +3379,9 @@ namespace FieldMgt.Core.Migrations
                         .WithMany()
                         .HasForeignKey("SPModifiedById");
 
+                    b.Navigation("AddressDetail");
+
                     b.Navigation("ContactDetail");
-
-                    b.Navigation("ServiceProviderAddress");
-
-                    b.Navigation("ServiceProviderBillingAddress");
 
                     b.Navigation("SPCreatedBy");
 
@@ -3700,10 +3690,6 @@ namespace FieldMgt.Core.Migrations
                     b.Navigation("OrderAddress1Id");
 
                     b.Navigation("OrderAddress2Id");
-
-                    b.Navigation("ServiceProviderAddress1Id");
-
-                    b.Navigation("ServiceProviderAddress2Id");
 
                     b.Navigation("ServiceProviderLocationAddress1Id");
 

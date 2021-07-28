@@ -16,6 +16,7 @@ namespace FieldMgt
             CreateMap<CreateVendorDTO, Vendor>().ReverseMap();
             CreateMap<CreateContactDetailDTO, ContactDetail>().ReverseMap();
             CreateMap<CreateContactDetailDTO, CreateVendorDTO>().ReverseMap();
+            CreateMap<CreateServiceProviderDTO, ServiceProvider>().ReverseMap();
             CreateMap<CreateEmployeeDTO, RegistrationDTO>().ReverseMap()
                  .ForMember(dest => dest.Email, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.Ignore())

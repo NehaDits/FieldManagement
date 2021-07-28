@@ -13,7 +13,7 @@ namespace FieldMgt.Core.Interfaces
         Task<ServiceProvider> CreateServiceProviderAsync(CreateServiceProviderDTO model);
         IEnumerable<ServiceProvider> GetServiceProvider();
         Staff GetServiceProviderbyId(int id);
-        Staff DeleteServiceProvider(int userName, string deletedBy);
+        ServiceProvider DeleteServiceProvider(int serviceProviderId, string deletedBy);
         Task UpdateServiceProviderAsync(UpdateServiceProviderDTO model);
     }
 }

@@ -40,7 +40,7 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
             try
             {
                 await _next(httpContext);
-            }
+             }
             catch (Exception ex)
             {
                 await HandleExceptionAsync(httpContext, ex, env, detector, _exceptionService);

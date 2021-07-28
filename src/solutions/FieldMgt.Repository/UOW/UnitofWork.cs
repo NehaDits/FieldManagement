@@ -21,7 +21,7 @@ namespace FieldMgt.Repository.UOW
             StaffRepositories = new StaffRepository(_dbContext,this,mapper);
             AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);
-            ServiceProviderRepositories = new ServiceProviderRepository(_dbContext);
+            ServiceProviderRepositories = new ServiceProviderRepository(_dbContext,this,mapper);
         }
         public ILeadRepository LeadServices { get; }
         public IUserRepository USerServices { get; }

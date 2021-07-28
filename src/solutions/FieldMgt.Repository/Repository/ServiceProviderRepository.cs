@@ -2,6 +2,8 @@
 using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.Interfaces;
+using FieldMgt.Core.UOW;
+using FieldMgt.Repository.Common.StoreProcedures;
 using FieldMgt.Repository.UOW;
 using System;
 using System.Collections.Generic;
@@ -11,24 +13,34 @@ using System.Threading.Tasks;
 
 namespace FieldMgt.Repository.Repository
 {
-    public class ServiceProviderRepository: GenericRepository<ServiceProvider>, IServiceProviderRepository
+    public class ServiceProviderRepository : GenericRepository<ServiceProvider>, IServiceProviderRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        //private readonly IMapper _mapper;
-        public ServiceProviderRepository(ApplicationDbContext dbContext) : base(dbContext)
+        private readonly IMapper _mapper;
+        private readonly IUnitofWork _uow;
+        public ServiceProviderRepository(ApplicationDbContext dbContext, IUnitofWork uow, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
-           // _mapper = mapper;
+            _mapper = mapper;
+            _uow = uow;
         }
+        // <summary>
+        /// Create the Service Provider
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
 
-        public Task<ServiceProvider> CreateServiceProviderAsync(CreateServiceProviderDTO model)
+        public async Task<ServiceProvider> CreateServiceProviderAsync(CreateServiceProviderDTO model)
         {
-            throw new NotImplementedException();
-        }
-
-        public Staff DeleteServiceProvider(int userName, string deletedBy)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                //var staff = _mapper.Map<creat, RegistrationDTO>(model);
+                return await CommandAsync<ServiceProvider>(StoreProcedures.CreateServiceProvider, model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public IEnumerable<ServiceProvider> GetServiceProvider()
@@ -41,9 +53,42 @@ namespace FieldMgt.Repository.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateServiceProviderAsync(UpdateServiceProviderDTO model)
+        public async Task UpdateServiceProviderAsync(UpdateServiceProviderDTO model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await CollectionsAsync<Task>(StoreProcedures.UpdateServiceProvider, model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        /// <summary>
+        /// soft delete ServiceProvider details 
+        /// </summary>
+        /// <param name="serviceProviderId"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
+        public ServiceProvider DeleteServiceProvider(int serviceProviderId, string deletedBy)
+        {
+            try
+            {
+                var serviceProvider = _dbContext.ServiceProviders.SingleOrDefault(a => a.ServiceProviderId == serviceProviderId);
+                serviceProvider.IsDeleted = true;
+                serviceProvider.DeletedBy = deletedBy;
+                serviceProvider.DeletedOn = System.DateTime.Now;
+                int Address = (int)serviceProvider.AddressDetailId;
+                int contactDetail = (int)serviceProvider.ContactDetailId;
+                _uow.AddressRepositories.DeleteAddress(Address, deletedBy);
+                _uow.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
+                return Update(serviceProvider);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

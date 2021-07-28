@@ -13,15 +13,16 @@ namespace FieldMgt.Core.DomainModels
         [Column(TypeName = "nvarchar(30)")]
         public string ServiceProviderName { get; set; }
         [Column(TypeName = "nvarchar(30)")]
-        [MaxLength(15)]
+        [MaxLength(30)]
         public string ServiceProviderIncharge { get; set; }
         [DefaultValue(true)]
         public bool? IsActive { get; set; }
         public int? ContactDetailId { get; set; }
         [ForeignKey("ContactDetailId")]
         public ContactDetail ContactDetail { get; set; }
-        public int? PermanentAddressId { get; set; }
-        public int? BillingAddressId { get; set; }
+        public int? AddressDetailId { get; set; }
+        public AddressDetail AddressDetail { get; set; }
+        
         [Column(TypeName = "nvarchar(255)")]
         public string CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
@@ -36,7 +37,6 @@ namespace FieldMgt.Core.DomainModels
         public ApplicationUser SPCreatedBy { get; set; }
         public ApplicationUser SPModifiedBy { get; set; }
         public ApplicationUser SPDeletedBy { get; set; }
-        public AddressDetail ServiceProviderAddress { get; set; }
-        public AddressDetail ServiceProviderBillingAddress { get; set; }
+        
     }
 }
