@@ -10,5 +10,7 @@
         public static string UpdateStaff = "sp_UpdateStaffMember";
         public static string CreateServiceProvider = "sp_CreateServiceProvider";
         public static string UpdateServiceProvider = "sp_UpdateServiceProvider";
+        public static string CreateLead = "sp_CreateLead";
+        public static string UpdateLead = "sp_UpdateLead";
     }
 }

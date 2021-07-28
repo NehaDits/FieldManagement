@@ -40,8 +40,5 @@ namespace FieldMgt.Core.DTOs.Request
     public class BaseCreateVendorModel
     {
         public int? VendorId { get; set; }
-        //public int? PermanentAddressId { get; set; }
-        //public int? BillingAddressId { get; set; }
-        //public int? ContactDetailId { get; set; }
     }
 }
