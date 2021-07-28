@@ -9,12 +9,14 @@ using FieldMgt.Core.DTOs.Request;
 using System.Threading;
 using FieldMgt.Repository.Enums;
 using System.Net;
+using FieldMgt.API.Controllers;
+using FieldMgt.Core.DTOs.Response;
 
 namespace FieldMgt.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]    
-    public class LeadController : ControllerBase
+    public class LeadController : BaseController
     {
         private readonly IUnitofWork _uow;
         private readonly IMapper _mapper;
@@ -29,47 +31,17 @@ namespace FieldMgt.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model, CancellationToken cancellationToken)
-        {
-            CreateLeadDTO modelDTO = new CreateLeadDTO();
-            modelDTO.FirstName = model.FirstName;
-            modelDTO.LastName = model.LastName;
-            modelDTO.LeadDescription = model.LeadDescription;
-            modelDTO.LeadContact = model.LeadContact;
-            modelDTO.LeadSource = model.LeadSource;
-            modelDTO.LeadStatus = model.LeadStatus;
-            modelDTO.Gender = model.Gender;
-            modelDTO.Address = model.Address;
-            modelDTO.City = model.City;
-            modelDTO.State = model.State;
-            modelDTO.Country = model.Country;
-            modelDTO.Zip = model.Zip;
-            modelDTO.Email = model.Email;
-            modelDTO.LeadStage = model.LeadStage;
-            modelDTO.IsActive = true;
-            modelDTO.CreatedBy = _currentUserService.GetUserId();
-            modelDTO.CreatedOn = System.DateTime.Now;
-            Lead payload = _mapper.Map<CreateLeadDTO, Lead>(modelDTO);
-            await _uow.LeadServices.CreateLeadAsync(payload);
-            var result = await _uow.SaveAsync();
-            if (result.Equals(1))
-            {
-                return Ok(result);//status code 200
-            }
-            else
-            {
-                return BadRequest(ResponseMessages.LeadNotCreated);
-            }
-        }        
+        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model)=> BaseResult(await _uow.LeadServices.CreateLeadAsync(model));
+
         [Route("GetList")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IEnumerable<Lead> GetLeadsAsync()
+        public IEnumerable<LeadResponseDTO> GetLeadsAsync()
         {
             return _uow.LeadServices.GetLeadsAsync();
         }
-        [Route("ById{id}")]
+        [Route("ById/{id}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -80,17 +52,12 @@ namespace FieldMgt.Controllers
             {
                 return BadRequest(ResponseMessages.LeadNotFound);
             }
-            return Ok(result);//status code 200
+            return Ok(result);
         }
         [Route("Update")]
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public Lead UpdateLeadStatusAsync(Lead lead)
-        {
-            var updatedLead= _uow.LeadServices.UpdateLeadStatusAsync(lead);
-            _uow.SaveAsync();
-            return updatedLead;
-        }
+        public async Task UpdateLeadStatusAsync(UpdateLeadDTO lead)=>  await _uow.LeadServices.UpdateLeadStatusAsync(lead);
     }
 }
