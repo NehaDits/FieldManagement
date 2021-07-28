@@ -9,7 +9,7 @@ using FieldMgt.Repository.Common.StoreProcedures;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.UOW;
 using System;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using FieldMgt.Core.DTOs.Response;
@@ -42,38 +42,38 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public IEnumerable<VendorResponseDTO> GetVendorsAsync()
         {
-            IEnumerable<VendorResponseDTO> result = (from a in _dbContext.Vendors
-                                                     join c in _dbContext.AddressDetails on a.PermanentAddressId equals c.AddressDetailId
-                                                     join d in _dbContext.AddressDetails on a.BillingAddressId equals d.AddressDetailId
-                                                     join e in _dbContext.ContactDetails on a.ContactDetailId equals e.ContactDetailId
-                                                     where a.IsActive == true
-                                                     select new VendorResponseDTO
-                                                     {
-                                                         VendorAccountNumber = a.VendorAccountNumber,
-                                                         VendorBankBranch = a.VendorBankBranch,
-                                                         VendorBankName = a.VendorBankName,
-                                                         VendorCompanyName = a.VendorCompanyName,
-                                                         VendorContactPersonName = a.VendorContactPersonName,
-                                                         VendorGSTNumber = a.VendorGSTNumber,
-                                                         VendorIFSCCode = a.VendorIFSCCode,
-                                                         VendorOwnerorMD = a.VendorOwnerorMD,
-                                                         VendorId = a.VendorId,
-                                                         AlternateEmail = e.AlternateEmail,
-                                                         PrimaryEmail = e.PrimaryEmail,
-                                                         AlternatePhone = e.AlternatePhone,
-                                                         PrimaryPhone = e.PrimaryPhone,
-                                                         CorrespondenceAddress = d.Address,
-                                                         CorrespondenceCity = d.CityId,
-                                                         CorrespondenceCountry = d.CountryId,
-                                                         CorrespondenceState = d.StateId,
-                                                         CorrespondenceZipCode = d.ZipCode,
-                                                         PermanentZipCode = c.ZipCode,
-                                                         PermanentAddress = c.Address,
-                                                         PermanentCity = c.CityId,
-                                                         PermanentCountry = c.CountryId,
-                                                         PermanentState = c.StateId
-                                                     });
-            return result;
+            IEnumerable<VendorResponseDTO> vendorDetails = _dbContext.Vendors
+                          .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
+                          .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
+                          .Join(_dbContext.ContactDetails, cd => cd.a.p.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
+                          .Where(x => x.cd.a.p.IsActive == true)
+                          .Select(m => new VendorResponseDTO
+                          {
+                              VendorAccountNumber = m.cd.a.p.VendorAccountNumber,
+                              VendorBankBranch = m.cd.a.p.VendorBankBranch,
+                              VendorBankName = m.cd.a.p.VendorBankName,
+                              VendorCompanyName = m.cd.a.p.VendorCompanyName,
+                              VendorContactPersonName = m.cd.a.p.VendorContactPersonName,
+                              VendorGSTNumber = m.cd.a.p.VendorGSTNumber,
+                              VendorIFSCCode = m.cd.a.p.VendorIFSCCode,
+                              VendorOwnerorMD = m.cd.a.p.VendorOwnerorMD,
+                              VendorId = m.cd.a.p.VendorId,
+                              AlternateEmail = m.c.AlternateEmail,
+                              PrimaryEmail = m.c.PrimaryEmail,
+                              AlternatePhone = m.c.AlternatePhone,
+                              PrimaryPhone = m.c.PrimaryPhone,
+                              CorrespondenceAddress = m.cd.ad.Address,
+                              CorrespondenceCity = m.cd.ad.CityId,
+                              CorrespondenceCountry = m.cd.ad.CountryId,
+                              CorrespondenceState = m.cd.ad.StateId,
+                              CorrespondenceZipCode = m.cd.ad.ZipCode,
+                              PermanentZipCode = m.cd.ad.ZipCode,
+                              PermanentAddress = m.cd.ad.Address,
+                              PermanentCity = m.cd.ad.CityId,
+                              PermanentCountry = m.cd.ad.CountryId,
+                              PermanentState = m.cd.ad.StateId
+                          });
+            return vendorDetails;
         }
 
         /// <summary>
@@ -97,20 +97,21 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public async Task<Vendor> Save(CreateVendorDTO model)
         {
+            Vendor detail = _mapper.Map<CreateVendorDTO, Vendor>(model);
             try
             {
-                return await CommandAsync<Vendor>(StoreProcedures.UpdateVendorDetail, model);
+                return await CommandAsync<Vendor>(StoreProcedures.UpdateVendorDetail, detail);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-             }
+            }
         }
-        public async Task<Vendor> DeleteVendor(int vendorId, string deletedBy)
+        public Vendor DeleteVendor(int vendorId, string deletedBy)
         {
             try
             {
-                var currentVendor = _dbContext.Vendors.SingleOrDefault(a => a.VendorId == vendorId);
+                var currentVendor =_dbContext.Vendors.SingleOrDefault(a => a.VendorId == vendorId);
                 currentVendor.IsDeleted = true;
                 currentVendor.DeletedBy = deletedBy;
                 currentVendor.DeletedOn = System.DateTime.Now;
@@ -120,16 +121,6 @@ namespace FieldMgt.Repository.Repository
             {
                 throw new Exception(ex.Message);
             }
-        }
-        public async Task<int> AddVendor(CreateVendorDTO model)
-        {
-            Vendor vendor = new Vendor();
-            vendor.VendorContactPersonName = model.VendorContactPersonName;
-            vendor.VendorCompanyName = model.VendorCompanyName;
-            vendor.BillingAddressId = 1;
-            vendor.VendorBankName = model.VendorBankName;
-            vendor.VendorBankBranch = model.VendorBankBranch;
-            return 0;
         }
     }
 }
