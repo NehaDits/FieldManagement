@@ -15,13 +15,14 @@ namespace FieldMgt.Repository.UOW
         {
             _dbContext = dbContext;
 
-            LeadServices = new LeadRepository(_dbContext);
+            LeadServices = new LeadRepository(_dbContext, mapper);
             LeadContactRepositories = new LeadContactRepository(_dbContext);
             VendorRepositories = new VendorRepository(_dbContext, this,mapper);
             StaffRepositories = new StaffRepository(_dbContext,this,mapper);
             AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);
             ServiceProviderRepositories = new ServiceProviderRepository(_dbContext,this,mapper);
+            ClientRepositories = new ClientRepository(_dbContext, this, mapper);
         }
         public ILeadRepository LeadServices { get; }
         public IUserRepository USerServices { get; }
@@ -32,7 +33,7 @@ namespace FieldMgt.Repository.UOW
         public IAddressDetailRepository AddressRepositories { get; }  
         public IContactDetailRepository ContactDetailRepositories { get; }
         public IServiceProviderRepository ServiceProviderRepositories { get; }
-    
+        public IClientRepository ClientRepositories { get; }
         public async Task<int> SaveAsync()
         {
             using (_dbContext.Database.BeginTransaction())

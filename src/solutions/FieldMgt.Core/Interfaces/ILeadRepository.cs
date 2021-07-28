@@ -2,14 +2,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FieldMgt.Core.DomainModels;
+using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
 
 namespace FieldMgt.Core.Interfaces
 {
     public interface ILeadRepository
     {
-        Task CreateLeadAsync(Lead model);
-        IEnumerable<Lead> GetLeadsAsync();
-        Lead GetLeadbyIdAsync(int id);
-        Lead UpdateLeadStatusAsync(Lead lead);
+        Task<Lead> CreateLeadAsync(CreateLeadDTO model);
+        IEnumerable<LeadResponseDTO> GetLeadsAsync();
+        IEnumerable<LeadResponseDTO> GetLeadbyIdAsync(int id);
+        Task UpdateLeadStatusAsync(UpdateLeadDTO lead);
     }
 }

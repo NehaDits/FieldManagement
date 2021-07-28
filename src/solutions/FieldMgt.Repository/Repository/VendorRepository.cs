@@ -9,7 +9,7 @@ using FieldMgt.Repository.Common.StoreProcedures;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.UOW;
 using System;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using FieldMgt.Core.DTOs.Response;
@@ -97,9 +97,10 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public async Task<Vendor> Save(CreateVendorDTO model)
         {
+            Vendor detail = _mapper.Map<CreateVendorDTO, Vendor>(model);
             try
             {
-                return await CommandAsync<Vendor>(StoreProcedures.UpdateVendorDetail, model);
+                return await CommandAsync<Vendor>(StoreProcedures.UpdateVendorDetail, detail);
             }
             catch (Exception ex)
             {
