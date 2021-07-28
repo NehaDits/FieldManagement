@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.Interfaces;
 using FieldMgt.Core.UOW;
 using FieldMgt.Repository.Common.StoreProcedures;
@@ -46,11 +47,36 @@ namespace FieldMgt.Repository.Repository
         {
             throw new NotImplementedException();
         }
-
-        public Staff GetServiceProviderbyId(int id)
+        /// <summary>
+        /// Get the particular staff by his id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ServiceProviderListDTO GetServiceProviderbyId(int id)
         {
-            throw new NotImplementedException();
-        }
+            var serviceProviderModel = _dbContext.ServiceProviders.Where(w =>
+                  w.ServiceProviderId.Equals(id)).FirstOrDefault();
+            var AddressDetail = _dbContext.AddressDetails.Where(t =>
+              t.AddressDetailId.Equals(serviceProviderModel.AddressDetailId))
+              .FirstOrDefault();
+            var contactDetail = _dbContext.ContactDetails.Where(p => p.ContactDetailId == serviceProviderModel.ContactDetailId)
+              .FirstOrDefault();
+            var details =  new ServiceProviderListDTO()
+                           {
+                               AlternatePhone = contactDetail.AlternatePhone,
+                               AlternateEmail = contactDetail.AlternateEmail,
+                               PrimaryPhone = contactDetail.PrimaryPhone,
+                               PrimaryEmail = contactDetail.PrimaryEmail,
+                               Address = AddressDetail.Address,
+                               City = AddressDetail.CityId,
+                               State = AddressDetail.StateId,
+                               Country = AddressDetail.CountryId,
+                               ZipCode = AddressDetail.ZipCode,
+                               ServiceProviderName=serviceProviderModel.ServiceProviderName,
+                               ServiceProviderIncharge=serviceProviderModel.ServiceProviderIncharge
+                           };
+            return details;
+        }                
         /// <summary>
         /// Updates the ServiceProvider details 
         /// </summary>

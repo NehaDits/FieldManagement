@@ -45,7 +45,7 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType(typeof(ServiceProvider), StatusCodes.Status200OK)]
         public ServiceProviderListDTO GetServiceProviderbyId(int id)
         {
-            var result = _uow.StaffRepositories.GetStaffbyId(id);
+            var result = _uow.ServiceProviderRepositories.GetServiceProviderbyId(id);
             return result;
         }
         [Route("UpdateServiceProvider")]
