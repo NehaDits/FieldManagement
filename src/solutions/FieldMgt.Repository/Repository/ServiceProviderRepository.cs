@@ -61,6 +61,7 @@ namespace FieldMgt.Repository.Repository
               .FirstOrDefault();
             var contactDetail = _dbContext.ContactDetails.Where(p => p.ContactDetailId == serviceProviderModel.ContactDetailId)
               .FirstOrDefault();
+            
             var details =  new ServiceProviderListDTO()
                            {
                                AlternatePhone = contactDetail.AlternatePhone,
