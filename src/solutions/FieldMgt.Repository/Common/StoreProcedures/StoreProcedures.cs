@@ -7,6 +7,8 @@
         public static string SaveVendorDetail = "sp_InsertVendorDetail";
         public static string UpdateVendorDetail = "sp_UpdateVendorDetail";
         public static string CreateStaff = "sp_CreateStaffMember";
-        public static string UpdateStaff = "sp_UpdateStaffMember";       
+        public static string UpdateStaff = "sp_UpdateStaffMember";
+        public static string CreateServiceProvider = "sp_CreateServiceProvider";
+        public static string UpdateServiceProvider = "sp_UpdateServiceProvider";
     }
 }

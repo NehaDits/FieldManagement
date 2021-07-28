@@ -17,7 +17,7 @@ namespace FieldMgt.API.Controllers
         {
             _roleService = roleService;
         }
-        [Route("List")]
+        [Route("ListRoles")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]

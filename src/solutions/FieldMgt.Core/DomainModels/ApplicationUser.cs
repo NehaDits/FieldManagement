@@ -106,6 +106,9 @@ namespace FieldMgt.Core.DomainModels
             Ref93Navigation = new HashSet<AddressDetail>();
             Ref94Navigation = new HashSet<AddressDetail>();
             Ref95Navigation = new HashSet<AddressDetail>();
+            Ref96Navigation = new HashSet<ServiceProvider>();
+            Ref97Navigation = new HashSet<ServiceProvider>();
+            Ref98Navigation = new HashSet<ServiceProvider>();
         }
         [DefaultValue(true)]
         public bool IsActive { get; set; }
@@ -214,5 +217,8 @@ namespace FieldMgt.Core.DomainModels
         public ICollection<AddressDetail> Ref93Navigation { get; set; }
         public ICollection<AddressDetail> Ref94Navigation { get; set; }
         public ICollection<AddressDetail> Ref95Navigation { get; set; }
+        public ICollection<ServiceProvider> Ref96Navigation { get; set; }
+        public ICollection<ServiceProvider> Ref97Navigation { get; set; }
+        public ICollection<ServiceProvider> Ref98Navigation { get; set; }
     }
 }

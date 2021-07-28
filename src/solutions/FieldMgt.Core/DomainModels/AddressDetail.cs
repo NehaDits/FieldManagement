@@ -16,8 +16,8 @@ namespace FieldMgt.Core.DomainModels
             LeadAddress2Id = new HashSet<Lead>();
             OrderAddress1Id = new HashSet<Order>();
             OrderAddress2Id = new HashSet<Order>();
-            ServiceProviderAddress1Id = new HashSet<ServiceProvider>();
-            ServiceProviderAddress2Id = new HashSet<ServiceProvider>();
+            //ServiceProviderAddress1Id = new HashSet<ServiceProvider>();
+            //ServiceProviderAddress2Id = new HashSet<ServiceProvider>();
             ServiceProviderLocationAddress1Id = new HashSet<ServiceProviderLocation>();
             ServiceProviderLocationAddress2Id = new HashSet<ServiceProviderLocation>();
             VendorAddress1Id = new HashSet<Vendor>();
@@ -63,8 +63,8 @@ namespace FieldMgt.Core.DomainModels
         public ICollection<Lead> LeadAddress2Id { get; set; }
         public ICollection<Order> OrderAddress1Id { get; set; }
         public ICollection<Order> OrderAddress2Id { get; set; }
-        public ICollection<ServiceProvider> ServiceProviderAddress1Id { get; set; }
-        public ICollection<ServiceProvider> ServiceProviderAddress2Id { get; set; }
+        //public ICollection<ServiceProvider> ServiceProviderAddress1Id { get; set; }
+        //public ICollection<ServiceProvider> ServiceProviderAddress2Id { get; set; }
         public ICollection<ServiceProviderLocation> ServiceProviderLocationAddress1Id { get; set; }
         public ICollection<ServiceProviderLocation> ServiceProviderLocationAddress2Id { get; set; }
         public ICollection<Vendor> VendorAddress1Id { get; set; }

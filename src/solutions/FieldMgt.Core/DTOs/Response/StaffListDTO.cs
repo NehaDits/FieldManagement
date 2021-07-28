@@ -28,6 +28,6 @@ namespace FieldMgt.Core.DTOs.Response
         public string AlternatePhone { get; set; }
         public string PrimaryEmail { get; set; }
         public string AlternateEmail { get; set; }
-        public int Designation { get; set; }
+        public int? Designation { get; set; }
     }
 }

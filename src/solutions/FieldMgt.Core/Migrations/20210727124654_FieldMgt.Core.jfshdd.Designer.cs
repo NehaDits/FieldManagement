@@ -4,14 +4,16 @@ using FieldMgt.Core.DomainModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FieldMgt.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210727124654_FieldMgt.Core.jfshdd")]
+    partial class FieldMgtCorejfshdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1728,8 +1730,8 @@ namespace FieldMgt.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ServiceProviderIncharge")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("ServiceProviderName")
                         .HasColumnType("nvarchar(30)");

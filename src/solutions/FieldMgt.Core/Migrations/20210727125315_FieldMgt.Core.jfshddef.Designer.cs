@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FieldMgt.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210722101038_fieldmgt.core.vishal")]
-    partial class fieldmgtcorevishal
+    [Migration("20210727125315_FieldMgt.Core.jfshddef")]
+    partial class FieldMgtCorejfshddef
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1699,7 +1699,7 @@ namespace FieldMgt.Core.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BillingAddressId")
+                    b.Property<int?>("AddressDetailId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ContactDetailId")
@@ -1729,38 +1729,24 @@ namespace FieldMgt.Core.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PermanentAddressId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SPCreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SPDeletedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SPModifiedById")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ServiceProviderIncharge")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("ServiceProviderName")
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("ServiceProviderId");
 
-                    b.HasIndex("BillingAddressId");
+                    b.HasIndex("AddressDetailId");
 
                     b.HasIndex("ContactDetailId");
 
-                    b.HasIndex("PermanentAddressId");
+                    b.HasIndex("CreatedBy");
 
-                    b.HasIndex("SPCreatedById");
+                    b.HasIndex("DeletedBy");
 
-                    b.HasIndex("SPDeletedById");
-
-                    b.HasIndex("SPModifiedById");
+                    b.HasIndex("ModifiedBy");
 
                     b.ToTable("ServiceProviders");
                 });
@@ -1987,7 +1973,7 @@ namespace FieldMgt.Core.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsActive")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsDeleted")
@@ -3361,37 +3347,32 @@ namespace FieldMgt.Core.Migrations
 
             modelBuilder.Entity("FieldMgt.Core.DomainModels.ServiceProvider", b =>
                 {
-                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "ServiceProviderBillingAddress")
-                        .WithMany("ServiceProviderAddress2Id")
-                        .HasForeignKey("BillingAddressId")
-                        .HasConstraintName("SPBillingAddress_FK");
+                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "AddressDetail")
+                        .WithMany()
+                        .HasForeignKey("AddressDetailId");
 
                     b.HasOne("FieldMgt.Core.DomainModels.ContactDetail", "ContactDetail")
                         .WithMany()
                         .HasForeignKey("ContactDetailId");
 
-                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "ServiceProviderAddress")
-                        .WithMany("ServiceProviderAddress1Id")
-                        .HasForeignKey("PermanentAddressId")
-                        .HasConstraintName("SPPermaAddress_FK");
-
                     b.HasOne("FieldMgt.Core.DomainModels.ApplicationUser", "SPCreatedBy")
-                        .WithMany()
-                        .HasForeignKey("SPCreatedById");
+                        .WithMany("Ref96Navigation")
+                        .HasForeignKey("CreatedBy")
+                        .HasConstraintName("SPCreated_FK");
 
                     b.HasOne("FieldMgt.Core.DomainModels.ApplicationUser", "SPDeletedBy")
-                        .WithMany()
-                        .HasForeignKey("SPDeletedById");
+                        .WithMany("Ref98Navigation")
+                        .HasForeignKey("DeletedBy")
+                        .HasConstraintName("SPDeleted_FK");
 
                     b.HasOne("FieldMgt.Core.DomainModels.ApplicationUser", "SPModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("SPModifiedById");
+                        .WithMany("Ref97Navigation")
+                        .HasForeignKey("ModifiedBy")
+                        .HasConstraintName("SPModified_FK");
+
+                    b.Navigation("AddressDetail");
 
                     b.Navigation("ContactDetail");
-
-                    b.Navigation("ServiceProviderAddress");
-
-                    b.Navigation("ServiceProviderBillingAddress");
 
                     b.Navigation("SPCreatedBy");
 
@@ -3701,10 +3682,6 @@ namespace FieldMgt.Core.Migrations
 
                     b.Navigation("OrderAddress2Id");
 
-                    b.Navigation("ServiceProviderAddress1Id");
-
-                    b.Navigation("ServiceProviderAddress2Id");
-
                     b.Navigation("ServiceProviderLocationAddress1Id");
 
                     b.Navigation("ServiceProviderLocationAddress2Id");
@@ -3945,6 +3922,12 @@ namespace FieldMgt.Core.Migrations
                     b.Navigation("Ref94Navigation");
 
                     b.Navigation("Ref95Navigation");
+
+                    b.Navigation("Ref96Navigation");
+
+                    b.Navigation("Ref97Navigation");
+
+                    b.Navigation("Ref98Navigation");
 
                     b.Navigation("Ref9Navigation");
                 });

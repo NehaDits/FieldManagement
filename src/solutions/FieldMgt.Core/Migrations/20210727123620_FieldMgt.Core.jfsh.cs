@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FieldMgt.Core.Migrations
 {
-    public partial class fieldmgtcorefjkekjwds2f : Migration
+    public partial class FieldMgtCorejfsh : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -177,8 +177,8 @@ namespace FieldMgt.Core.Migrations
                 {
                     ContactDetailId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PrimaryPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AlternatePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PrimaryPhone = table.Column<string>(type: "nvarchar(14)", nullable: true),
+                    AlternatePhone = table.Column<string>(type: "nvarchar(14)", nullable: true),
                     PrimaryEmail = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     AlternateEmail = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: true),
@@ -260,9 +260,9 @@ namespace FieldMgt.Core.Migrations
                     ExceptionLogId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Browser = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ErrorCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExceptionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ErrorCode = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    ExceptionId = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     ErrorDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExceptionBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     ID = table.Column<string>(type: "nvarchar(255)", nullable: true),
@@ -601,11 +601,37 @@ namespace FieldMgt.Core.Migrations
                     StateId = table.Column<int>(type: "int", nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    AddressType = table.Column<int>(type: "int", nullable: false)
+                    AddressType = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AddressDetails", x => x.AddressDetailId);
+                    table.ForeignKey(
+                        name: "AddressCreatedBy_FK",
+                        column: x => x.CreatedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "AddressDeletedBy_FK",
+                        column: x => x.DeletedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "AddressModifiedBy_FK",
+                        column: x => x.ModifiedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "AddressTypeRef_FK",
                         column: x => x.AddressType,
@@ -797,8 +823,8 @@ namespace FieldMgt.Core.Migrations
                     ServiceProviderIncharge = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: true),
                     ContactDetailId = table.Column<int>(type: "int", nullable: true),
-                    PermanentAddressId = table.Column<int>(type: "int", nullable: true),
-                    BillingAddressId = table.Column<int>(type: "int", nullable: true),
+                    AddressId = table.Column<int>(type: "int", nullable: true),
+                    AddressDetailId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
@@ -813,6 +839,12 @@ namespace FieldMgt.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServiceProviders", x => x.ServiceProviderId);
+                    table.ForeignKey(
+                        name: "FK_ServiceProviders_AddressDetails_AddressDetailId",
+                        column: x => x.AddressDetailId,
+                        principalTable: "AddressDetails",
+                        principalColumn: "AddressDetailId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ServiceProviders_AspNetUsers_SPCreatedById",
                         column: x => x.SPCreatedById,
@@ -836,18 +868,6 @@ namespace FieldMgt.Core.Migrations
                         column: x => x.ContactDetailId,
                         principalTable: "ContactDetails",
                         principalColumn: "ContactDetailId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "SPBillingAddress_FK",
-                        column: x => x.BillingAddressId,
-                        principalTable: "AddressDetails",
-                        principalColumn: "AddressDetailId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "SPPermaAddress_FK",
-                        column: x => x.PermanentAddressId,
-                        principalTable: "AddressDetails",
-                        principalColumn: "AddressDetailId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -951,7 +971,7 @@ namespace FieldMgt.Core.Migrations
                     PermanentAddressId = table.Column<int>(type: "int", nullable: true),
                     BillingAddressId = table.Column<int>(type: "int", nullable: true),
                     ContactDetailId = table.Column<int>(type: "int", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
@@ -2029,6 +2049,21 @@ namespace FieldMgt.Core.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AddressDetails_CreatedBy",
+                table: "AddressDetails",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AddressDetails_DeletedBy",
+                table: "AddressDetails",
+                column: "DeletedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AddressDetails_ModifiedBy",
+                table: "AddressDetails",
+                column: "ModifiedBy");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AddressDetails_StateId",
                 table: "AddressDetails",
                 column: "StateId");
@@ -2748,19 +2783,14 @@ namespace FieldMgt.Core.Migrations
                 column: "ServiceProviderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceProviders_BillingAddressId",
+                name: "IX_ServiceProviders_AddressDetailId",
                 table: "ServiceProviders",
-                column: "BillingAddressId");
+                column: "AddressDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServiceProviders_ContactDetailId",
                 table: "ServiceProviders",
                 column: "ContactDetailId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceProviders_PermanentAddressId",
-                table: "ServiceProviders",
-                column: "PermanentAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServiceProviders_SPCreatedById",

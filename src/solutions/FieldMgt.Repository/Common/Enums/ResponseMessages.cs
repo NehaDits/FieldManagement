@@ -30,5 +30,7 @@ namespace FieldMgt.Repository.Enums
         public static string UserNotUpdated = "User can not be updated";
         public static string UserNotAuthorize = "You are not authorized";
         public static string UnknownError = "Some unknown error occoured";
+        public static string ServiceProviderNotUpdated = "Service Provider can not be updated";
+        public static string ServiceProviderNotDeleted = "Service Provider can not be deleted";
     }
 }
