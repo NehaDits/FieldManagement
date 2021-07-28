@@ -20,6 +20,7 @@ namespace FieldMgt.Repository.Repository
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IUnitofWork _uow;
+        private IMapper mapper;
 
         public StaffRepository(ApplicationDbContext dbContext, IUnitofWork uow, IMapper mapper) :base(dbContext)
         {
@@ -27,6 +28,8 @@ namespace FieldMgt.Repository.Repository
             _mapper = mapper;
             _uow = uow;
         }
+
+
         /// <summary>
         /// Create the staff
         /// </summary>
@@ -43,6 +46,7 @@ namespace FieldMgt.Repository.Repository
             {
                 throw new Exception(ex.Message);
             }
+
         }
         /// <summary>
         /// Get the particular staff by his id
@@ -62,7 +66,6 @@ namespace FieldMgt.Repository.Repository
             var contactDetailModel = _dbContext.ContactDetails.Where(p => p.ContactDetailId == staffModel.ContactDetailId)
               .FirstOrDefault();
             var details = (from master in _dbContext.Staffs
-            
                            join detail in _dbContext.AddressDetails
                            on master.PermanentAddressId equals detail.AddressDetailId
                            where master.StaffId == id
@@ -70,24 +73,24 @@ namespace FieldMgt.Repository.Repository
                            select new StaffListDTO()
                            {
                                AlternatePhone = proj.AlternatePhone,
-                               AlternateEmail=proj.AlternateEmail,
+                               AlternateEmail = proj.AlternateEmail,
                                PrimaryPhone = contactDetailModel.PrimaryPhone,
                                CorrespondenceAddress = correspondenceAddressDetail.Address,
-                               CorrespondenceCity =correspondenceAddressDetail.CityId,
-                               CorrespondenceState=correspondenceAddressDetail.StateId,
-                               CorrespondenceCountry=correspondenceAddressDetail.CountryId,
-                               CorrespondenceZipCode=correspondenceAddressDetail.ZipCode,
-                               DOB=master.DOB,
+                               CorrespondenceCity = correspondenceAddressDetail.CityId,
+                               CorrespondenceState = correspondenceAddressDetail.StateId,
+                               CorrespondenceCountry = correspondenceAddressDetail.CountryId,
+                               CorrespondenceZipCode = correspondenceAddressDetail.ZipCode,
+                               DOB = master.DOB,
                                PermanentAddress = detail.Address,
-                               PermanentCity=detail.CityId,
-                               PermanentState=detail.StateId,
-                               PermanentCountry=detail.CountryId,
-                               PermanentZipCode=detail.ZipCode,
-                               PrimaryEmail=proj.PrimaryEmail,
-                               FirstName = master.FirstName,                               
-                               LastName=master.LastName,
-                               Designation=master.Designation,
-                               Gender=master.Gender
+                               PermanentCity = detail.CityId,
+                               PermanentState = detail.StateId,
+                               PermanentCountry = detail.CountryId,
+                               PermanentZipCode = detail.ZipCode,
+                               PrimaryEmail = proj.PrimaryEmail,
+                               FirstName = master.FirstName,
+                               LastName = master.LastName,
+                               Designation = master.Designation,
+                               Gender = master.Gender
                                //map field names
                            }).FirstOrDefault();
             return details;
@@ -97,28 +100,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Staff> GetStaff() => _dbContext.Staffs.Where(a => a.IsDeleted == false).ToList();
-        //{
-        //    var staffModel = _dbContext.Staffs.Where(w =>
-        //          w.StaffId.Equals(staffId)).FirstOrDefault();
-        //    var permanentAddressDetail = _dbContext.AddressDetails.Where(t =>
-        //      t.AddressDetailId.Equals(staffModel.PermanentAddressId))
-        //      .FirstOrDefault();
-        //    var correspondenceAddressDetail = _dbContext.AddressDetails.Where(t =>
-        //      t.AddressDetailId.Equals(staffModel.CorrespondenceAddressId))
-        //      .FirstOrDefault();
-        //    var contactDetailModel = _dbContext.ContactDetails.Where(p => p.ContactDetailId == staffModel.ContactDetailId)
-        //      .FirstOrDefault();
-        //    var details = (from master in _dbContext.Staffs
-        //                   join detail in _dbContext.AddressDetails
-        //                   on master.PermanentAddressId equals detail.AddressDetailId
-        //                   where master.StaffId == staffId
-        //                   //from proj in context.contactDetailModels where proj.contactDetailModelId = detail.contactDetailModelId
-        //                   select new Staff()
-        //                   {
-        //                       //map field names
-        //                   }).FirstOrDefault();
-        //}
-
+        
         /// <summary>
         /// soft delete staff when deleting User Account by User Id
         /// </summary>
@@ -179,17 +161,16 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task UpdateStaffAsync(UpdateStaffDTO model)
-        {
-            try
+        public async Task UpdateStaffAsync(UpdateStaffDTO model) 
+        { 
+            try 
             {
                 await CollectionsAsync<Task>(StoreProcedures.UpdateStaff, model);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
-        }
-
+}
         }
     }
+}

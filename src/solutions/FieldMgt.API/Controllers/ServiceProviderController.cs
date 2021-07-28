@@ -1,5 +1,6 @@
 ﻿using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.UOW;
 using FieldMgt.Repository.Enums;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +38,15 @@ namespace FieldMgt.API.Controllers
             {
                 throw new Exception(ex.Message);
             }
+        }
+        [Route("ById/{id}")]
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ServiceProvider), StatusCodes.Status200OK)]
+        public ServiceProviderListDTO GetServiceProviderbyId(int id)
+        {
+            var result = _uow.StaffRepositories.GetStaffbyId(id);
+            return result;
         }
         [Route("UpdateServiceProvider")]
         [HttpPatch]

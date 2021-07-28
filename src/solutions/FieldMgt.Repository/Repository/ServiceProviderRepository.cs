@@ -29,7 +29,6 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-
         public async Task<ServiceProvider> CreateServiceProviderAsync(CreateServiceProviderDTO model)
         {
             try
@@ -52,7 +51,12 @@ namespace FieldMgt.Repository.Repository
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Updates the ServiceProvider details 
+        /// </summary>
+        /// <paramname="model"></param>
+        /// <paramname="UpdateServiceProviderDTO"></param>
+        /// <returns></returns>
         public async Task UpdateServiceProviderAsync(UpdateServiceProviderDTO model)
         {
             try
