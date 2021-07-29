@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FieldMgt.Core.DTOs.Response
 {
-    public class StaffListDTO
+    public class StaffListDTO:BaseStaffModel
     {        
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -29,5 +29,9 @@ namespace FieldMgt.Core.DTOs.Response
         public string PrimaryEmail { get; set; }
         public string AlternateEmail { get; set; }
         public int? Designation { get; set; }
+    }
+    public class BaseStaffModel
+    {
+        public int? StaffId { get; set; }
     }
 }

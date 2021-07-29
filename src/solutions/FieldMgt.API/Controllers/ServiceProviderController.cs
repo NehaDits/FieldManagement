@@ -30,7 +30,7 @@ namespace FieldMgt.API.Controllers
         {
             try
             {
-                //model.CreatedBy =GetUserId();
+                model.CreatedBy =GetUserId();
                 model.CreatedOn = System.DateTime.Now;   
                 return BaseResult(await _uow.ServiceProviderRepositories.CreateServiceProviderAsync(model));
             }
@@ -39,10 +39,15 @@ namespace FieldMgt.API.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        [Route("List")]
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<ServiceProviderListDTO>), StatusCodes.Status200OK)]
+        public IEnumerable<ServiceProviderListDTO> GetServiceProvider() => _uow.ServiceProviderRepositories.GetServiceProvider();
         [Route("ById/{id}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ServiceProvider), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceProviderListDTO), StatusCodes.Status200OK)]
         public ServiceProviderListDTO GetServiceProviderbyId(int id)
         {
             var result = _uow.ServiceProviderRepositories.GetServiceProviderbyId(id);
@@ -54,7 +59,7 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task UpdateServiceProviderAsync(UpdateServiceProviderDTO model)
         {
-            //model.ModifiedBy = GetUserId();
+            model.ModifiedBy = GetUserId();
             model.ModifiedOn = System.DateTime.Now;
             await _uow.ServiceProviderRepositories.UpdateServiceProviderAsync(model);            
         }
@@ -64,8 +69,7 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteServiceProvider(int serviceProviderId)
         {
-            //var deletedBy = GetUserId();
-            string deletedBy = "7ca0112a-8300-42bc-b805-7c756dc53456";
+            var deletedBy = GetUserId();
             var serviceProvider = _uow.ServiceProviderRepositories.DeleteServiceProvider(serviceProviderId, deletedBy);
             var result = await _uow.SaveAsync();
             if (result > 0)

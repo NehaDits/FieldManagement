@@ -43,9 +43,35 @@ namespace FieldMgt.Repository.Repository
             }
         }
 
-        public IEnumerable<ServiceProvider> GetServiceProvider()
+        public IEnumerable<ServiceProviderListDTO> GetServiceProvider()
         {
-            throw new NotImplementedException();
+            try
+            {
+                IEnumerable<ServiceProviderListDTO> serviceProviderDetails = _dbContext.ServiceProviders
+                        .Join(_dbContext.AddressDetails, p => p.AddressDetailId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
+                        .Join(_dbContext.ContactDetails, a => a.p.ContactDetailId, ad => ad.ContactDetailId, (a, ad) => new { a, ad })
+                        .Where(x => x.a.p.IsActive == true)
+                        .Select(m => new ServiceProviderListDTO
+                        {
+                            ServiceProviderName = m.a.p.ServiceProviderName,
+                            ServiceProviderIncharge = m.a.p.ServiceProviderIncharge,
+                            ServiceProviderID=m.a.p.ServiceProviderId,
+                            AlternateEmail = m.ad.AlternateEmail,
+                            PrimaryEmail = m.ad.PrimaryEmail,
+                            AlternatePhone = m.ad.AlternatePhone,
+                            PrimaryPhone = m.ad.PrimaryPhone,                            
+                            ZipCode = m.a.pc.ZipCode,
+                            Address = m.a.pc.Address,
+                            City = m.a.pc.CityId,
+                            Country = m.a.pc.CountryId,
+                            State = m.a.pc.StateId
+                        });
+                return serviceProviderDetails;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         /// <summary>
         /// Get the particular staff by his id
@@ -54,29 +80,36 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public ServiceProviderListDTO GetServiceProviderbyId(int id)
         {
-            var serviceProviderModel = _dbContext.ServiceProviders.Where(w =>
+            try
+            {
+                var serviceProviderModel = _dbContext.ServiceProviders.Where(w =>
                   w.ServiceProviderId.Equals(id)).FirstOrDefault();
-            var AddressDetail = _dbContext.AddressDetails.Where(t =>
-              t.AddressDetailId.Equals(serviceProviderModel.AddressDetailId))
-              .FirstOrDefault();
-            var contactDetail = _dbContext.ContactDetails.Where(p => p.ContactDetailId == serviceProviderModel.ContactDetailId)
-              .FirstOrDefault();
-            
-            var details =  new ServiceProviderListDTO()
-                           {
-                               AlternatePhone = contactDetail.AlternatePhone,
-                               AlternateEmail = contactDetail.AlternateEmail,
-                               PrimaryPhone = contactDetail.PrimaryPhone,
-                               PrimaryEmail = contactDetail.PrimaryEmail,
-                               Address = AddressDetail.Address,
-                               City = AddressDetail.CityId,
-                               State = AddressDetail.StateId,
-                               Country = AddressDetail.CountryId,
-                               ZipCode = AddressDetail.ZipCode,
-                               ServiceProviderName=serviceProviderModel.ServiceProviderName,
-                               ServiceProviderIncharge=serviceProviderModel.ServiceProviderIncharge
-                           };
-            return details;
+                var AddressDetail = _dbContext.AddressDetails.Where(t =>
+                  t.AddressDetailId.Equals(serviceProviderModel.AddressDetailId))
+                  .FirstOrDefault();
+                var contactDetail = _dbContext.ContactDetails.Where(p => p.ContactDetailId == serviceProviderModel.ContactDetailId)
+                  .FirstOrDefault();
+
+                var details = new ServiceProviderListDTO()
+                {
+                    AlternatePhone = contactDetail.AlternatePhone,
+                    AlternateEmail = contactDetail.AlternateEmail,
+                    PrimaryPhone = contactDetail.PrimaryPhone,
+                    PrimaryEmail = contactDetail.PrimaryEmail,
+                    Address = AddressDetail.Address,
+                    City = AddressDetail.CityId,
+                    State = AddressDetail.StateId,
+                    Country = AddressDetail.CountryId,
+                    ZipCode = AddressDetail.ZipCode,
+                    ServiceProviderName = serviceProviderModel.ServiceProviderName,
+                    ServiceProviderIncharge = serviceProviderModel.ServiceProviderIncharge
+                };
+                return details;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }            
         }                
         /// <summary>
         /// Updates the ServiceProvider details 

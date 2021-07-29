@@ -12,7 +12,7 @@ namespace FieldMgt.Core.Interfaces
     public interface IServiceProviderRepository
     {
         Task<ServiceProvider> CreateServiceProviderAsync(CreateServiceProviderDTO model);
-        IEnumerable<ServiceProvider> GetServiceProvider();
+        IEnumerable<ServiceProviderListDTO> GetServiceProvider();
         ServiceProviderListDTO GetServiceProviderbyId(int id);
         ServiceProvider DeleteServiceProvider(int serviceProviderId, string deletedBy);
         Task UpdateServiceProviderAsync(UpdateServiceProviderDTO model);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FieldMgt.Core.DTOs.Response
 {
-    public class ServiceProviderListDTO
+    public class ServiceProviderListDTO:BaseServiceProviderModel
     {        
         public string ServiceProviderName { get; set; }        
         public string ServiceProviderIncharge { get; set; }        
@@ -23,4 +23,9 @@ namespace FieldMgt.Core.DTOs.Response
         public string PrimaryEmail { get; set; }
         public string AlternateEmail { get; set; }
     }
+    public class BaseServiceProviderModel
+    {
+        public int? ServiceProviderID { get; set; }
+    }
+
 }

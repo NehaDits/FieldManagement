@@ -55,51 +55,92 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public StaffListDTO GetStaffbyId(int id)
         {
-            var staffModel = _dbContext.Staffs.Where(w =>
-                  w.StaffId.Equals(id)).FirstOrDefault();
-            var permanentAddressDetail = _dbContext.AddressDetails.Where(t =>
-              t.AddressDetailId.Equals(staffModel.PermanentAddressId))
-              .FirstOrDefault();
-            var correspondenceAddressDetail = _dbContext.AddressDetails.Where(t =>
-              t.AddressDetailId.Equals(staffModel.CorrespondenceAddressId))
-              .FirstOrDefault();
-            var contactDetailModel = _dbContext.ContactDetails.Where(p => p.ContactDetailId == staffModel.ContactDetailId)
-              .FirstOrDefault();
-            var details = (from master in _dbContext.Staffs
-                           join detail in _dbContext.AddressDetails
-                           on master.PermanentAddressId equals detail.AddressDetailId
-                           where master.StaffId == id
-                           from proj in _dbContext.ContactDetails where proj.ContactDetailId == master.ContactDetailId
-                           select new StaffListDTO()
-                           {
-                               AlternatePhone = proj.AlternatePhone,
-                               AlternateEmail = proj.AlternateEmail,
-                               PrimaryPhone = contactDetailModel.PrimaryPhone,
-                               CorrespondenceAddress = correspondenceAddressDetail.Address,
-                               CorrespondenceCity = correspondenceAddressDetail.CityId,
-                               CorrespondenceState = correspondenceAddressDetail.StateId,
-                               CorrespondenceCountry = correspondenceAddressDetail.CountryId,
-                               CorrespondenceZipCode = correspondenceAddressDetail.ZipCode,
-                               DOB = master.DOB,
-                               PermanentAddress = detail.Address,
-                               PermanentCity = detail.CityId,
-                               PermanentState = detail.StateId,
-                               PermanentCountry = detail.CountryId,
-                               PermanentZipCode = detail.ZipCode,
-                               PrimaryEmail = proj.PrimaryEmail,
-                               FirstName = master.FirstName,
-                               LastName = master.LastName,
-                               Designation = master.Designation,
-                               Gender = master.Gender
-                               //map field names
-                           }).FirstOrDefault();
-            return details;
+            try
+            {
+                var staffModel = _dbContext.Staffs.Where(w =>
+                 w.StaffId.Equals(id)).FirstOrDefault();
+                var permanentAddressDetail = _dbContext.AddressDetails.Where(t =>
+                  t.AddressDetailId.Equals(staffModel.PermanentAddressId))
+                  .FirstOrDefault();
+                var correspondenceAddressDetail = _dbContext.AddressDetails.Where(t =>
+                  t.AddressDetailId.Equals(staffModel.CorrespondenceAddressId))
+                  .FirstOrDefault();
+                var contactDetailModel = _dbContext.ContactDetails.Where(p => p.ContactDetailId == staffModel.ContactDetailId)
+                  .FirstOrDefault();
+                var details = new StaffListDTO()
+                {
+                    AlternatePhone = contactDetailModel.AlternatePhone,
+                    AlternateEmail = contactDetailModel.AlternateEmail,
+                    PrimaryPhone = contactDetailModel.PrimaryPhone,
+                    CorrespondenceAddress = correspondenceAddressDetail.Address,
+                    CorrespondenceCity = correspondenceAddressDetail.CityId,
+                    CorrespondenceState = correspondenceAddressDetail.StateId,
+                    CorrespondenceCountry = correspondenceAddressDetail.CountryId,
+                    CorrespondenceZipCode = correspondenceAddressDetail.ZipCode,
+                    DOB = staffModel.DOB,
+                    PermanentAddress = permanentAddressDetail.Address,
+                    PermanentCity = permanentAddressDetail.CityId,
+                    PermanentState = permanentAddressDetail.StateId,
+                    PermanentCountry = permanentAddressDetail.CountryId,
+                    PermanentZipCode = permanentAddressDetail.ZipCode,
+                    PrimaryEmail = contactDetailModel.PrimaryEmail,
+                    FirstName = staffModel.FirstName,
+                    LastName = staffModel.LastName,
+                    Designation = staffModel.Designation,
+                    Gender = staffModel.Gender,
+                    StaffId = staffModel.StaffId
+                    //map field names
+                };
+                return details;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }           
         }
         /// <summary>
         /// Get lsit of staff
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Staff> GetStaff() => _dbContext.Staffs.Where(a => a.IsDeleted == false).ToList();
+        public IEnumerable<StaffListDTO> GetStaff() //=> _dbContext.Staffs.Where(a => a.IsDeleted == false).ToList();
+        {
+            try
+            {
+                IEnumerable<StaffListDTO> staffDetails = _dbContext.Staffs
+                         .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
+                         .Join(_dbContext.AddressDetails, a => a.p.CorrespondenceAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
+                         .Join(_dbContext.ContactDetails, cd => cd.a.p.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
+                         .Where(x => x.cd.a.p.IsActive == true)
+                         .Select(m => new StaffListDTO
+                         {
+                             FirstName = m.cd.a.p.FirstName,
+                             LastName = m.cd.a.p.LastName,
+                             Gender = m.cd.a.p.Gender,
+                             DOB = m.cd.a.p.DOB,
+                             Designation = m.cd.a.p.Designation,
+                             StaffId = m.cd.a.p.StaffId,
+                             AlternateEmail = m.c.AlternateEmail,
+                             PrimaryEmail = m.c.PrimaryEmail,
+                             AlternatePhone = m.c.AlternatePhone,
+                             PrimaryPhone = m.c.PrimaryPhone,
+                             CorrespondenceAddress = m.cd.ad.Address,
+                             CorrespondenceCity = m.cd.ad.CityId,
+                             CorrespondenceCountry = m.cd.ad.CountryId,
+                             CorrespondenceState = m.cd.ad.StateId,
+                             CorrespondenceZipCode = m.cd.ad.ZipCode,
+                             PermanentZipCode = m.cd.ad.ZipCode,
+                             PermanentAddress = m.cd.ad.Address,
+                             PermanentCity = m.cd.ad.CityId,
+                             PermanentCountry = m.cd.ad.CountryId,
+                             PermanentState = m.cd.ad.StateId
+                         });
+                return staffDetails;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }            
+        }
         
         /// <summary>
         /// soft delete staff when deleting User Account by User Id

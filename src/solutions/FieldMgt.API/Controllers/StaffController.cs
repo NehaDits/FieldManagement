@@ -26,7 +26,7 @@ namespace FieldMgt.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<Staff>), StatusCodes.Status200OK)]
-        public IEnumerable<Staff> GetStaff() => _uow.StaffRepositories.GetStaff();
+        public IEnumerable<StaffListDTO> GetStaff() => _uow.StaffRepositories.GetStaff();
         [Route("ById/{id}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -44,7 +44,7 @@ namespace FieldMgt.API.Controllers
         {
             try
             {
-                //model.ModifiedBy = GetUserId();
+                model.ModifiedBy = GetUserId();
                 model.ModifiedOn = System.DateTime.Now;
                 await _uow.StaffRepositories.UpdateStaffAsync(model);
             }
@@ -59,8 +59,7 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteStaff(int staffId)
         {
-            //var deletedBy = GetUserId();
-            string deletedBy= "ef909433-f28e-40a9-ab89-fe81b99ca1e3";
+            var deletedBy = GetUserId();
             var staff=_uow.StaffRepositories.DeleteStaff(staffId,deletedBy);            
             var result = await _uow.SaveAsync();
             if (result>0)

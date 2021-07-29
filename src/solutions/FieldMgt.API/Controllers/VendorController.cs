@@ -67,11 +67,10 @@ namespace FieldMgt.API.Controllers
         public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor, int Vendorid)
         {
             vendor.VendorId = Vendorid;
-            //vendor.CreatedBy = GetUserId();
+            vendor.CreatedBy = GetUserId();
             var vendorDetail = await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor);
             return vendorDetail;
         }
-        //=> BaseResult<Vendor>(await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor));
 
         /// <summary>
         /// Soft delete vendor 

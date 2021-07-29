@@ -10,7 +10,7 @@ namespace FieldMgt.Core.Interfaces
     public interface IStaffRepository
     {
         Task<Staff> CreateStaffAsync(CreateEmployeeDTO model);
-        IEnumerable<Staff> GetStaff();
+        IEnumerable<StaffListDTO> GetStaff();
         StaffListDTO GetStaffbyId(int id);
         Staff DeleteStaffAsUser(string userName, string deletedBy);
         Staff DeleteStaff(int userName, string deletedBy);
