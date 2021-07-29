@@ -25,7 +25,7 @@ namespace FieldMgt.Repository.Repository
             _mapper = mapper;
             _uow = uow;
         }
-        // <summary>
+        /// <summary>
         /// Create the Service Provider
         /// </summary>
         /// <param name="model"></param>
@@ -42,7 +42,6 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
         public IEnumerable<ServiceProviderListDTO> GetServiceProvider()
         {
             try
@@ -62,9 +61,9 @@ namespace FieldMgt.Repository.Repository
                             PrimaryPhone = m.ad.PrimaryPhone,                            
                             ZipCode = m.a.pc.ZipCode,
                             Address = m.a.pc.Address,
-                            City = m.a.pc.CityId,
-                            Country = m.a.pc.CountryId,
-                            State = m.a.pc.StateId
+                            CityId = m.a.pc.CityId,
+                            CountryId = m.a.pc.CountryId,
+                            StateId = m.a.pc.StateId
                         });
                 return serviceProviderDetails;
             }
@@ -84,10 +83,19 @@ namespace FieldMgt.Repository.Repository
             {
                 var serviceProviderModel = _dbContext.ServiceProviders.Where(w =>
                   w.ServiceProviderId.Equals(id)).FirstOrDefault();
-                var AddressDetail = _dbContext.AddressDetails.Where(t =>
+                var addressDetail = _dbContext.AddressDetails.Where(t =>
                   t.AddressDetailId.Equals(serviceProviderModel.AddressDetailId))
                   .FirstOrDefault();
                 var contactDetail = _dbContext.ContactDetails.Where(p => p.ContactDetailId == serviceProviderModel.ContactDetailId)
+                  .FirstOrDefault();
+                var countryDetail = _dbContext.Country.Where(t =>
+                  t.CountryId.Equals(addressDetail.CountryId))
+                  .FirstOrDefault();
+                var stateDetail = _dbContext.State.Where(t =>
+                  t.StateId.Equals(addressDetail.StateId))
+                  .FirstOrDefault();
+                var cityDetail = _dbContext.City.Where(t =>
+                  t.CityId.Equals(addressDetail.CityId))
                   .FirstOrDefault();
 
                 var details = new ServiceProviderListDTO()
@@ -96,13 +104,17 @@ namespace FieldMgt.Repository.Repository
                     AlternateEmail = contactDetail.AlternateEmail,
                     PrimaryPhone = contactDetail.PrimaryPhone,
                     PrimaryEmail = contactDetail.PrimaryEmail,
-                    Address = AddressDetail.Address,
-                    City = AddressDetail.CityId,
-                    State = AddressDetail.StateId,
-                    Country = AddressDetail.CountryId,
-                    ZipCode = AddressDetail.ZipCode,
+                    Address = addressDetail.Address,
+                    CityId = addressDetail.CityId,
+                    StateId = addressDetail.StateId,
+                    CountryId = addressDetail.CountryId,
+                    City=cityDetail.CityName,
+                    State=stateDetail.StateName,
+                    Country=countryDetail.Name,
+                    ZipCode = addressDetail.ZipCode,
                     ServiceProviderName = serviceProviderModel.ServiceProviderName,
-                    ServiceProviderIncharge = serviceProviderModel.ServiceProviderIncharge
+                    ServiceProviderIncharge = serviceProviderModel.ServiceProviderIncharge,
+                    ServiceProviderID=serviceProviderModel.ServiceProviderId
                 };
                 return details;
             }

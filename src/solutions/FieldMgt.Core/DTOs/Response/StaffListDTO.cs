@@ -14,14 +14,20 @@ namespace FieldMgt.Core.DTOs.Response
         public int? Gender { get; set; }
         public DateTime? DOB { get; set; }
         public string PermanentAddress { get; set; }
-        public int PermanentCity { get; set; }
-        public int PermanentState { get; set; }
-        public int PermanentCountry { get; set; }
+        public int PermanentCityId { get; set; }
+        public int PermanentStateId { get; set; }
+        public int PermanentCountryId { get; set; }
+        public string PermanentCity { get; set; }
+        public string PermanentState { get; set; }
+        public string PermanentCountry { get; set; }
         public string PermanentZipCode { get; set; }
         public string CorrespondenceAddress { get; set; }
-        public int CorrespondenceCity { get; set; }
-        public int CorrespondenceState { get; set; }
-        public int CorrespondenceCountry { get; set; }
+        public int CorrespondenceCityId { get; set; }
+        public int CorrespondenceStateId { get; set; }
+        public int CorrespondenceCountryId { get; set; }
+        public string CorrespondenceCity { get; set; }
+        public string CorrespondenceState { get; set; }
+        public string CorrespondenceCountry { get; set; }
         public string CorrespondenceZipCode { get; set; }
         public bool IsActive { get; set; }
         public string PrimaryPhone { get; set; }

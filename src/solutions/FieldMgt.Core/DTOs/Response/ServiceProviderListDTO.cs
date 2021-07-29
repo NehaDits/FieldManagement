@@ -14,9 +14,12 @@ namespace FieldMgt.Core.DTOs.Response
         public string ServiceProviderIncharge { get; set; }        
         [StringLength(100, MinimumLength = 5)]
         public string Address { get; set; }
-        public int City { get; set; }
-        public int State { get; set; }
-        public int Country { get; set; }
+        public int CityId { get; set; }
+        public int StateId { get; set; }
+        public int CountryId { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
         public string ZipCode { get; set; }
         public string PrimaryPhone { get; set; }
         public string AlternatePhone { get; set; }

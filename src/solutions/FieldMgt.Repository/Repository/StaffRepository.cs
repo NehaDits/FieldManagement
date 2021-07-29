@@ -20,7 +20,6 @@ namespace FieldMgt.Repository.Repository
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IUnitofWork _uow;
-        private IMapper mapper;
 
         public StaffRepository(ApplicationDbContext dbContext, IUnitofWork uow, IMapper mapper) :base(dbContext)
         {
@@ -28,8 +27,6 @@ namespace FieldMgt.Repository.Repository
             _mapper = mapper;
             _uow = uow;
         }
-
-
         /// <summary>
         /// Create the staff
         /// </summary>
@@ -67,21 +64,39 @@ namespace FieldMgt.Repository.Repository
                   .FirstOrDefault();
                 var contactDetailModel = _dbContext.ContactDetails.Where(p => p.ContactDetailId == staffModel.ContactDetailId)
                   .FirstOrDefault();
+                var permanentCountryDetail = _dbContext.Country.Where(t =>
+                  t.CountryId.Equals(permanentAddressDetail.CountryId))
+                  .FirstOrDefault();
+                var permanentStateDetail = _dbContext.State.Where(t =>
+                  t.StateId.Equals(permanentAddressDetail.StateId))
+                  .FirstOrDefault();
+                var permanentCityDetail = _dbContext.City.Where(t =>
+                  t.CityId.Equals(permanentAddressDetail.CityId))
+                  .FirstOrDefault();
+                var correspondenceCountryDetail = _dbContext.Country.Where(t =>
+                  t.CountryId.Equals(correspondenceAddressDetail.CountryId))
+                  .FirstOrDefault();
+                var correspondenceStateDetail = _dbContext.State.Where(t =>
+                  t.StateId.Equals(correspondenceAddressDetail.StateId))
+                  .FirstOrDefault();
+                var correspondenceCityDetail = _dbContext.City.Where(t =>
+                  t.CityId.Equals(correspondenceAddressDetail.CityId))
+                  .FirstOrDefault();
                 var details = new StaffListDTO()
                 {
                     AlternatePhone = contactDetailModel.AlternatePhone,
                     AlternateEmail = contactDetailModel.AlternateEmail,
                     PrimaryPhone = contactDetailModel.PrimaryPhone,
                     CorrespondenceAddress = correspondenceAddressDetail.Address,
-                    CorrespondenceCity = correspondenceAddressDetail.CityId,
-                    CorrespondenceState = correspondenceAddressDetail.StateId,
-                    CorrespondenceCountry = correspondenceAddressDetail.CountryId,
+                    CorrespondenceCity = correspondenceCityDetail.CityName,
+                    CorrespondenceState = correspondenceStateDetail.StateName,
+                    CorrespondenceCountry = correspondenceCountryDetail.Name,
                     CorrespondenceZipCode = correspondenceAddressDetail.ZipCode,
                     DOB = staffModel.DOB,
                     PermanentAddress = permanentAddressDetail.Address,
-                    PermanentCity = permanentAddressDetail.CityId,
-                    PermanentState = permanentAddressDetail.StateId,
-                    PermanentCountry = permanentAddressDetail.CountryId,
+                    PermanentCity = permanentCityDetail.CityName,
+                    PermanentState = permanentStateDetail.StateName,
+                    PermanentCountry = permanentCountryDetail.Name,
                     PermanentZipCode = permanentAddressDetail.ZipCode,
                     PrimaryEmail = contactDetailModel.PrimaryEmail,
                     FirstName = staffModel.FirstName,
@@ -101,8 +116,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Get lsit of staff
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<StaffListDTO> GetStaff() //=> _dbContext.Staffs.Where(a => a.IsDeleted == false).ToList();
+        /// <returns></returns>        
+        public IEnumerable<StaffListDTO> GetStaff() 
         {
             try
             {
@@ -124,15 +139,15 @@ namespace FieldMgt.Repository.Repository
                              AlternatePhone = m.c.AlternatePhone,
                              PrimaryPhone = m.c.PrimaryPhone,
                              CorrespondenceAddress = m.cd.ad.Address,
-                             CorrespondenceCity = m.cd.ad.CityId,
-                             CorrespondenceCountry = m.cd.ad.CountryId,
-                             CorrespondenceState = m.cd.ad.StateId,
+                             CorrespondenceCityId = m.cd.ad.CityId,
+                             CorrespondenceCountryId = m.cd.ad.CountryId,
+                             CorrespondenceStateId = m.cd.ad.StateId,
                              CorrespondenceZipCode = m.cd.ad.ZipCode,
                              PermanentZipCode = m.cd.ad.ZipCode,
                              PermanentAddress = m.cd.ad.Address,
-                             PermanentCity = m.cd.ad.CityId,
-                             PermanentCountry = m.cd.ad.CountryId,
-                             PermanentState = m.cd.ad.StateId
+                             PermanentCityId = m.cd.ad.CityId,
+                             PermanentCountryId = m.cd.ad.CountryId,
+                             PermanentStateId = m.cd.ad.StateId
                          });
                 return staffDetails;
             }
@@ -140,8 +155,7 @@ namespace FieldMgt.Repository.Repository
             {
                 throw new Exception(ex.Message);
             }            
-        }
-        
+        }        
         /// <summary>
         /// soft delete staff when deleting User Account by User Id
         /// </summary>
@@ -196,7 +210,6 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception(ex.Message);
             }            
         }
-
         /// <summary>
         /// update the staff detail
         /// </summary>
