@@ -13,6 +13,8 @@ using System.Data.Entity;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using FieldMgt.Core.DTOs.Response;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -22,11 +24,13 @@ namespace FieldMgt.Repository.Repository
         private readonly IUnitofWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper) : base(dbContext)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(dbContext)
         {
             _dbContext = dbContext;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -42,6 +46,7 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public IEnumerable<VendorResponseDTO> GetVendorsAsync()
         {
+            string userid=_httpContextAccessor.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             IEnumerable<VendorResponseDTO> vendorDetails = _dbContext.Vendors
                           .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
@@ -107,6 +112,12 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vendorId"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
         public Vendor DeleteVendor(int vendorId, string deletedBy)
         {
             try
@@ -115,6 +126,12 @@ namespace FieldMgt.Repository.Repository
                 currentVendor.IsDeleted = true;
                 currentVendor.DeletedBy = deletedBy;
                 currentVendor.DeletedOn = System.DateTime.Now;
+                int permanentAddress = (int)currentVendor.PermanentAddressId;
+                int correspondenceAddress = (int)currentVendor.BillingAddressId;
+                int contactDetail = (int)currentVendor.ContactDetailId;
+                _unitOfWork.AddressRepositories.DeleteAddress(permanentAddress, deletedBy);
+                _unitOfWork.AddressRepositories.DeleteAddress(correspondenceAddress, deletedBy);
+                _unitOfWork.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
                 return Update(currentVendor);
             }
             catch (Exception ex)

@@ -2,15 +2,11 @@
 using System.Threading.Tasks;
 using FieldMgt.Core.Interfaces;
 using AutoMapper;
-using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.UOW;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.API.Controllers;
 using System.Net;
 using Microsoft.AspNetCore.Http;
-using System.Threading;
-using System.Net;
-using FieldMgt.Repository.Enums;
 using System;
 
 namespace FieldMgt.Controllers
@@ -25,7 +21,7 @@ namespace FieldMgt.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitofWork _uow;
 
-        public AuthenticationController(IUserRepository userRepository, IUnitofWork uow, IMapper mapper)
+        public AuthenticationController(IUserRepository userRepository, IUnitofWork uow, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _userRepository = userRepository;
             _mapper = mapper;

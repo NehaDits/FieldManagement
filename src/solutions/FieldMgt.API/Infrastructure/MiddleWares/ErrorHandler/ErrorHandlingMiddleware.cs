@@ -12,27 +12,25 @@ using Shyjus.BrowserDetection;
 using System.Text.Json;
 using Newtonsoft.Json;
 using FieldMgt.API.Infrastructure.MiddleWares.Exceptions;
-using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.Interfaces;
 using FieldMgt.Core.DomainModels;
 using System.Threading;
 using FieldMgt.Repository.Enums;
+using FieldMgt.API.Controllers;
 
 namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
 {
-    public class ErrorHandlingMiddleware
+    public class ErrorHandlingMiddleware:BaseController
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
         private readonly IPathProvider _pathProvider;
-        private readonly ICurrentUserService _currentUser;
 
-        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IPathProvider pathProvider, ICurrentUserService currentUser)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IPathProvider pathProvider, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _next = next;
             _logger = loggerFactory.CreateLogger<ErrorHandlingMiddleware>();
             _pathProvider = pathProvider;
-            _currentUser = currentUser;
         }
 
         public async Task Invoke(HttpContext httpContext, IWebHostEnvironment env, IBrowserDetector detector, IExceptionInterface _exceptionService)
@@ -49,7 +47,7 @@ namespace FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler
         private Task HandleExceptionAsync(HttpContext httpContext, Exception exception, IWebHostEnvironment env, IBrowserDetector detector, IExceptionInterface _exceptionService)
         {
             FieldMgtExceptions response;
-            string CurrentUserId = _currentUser.GetUserId();
+            string CurrentUserId = GetUserId();
             HttpStatusCode statusCode;
             var exceptionType = exception.GetType();
             CreateLogFiles.CreateFileIfNotExist(_pathProvider);

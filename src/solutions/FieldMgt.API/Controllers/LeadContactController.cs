@@ -3,7 +3,6 @@ using FieldMgt.Core.UOW;
 using AutoMapper;
 using FieldMgt.Core.DomainModels;
 using System.Collections.Generic;
-using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.Core.DTOs.Request;
 using System.Threading;
 using FieldMgt.Repository.Enums;
@@ -26,7 +25,7 @@ namespace FieldMgt.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CreateLeadContactAsync(CreateLeadContactDTO model,CancellationToken cancellationToken, int leadId)
+        public IActionResult CreateLeadContactAsync(CreateLeadContactDTO model,int leadId)
         {
             CreateLeadContactDTO modelDTO = new CreateLeadContactDTO();
             modelDTO.LeadId = leadId;
