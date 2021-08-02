@@ -7,6 +7,10 @@ namespace FieldMgt.API.Controllers
     public class BaseController : ControllerBase
     {
         private readonly IHttpContextAccessor _httpContext;
+        //public BaseController(IHttpContextAccessor httpContext)
+        //{
+        //    _httpContext = httpContext;
+        //}
         protected IActionResult BaseResult(int response)
         {
             if (response > 0)

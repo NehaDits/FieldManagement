@@ -25,7 +25,7 @@ namespace FieldMgt.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitofWork _uow;
 
-        public AuthenticationController(IUserRepository userRepository, IUnitofWork uow, IMapper mapper)
+        public AuthenticationController(IUserRepository userRepository, IUnitofWork uow, IMapper mapper,IHttpContextAccessor httpContext)
         {
             _userRepository = userRepository;
             _mapper = mapper;

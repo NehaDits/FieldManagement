@@ -17,10 +17,10 @@ namespace FieldMgt.Core.DomainModels
         public int LeadId { get; set; }
         [Required]
         [Column(TypeName = "nvarchar(100)")]
-        public string LeadCompanyName { get; set; }        
+        public string LeadCompanyName { get; set; }
         [Column(TypeName = "nvarchar(255)")]
-        public string LeadDescription { get; set; }        
-        public int LeadSource { get; set; }  
+        public string LeadDescription { get; set; }
+        public int LeadSource { get; set; }
         public int LeadStatus { get; set; }
         public int? LeadStage { get; set; }
         [DefaultValue(true)]
@@ -30,7 +30,7 @@ namespace FieldMgt.Core.DomainModels
         public ContactDetail ContactDetail { get; set; }
         public int PermanentAddressId { get; set; }
         public int BillingAddressId { get; set; }
-        
+
         [Column(TypeName = "nvarchar(255)")]
         public string CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
@@ -51,8 +51,5 @@ namespace FieldMgt.Core.DomainModels
         public AddressDetail LeadAddress { get; set; }
         public AddressDetail LeadBillingAddress { get; set; }
         public ICollection<LeadCall> Ref2LeadId { get; set; }
-        public int? ClientId { get; set; }
-        [ForeignKey("ClientId")]
-        public Client Client { get; set; }
     }
 }

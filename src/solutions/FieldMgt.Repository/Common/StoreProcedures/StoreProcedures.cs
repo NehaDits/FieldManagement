@@ -12,5 +12,6 @@
         public static string UpdateServiceProvider = "sp_UpdateServiceProvider";
         public static string CreateLead = "sp_CreateLead";
         public static string UpdateLead = "sp_UpdateLead";
+        public static string CreateServiceProviderLocation = "sp_CreateServiceProviderLocation";
     }
 }

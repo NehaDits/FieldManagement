@@ -50,5 +50,4 @@ namespace FieldMgt.API.Infrastructure.Extensions
             return builder;
         }
     }
-
 }

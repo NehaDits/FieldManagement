@@ -4,14 +4,16 @@ using FieldMgt.Core.DomainModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FieldMgt.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210729094529_FieldMgtDemo.core.vrerjk")]
+    partial class FieldMgtDemocorevrerjk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,9 +185,6 @@ namespace FieldMgt.Core.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LeadId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(255)");
 
@@ -206,8 +205,6 @@ namespace FieldMgt.Core.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("DeletedBy");
-
-                    b.HasIndex("LeadId");
 
                     b.HasIndex("ModifiedBy");
 
@@ -812,6 +809,9 @@ namespace FieldMgt.Core.Migrations
                     b.Property<int>("BillingAddressId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ContactDetailId")
                         .HasColumnType("int");
 
@@ -861,6 +861,8 @@ namespace FieldMgt.Core.Migrations
                     b.HasKey("LeadId");
 
                     b.HasIndex("BillingAddressId");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("ContactDetailId");
 
@@ -2414,12 +2416,6 @@ namespace FieldMgt.Core.Migrations
                         .HasForeignKey("DeletedBy")
                         .HasConstraintName("ClientDeletedBy_FK");
 
-                    b.HasOne("FieldMgt.Core.DomainModels.Lead", "Lead")
-                        .WithMany()
-                        .HasForeignKey("LeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FieldMgt.Core.DomainModels.ApplicationUser", "ClientModifiedBy")
                         .WithMany("Ref70Navigation")
                         .HasForeignKey("ModifiedBy")
@@ -2434,8 +2430,6 @@ namespace FieldMgt.Core.Migrations
                     b.Navigation("ClientModifiedBy");
 
                     b.Navigation("ContactDetail");
-
-                    b.Navigation("Lead");
 
                     b.Navigation("RefSource");
                 });
@@ -2783,6 +2777,10 @@ namespace FieldMgt.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FieldMgt.Core.DomainModels.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
                     b.HasOne("FieldMgt.Core.DomainModels.ContactDetail", "ContactDetail")
                         .WithMany()
                         .HasForeignKey("ContactDetailId")
@@ -2829,6 +2827,8 @@ namespace FieldMgt.Core.Migrations
                         .HasConstraintName("LPermaAddress_FK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Client");
 
                     b.Navigation("ContactDetail");
 
