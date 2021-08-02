@@ -14,7 +14,7 @@ namespace FieldMgt.API.Controllers
     public class VendorController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public VendorController(IUnitofWork uow)
+        public VendorController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
         }

@@ -13,5 +13,6 @@ namespace FieldMgt.Core.Interfaces
         IEnumerable<LeadResponseDTO> GetLeadsAsync();
         IEnumerable<LeadResponseDTO> GetLeadbyIdAsync(int id);
         Task UpdateLeadStatusAsync(UpdateLeadDTO lead);
+        Task<Lead> UpdateLeadStatus(int Id, int Status, string modifiedBy);
     }
 }
