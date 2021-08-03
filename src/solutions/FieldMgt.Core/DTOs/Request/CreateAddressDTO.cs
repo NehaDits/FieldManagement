@@ -1,39 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace FieldMgt.Core.DTOs.Request
+﻿namespace FieldMgt.Core.DTOs.Request
 {
-    public class CreateAddressDTO:BaseAddressModel
+    public class CreateAddressDTO
     {
-        [StringLength(100, MinimumLength = 5)]
-        public string PermanentAddress { get; set; }
-        public int PermanentCity { get; set; }
-        public int PermanentState { get; set; }
-        public int PermanentCountry { get; set; }
-        public string PermanentZipCode { get; set; }
-        [StringLength(100, MinimumLength = 5)]
-        public string CorrespondenceAddress { get; set; }
-        public int CorrespondenceCity { get; set; }
-        public int CorrespondenceState { get; set; }
-        public int CorrespondenceCountry { get; set; }
-        public string CorrespondenceZipCode { get; set; }
-        [StringLength(100, MinimumLength = 5)]
         public string Address { get; set; }
         public int CityId { get; set; }
         public int StateId { get; set; }
         public int CountryId { get; set; }
         public string ZipCode { get; set; }
-        public int? AddressType { get; set; }
-        [DefaultValue(true)]
-        public bool? IsActive { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime? CreatedOn { get; set; }
-    }
-    public class BaseAddressModel
-    {
-        public int? AddressDetailId { get; set; }
+        public int AddressType { get; set; }
+        public int AddressId { get; set; }
     }
 }

@@ -88,9 +88,9 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IEnumerable<LeadResponseDTO> GetLeadbyIdAsync(int id)
+        public LeadResponseDTO GetLeadbyIdAsync(int id)
         {
-            IEnumerable<LeadResponseDTO> lead = _dbContext.Leads
+            var lead = _dbContext.Leads
                           .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
                           .Join(_dbContext.ContactDetails, cd => cd.a.p.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
@@ -124,7 +124,7 @@ namespace FieldMgt.Repository.Repository
                               countries=_dbContext.Country.ToList(),
                               states=_dbContext.State.ToList(),
                               cities=_dbContext.City.ToList()
-                          });
+                          }).SingleOrDefault();
 
             return lead;
         }
@@ -142,22 +142,14 @@ namespace FieldMgt.Repository.Repository
         /// <param name="Id"></param>
         /// <param name="Status"></param>
         /// <returns></returns>
-        public async Task<Lead> UpdateLeadStatus(int Id, int Status, string modifiedBy) {
-            var obj = new
-            {
-                LeadId = Id,
-                LeadStatus = Status,
-                ModifiedBy = modifiedBy,
-                ModifiedOn = DateTime.Now,
-            };
-            //UpdateLeadDTO updateLeadDTO = new UpdateLeadDTO();
-            //updateLeadDTO.LeadId = Id;
-            //updateLeadDTO.LeadStatus = Status;
-            //updateLeadDTO.ModifiedBy =modifiedBy;
-            //updateLeadDTO.ModifiedOn =DateTime.Now;
+        public void UpdateLeadStatus(int Id, int Status, string modifiedBy) {
             try
             {
-                return await CommandAsync<Lead>(StoreProcedures.UpdateLeadStatus, obj);
+                    Lead lead = _dbContext.Leads.FirstOrDefault(a => a.LeadId == Id);
+                    lead.LeadStatus = Status;
+                    lead.ModifiedBy = modifiedBy;
+                    lead.ModifiedOn= DateTime.Now;
+                    Update(lead);
             }
             catch (Exception ex)
             {

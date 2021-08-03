@@ -5,7 +5,10 @@ using System.ComponentModel.DataAnnotations;
 namespace FieldMgt.Core.DTOs.Request
 {
     public class CreateLeadDTO
-    {        
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Gender { get; set; }
         public string LeadCompanyName { get; set; }    
         public string LeadDescription { get; set; }       
         public int LeadSource { get; set; }
