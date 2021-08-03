@@ -22,12 +22,9 @@ namespace FieldMgt.Core.DTOs.Response
         public int CorrespondenceState { get; set; }
         public int CorrespondenceCountry { get; set; }
         public string CorrespondenceZipCode { get; set; }
-        public string PrimaryPhone { get; set; }
-        public string AlternatePhone { get; set; }
-        public string PrimaryEmail { get; set; }
-        public string AlternateEmail { get; set; }
+        public ContactResponseDTO ContactDTO { get; set; }
         public bool IsActive { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime? CreatedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

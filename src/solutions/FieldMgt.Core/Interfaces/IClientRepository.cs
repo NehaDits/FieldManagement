@@ -10,7 +10,7 @@ namespace FieldMgt.Core.Interfaces
     {
         //IEnumerable<ClientResponseDTO> GetClientsAsync();
         IEnumerable<ClientResponseDTO> GetClientbyIdAsync(int id);
-        Task<IEnumerable<Client>> UpdateClientStatusAsync(CreateClientDTO lead);
+        Task<IEnumerable<Client>> UpdateClientStatusAsync(ClientResponseDTO lead);
         Task<Client> Save(CreateClientDTO model);
         Client DeleteClient(int ClientId, string deletedBy);
     }

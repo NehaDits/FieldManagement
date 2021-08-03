@@ -25,15 +25,8 @@ namespace FieldMgt.Repository.Repository
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
-        public Client DeleteClient(int ClientId, string deletedBy)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<ClientResponseDTO> GetClientbyIdAsync(int id)
         {
-            //throw new NotImplementedException();
             IEnumerable<ClientResponseDTO> response =_dbContext.Clients
                 .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
@@ -41,14 +34,10 @@ namespace FieldMgt.Repository.Repository
                           .Where(x => x.cd.a.p.IsActive == true)
                           .Select(m => new ClientResponseDTO
                           {
-                              ClienyCompanyName = m.cd.a.p.ClienyCompanyName,
+                              ClienyCompanyName = m.cd.a.p.ClientCompanyName,
                               ClientDescription = m.cd.a.p.ClientDescription,
                               ClientSource = m.cd.a.p.ClientSource,
                               ClientId = m.cd.a.p.ClientId,
-                              AlternateEmail = m.c.AlternateEmail,
-                              PrimaryEmail = m.c.PrimaryEmail,
-                              AlternatePhone = m.c.AlternatePhone,
-                              PrimaryPhone = m.c.PrimaryPhone,
                               CorrespondenceAddress = m.cd.ad.Address,
                               CorrespondenceCity = m.cd.ad.CityId,
                               CorrespondenceCountry = m.cd.ad.CountryId,
@@ -58,26 +47,50 @@ namespace FieldMgt.Repository.Repository
                               PermanentAddress = m.cd.ad.Address,
                               PermanentCity = m.cd.ad.CityId,
                               PermanentCountry = m.cd.ad.CountryId,
-                              PermanentState = m.cd.ad.StateId
+                              PermanentState = m.cd.ad.StateId,
+                              ContactDTO = new ContactResponseDTO
+                              {
+                                  AlternateEmail = m.c.AlternateEmail,
+                                  PrimaryEmail = m.c.PrimaryEmail,
+                                  AlternatePhone = m.c.AlternatePhone,
+                                  PrimaryPhone = m.c.PrimaryPhone,
+                              }
                           });
             return response;
         }
 
         public Task<Client> Save(CreateClientDTO model)
         {
-            //throw new NotImplementedException();
             try
             {
-                return CommandAsync<Client>(StoreProcedures.UpdateVendorDetail, model);
+                return CommandAsync<Client>(StoreProcedures.SaveClientInfo, model);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public Task<IEnumerable<Client>> UpdateClientStatusAsync(CreateClientDTO lead)
+        public Task<IEnumerable<Client>> UpdateClientStatusAsync(ClientResponseDTO lead) => CollectionsAsync<Client>(StoreProcedures.UpdateClientInfo, lead);
+        public Client DeleteClient(int ClientId, string deletedBy)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var currentClient = _dbContext.Clients.SingleOrDefault(a => a.ClientId == ClientId);
+                currentClient.IsDeleted = true;
+                currentClient.DeletedBy = deletedBy;
+                currentClient.DeletedOn = System.DateTime.Now;
+                int permanentAddress = (int)currentClient.PermanentAddressId;
+                int correspondenceAddress = (int)currentClient.BillingAddressId;
+                int contactDetail = (int)currentClient.ContactDetailId;
+                _unitOfWork.AddressRepositories.DeleteAddress(permanentAddress, deletedBy);
+                _unitOfWork.AddressRepositories.DeleteAddress(correspondenceAddress, deletedBy);
+                _unitOfWork.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
+                return Update(currentClient);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace FieldMgt.Core.DomainModels
         public int ClientId { get; set; }
         [Required]
         [Column(TypeName = "nvarchar(100)")]
-        public string ClienyCompanyName { get; set; }
+        public string ClientCompanyName { get; set; }
         [Column(TypeName = "nvarchar(255)")]
         public string ClientDescription { get; set; }
         public int? ClientSource { get; set; }
@@ -38,9 +38,7 @@ namespace FieldMgt.Core.DomainModels
         public ApplicationUser ClientCreatedBy { get; set; }
         public ApplicationUser ClientModifiedBy { get; set; }
         public ApplicationUser ClientDeletedBy { get; set; }
-        public AddressDetail ClientAddress { get; set; }
-        public int LeadId { get; set; }
-        [ForeignKey("LeadId")]
-        public Lead Lead { get; set; }
+        public AddressDetail ClientPermanentAddress { get; set; }
+        public AddressDetail ClientBillingAddress { get; set; }
     }
 }

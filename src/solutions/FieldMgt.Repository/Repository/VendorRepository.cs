@@ -24,13 +24,11 @@ namespace FieldMgt.Repository.Repository
         private readonly IUnitofWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(dbContext)
+        public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public IEnumerable<VendorResponseDTO> GetVendorsAsync()
         {
-            string userid=_httpContextAccessor.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             IEnumerable<VendorResponseDTO> vendorDetails = _dbContext.Vendors
                           .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
@@ -76,7 +73,10 @@ namespace FieldMgt.Repository.Repository
                               PermanentAddress = m.cd.ad.Address,
                               PermanentCity = m.cd.ad.CityId,
                               PermanentCountry = m.cd.ad.CountryId,
-                              PermanentState = m.cd.ad.StateId
+                              PermanentState = m.cd.ad.StateId,
+                              CreatedBy=m.cd.a.p.CreatedBy,
+                              CreatedOn= m.cd.a.p.CreatedOn,
+                              IsActive= m.cd.a.p.IsActive
                           });
             return vendorDetails;
         }
