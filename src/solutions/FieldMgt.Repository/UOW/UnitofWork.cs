@@ -5,19 +5,21 @@ using FieldMgt.Core.DomainModels;
 using FieldMgt.Repository.Repository;
 using FieldMgt.Core.UOW;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace FieldMgt.Repository.UOW
 {
     public class UnitofWork : IUnitofWork
     {
         private readonly ApplicationDbContext _dbContext;
-        public UnitofWork(ApplicationDbContext dbContext, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UnitofWork(ApplicationDbContext dbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
 
             LeadServices = new LeadRepository(_dbContext, mapper);
             LeadContactRepositories = new LeadContactRepository(_dbContext);
-            VendorRepositories = new VendorRepository(_dbContext, this,mapper);
+            VendorRepositories = new VendorRepository(_dbContext, this,mapper, httpContextAccessor);
             StaffRepositories = new StaffRepository(_dbContext,this,mapper);
             AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);

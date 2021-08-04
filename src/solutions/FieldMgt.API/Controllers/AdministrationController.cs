@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FieldMgt.Core.Interfaces;
-using FieldMgt.Repository.Utils;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FieldMgt.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AdministrationController : BaseController
     {
         private readonly IRoleRepository _roleService;
-        public AdministrationController(IRoleRepository roleService)
+        public AdministrationController(IRoleRepository roleService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _roleService = roleService;
         }

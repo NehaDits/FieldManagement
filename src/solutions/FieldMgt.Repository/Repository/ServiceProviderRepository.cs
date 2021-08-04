@@ -42,6 +42,11 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// Get the list of Service Providers
+        /// </summary>
+        /// <paramname></paramname>
+        /// <returns></returns>
         public IEnumerable<ServiceProviderListDTO> GetServiceProvider()
         {
             try
@@ -49,7 +54,7 @@ namespace FieldMgt.Repository.Repository
                 IEnumerable<ServiceProviderListDTO> serviceProviderDetails = _dbContext.ServiceProviders
                         .Join(_dbContext.AddressDetails, p => p.AddressDetailId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                         .Join(_dbContext.ContactDetails, a => a.p.ContactDetailId, ad => ad.ContactDetailId, (a, ad) => new { a, ad })
-                        .Where(x => x.a.p.IsActive == true)
+                        .Where(x => x.a.p.IsDeleted == false)
                         .Select(m => new ServiceProviderListDTO
                         {
                             ServiceProviderName = m.a.p.ServiceProviderName,
@@ -73,9 +78,9 @@ namespace FieldMgt.Repository.Repository
             }
         }
         /// <summary>
-        /// Get the particular staff by his id
+        /// Get the particular Service Providers
         /// </summary>
-        /// <param name="id"></param>
+        /// <paramname="id"></param>
         /// <returns></returns>
         public ServiceProviderListDTO GetServiceProviderbyId(int id)
         {

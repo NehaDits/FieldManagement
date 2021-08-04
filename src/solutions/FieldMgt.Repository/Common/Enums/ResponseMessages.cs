@@ -32,5 +32,7 @@ namespace FieldMgt.Repository.Enums
         public static string UnknownError = "Some unknown error occoured";
         public static string ServiceProviderNotDeleted = "Service Provider can not be deleted";
         public static string ServicePRoviderNotUpdated = "Service Provider can not be updated";
+        public static string ServiceProviderLocationNotDeleted = "Service Provider Location can not be deleted";
+        public static string ServicePRoviderLocationNotUpdated = "Service Provider Location can not be updated";
     }
 }

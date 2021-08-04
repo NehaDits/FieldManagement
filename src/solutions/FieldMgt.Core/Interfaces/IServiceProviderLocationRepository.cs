@@ -12,9 +12,10 @@ namespace FieldMgt.Core.Interfaces
     public interface IServiceProviderLocationRepository
     {
         Task<ServiceProviderLocation> CreateServiceProviderLocationAsync(CreateServiceProviderLocationDTO model);
-        IEnumerable<ServiceProviderLocationListDTO> GetServiceProviderLocation();
-        ServiceProviderListDTO GetServiceProviderLocationbyId(int serviceProviderId);
-        ServiceProviderLocation DeleteServiceProviderLocation(int serviceProviderLocationId, string deletedBy);
-        Task UpdateServiceProviderLocationAsync(UpdateServiceProviderDTO model);
+        IEnumerable<ServiceProviderLocationListDTO> GetServiceProviderLocation(int serviceProviderId);
+        ServiceProviderLocationListDTO GetServiceProviderLocationbyId(int Id);        
+        Task UpdateServiceProviderLocationAsync(UpdateServiceProviderLocationDTO model);
+        ServiceProviderLocation DeleteServiceProviderLocation(int Id, string deletedBy);
+        void DeleteServiceProviderLocationByServiceProvider(int serviceProviderId, string deletedBy);
     }
 }

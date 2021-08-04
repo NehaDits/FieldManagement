@@ -12,13 +12,13 @@ using FieldMgt.API.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using FieldMgt.Core.UOW;
 using Microsoft.OpenApi.Models;
-using FieldMgt.API.Infrastructure.Services;
 using FieldMgt.API.Infrastructure.MiddleWares.ErrorHandler;
 using FieldMgt.API.Infrastructure.Factories.PathProvider;
 using Excepticon.Extensions;
 using Excepticon.AspNetCore;
 using FieldMgt.Repository.Repository.Exceptions;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace FieldMgt
 {
@@ -48,12 +48,12 @@ namespace FieldMgt
             services.AddExcepticon();
             services.AddBrowserDetection();
             services.AddSingleton<IPathProvider, PathProvider>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IAddressDetailRepository, AddressDetailRepository>();
             services.AddTransient<IContactDetailRepository, ContactDetailRepository>();
             services.AddTransient<IUnitofWork, UnitofWork>();
-            services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddTransient<IExceptionInterface, ExceptionRepository>();

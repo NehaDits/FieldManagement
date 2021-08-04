@@ -15,7 +15,7 @@ namespace FieldMgt.Core.DomainModels
         [Column(TypeName = "nvarchar(30)")]
         public string ServiceProviderLocationName { get; set; }
         [Column(TypeName = "nvarchar(30)")]
-        [MaxLength(15)]
+        [MaxLength(30)]
         public string ServiceProviderLocationIncharge { get; set; }
         public int? ContactDetailId { get; set; }
         [ForeignKey("ContactDetailId")]

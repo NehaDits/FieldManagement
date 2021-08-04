@@ -16,12 +16,12 @@ namespace FieldMgt.API.Controllers
     public class ClientController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public ClientController(IUnitofWork uow)
+        public ClientController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
         }
         /// <summary>
-        /// Use to create vendor
+        /// Use to create Client
         /// </summary>
         /// <param name="model"></param>
         /// <param name="cancellationToken"></param>
@@ -30,22 +30,22 @@ namespace FieldMgt.API.Controllers
         [Route("Create")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateVendorAsync([FromBody] CreateClientDTO model)
+        public async Task<IActionResult> CreateClientAsync([FromBody] CreateClientDTO model)
         => BaseResult(await _uow.ClientRepositories.Save(model));
 
         /// <summary>
-        /// Get vendor detail list
+        /// Get Client detail list
         /// </summary>
         /// <returns></returns>
         //[HttpGet]
         //[Route("GetList")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //[ProducesResponseType(typeof(IEnumerable<Client>), StatusCodes.Status200OK)]
-        //public IActionResult GetVendorAsync()
-        //    => Ok(_uow.ClientRepositories.GetVendorsAsync());
+        //public IActionResult GetClientAsync()
+        //    => Ok(_uow.ClientRepositories.GetClientsAsync());
 
         /// <summary>
-        /// Pass vendor id and returns single record of vendor
+        /// Pass Client id and returns single record of Client
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -53,39 +53,39 @@ namespace FieldMgt.API.Controllers
         [Route("ById/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Client), StatusCodes.Status200OK)]
-        public IActionResult GetVendorByIdAsync(int id)
-            => BaseResult<Client>(_uow.ClientRepositories.GetVendorbyIdAsync(id));
+        public IActionResult GetClientByIdAsync(int id)
+            => BaseResult(_uow.ClientRepositories.GetClientbyIdAsync(id));
 
         /// <summary>
-        /// Update the vendor details
+        /// Update the Client details
         /// </summary>
-        /// <param name="vendor"></param>
+        /// <param name="Client"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPatch]
-        [Route("Update/{VendorId}")]
+        [Route("Update/{ClientId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Client), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<Client>> UpdateVendorStatusAsync(CreateClientDTO vendor, int Vendorid)
+        public async Task<IEnumerable<Client>> UpdateClientStatusAsync(CreateClientDTO Client, int Clientid)
         {
-            vendor.ClientSource = Vendorid;
-            vendor.CreatedBy = GetUserId();
-            var vendorDetail = await _uow.ClientRepositories.UpdateVendorStatusAsync(vendor);
-            return vendorDetail;
+            Client.ClientSource = Clientid;
+            Client.CreatedBy = GetUserId();
+            var ClientDetail = await _uow.ClientRepositories.UpdateClientStatusAsync(Client);
+            return ClientDetail;
         }
-        //=> BaseResult<Vendor>(await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor));
+        //=> BaseResult<Client>(await _uow.ClientRepositories.UpdateClientStatusAsync(Client));
 
         /// <summary>
-        /// Soft delete vendor 
+        /// Soft delete Client 
         /// </summary>
-        /// <param name="vendorId"></param>
+        /// <param name="ClientId"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("DeleteVendor/{VendorId}")]
-        public Client DeleteVendor(int vendorId)
+        [Route("DeleteClient/{Id}")]
+        public Client DeleteClient(int Id)
         {
             var deletedBy = GetUserId();
-            return _uow.ClientRepositories.DeleteVendor(vendorId, deletedBy);
+            return _uow.ClientRepositories.DeleteClient(Id, deletedBy);
         }
     }
 }

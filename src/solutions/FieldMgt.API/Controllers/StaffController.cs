@@ -17,7 +17,7 @@ namespace FieldMgt.API.Controllers
     public class StaffController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public StaffController(IUnitofWork uow)
+        public StaffController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
         }

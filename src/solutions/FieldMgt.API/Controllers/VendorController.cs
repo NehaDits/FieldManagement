@@ -14,7 +14,7 @@ namespace FieldMgt.API.Controllers
     public class VendorController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public VendorController(IUnitofWork uow)
+        public VendorController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
         }
@@ -30,7 +30,6 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateVendorAsync([FromBody] CreateVendorDTO model)
         => BaseResult(await _uow.VendorRepositories.Save(model));
-
         /// <summary>
         /// Get vendor detail list
         /// </summary>

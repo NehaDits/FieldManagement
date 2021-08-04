@@ -135,5 +135,34 @@ namespace FieldMgt.Repository.Repository
         /// <param name="lead"></param>
         /// <returns></returns>
         public async Task UpdateLeadStatusAsync(UpdateLeadDTO lead)=>await CollectionsAsync<Task>(StoreProcedures.UpdateLead, lead);
+
+        /// <summary>
+        /// Update the lead status as client
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        public async Task<Lead> UpdateLeadStatus(int Id, int Status, string modifiedBy) {
+            var obj = new
+            {
+                LeadId = Id,
+                LeadStatus = Status,
+                ModifiedBy = modifiedBy,
+                ModifiedOn = DateTime.Now,
+            };
+            //UpdateLeadDTO updateLeadDTO = new UpdateLeadDTO();
+            //updateLeadDTO.LeadId = Id;
+            //updateLeadDTO.LeadStatus = Status;
+            //updateLeadDTO.ModifiedBy =modifiedBy;
+            //updateLeadDTO.ModifiedOn =DateTime.Now;
+            try
+            {
+                return await CommandAsync<Lead>(StoreProcedures.UpdateLeadStatus, obj);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }            
+        }
     }
 }

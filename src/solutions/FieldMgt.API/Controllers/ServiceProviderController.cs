@@ -18,7 +18,7 @@ namespace FieldMgt.API.Controllers
     public class ServiceProviderController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public ServiceProviderController(IUnitofWork uow)
+        public ServiceProviderController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
         }
