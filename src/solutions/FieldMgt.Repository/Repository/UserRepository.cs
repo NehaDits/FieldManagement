@@ -45,25 +45,34 @@ namespace FieldMgt.Repository.Repository
         /// <param name="model"></param>
         /// <returns></returns>
         public async Task<string> RegisterUserAsync(CreateEmployeeDTO model)
-        {  
-            var identityUser = new ApplicationUser
+        {
+            try
             {
-                Email = model.Email,
-                UserName = model.Email,
-                CreatedBy = model.CreatedBy,
-                CreatedOn = model.CreatedOn,
-                IsActive = true,
-                IsDeleted = false
-            };
-            var result = await _userManager.CreateAsync(identityUser, model.Password);
-            if (result.Succeeded)
-            {
-                return  identityUser.Id;
+                var identityUser = new ApplicationUser
+                {
+                    Email = model.Email,
+                    UserName = model.Email,
+                    CreatedBy = model.CreatedBy,
+                    CreatedOn = model.CreatedOn,
+                    IsActive = true,
+                    IsDeleted = false
+                };
+                var result = await _userManager.CreateAsync(identityUser, model.Password);
+                return identityUser.Id;
             }
-            else
+            catch(Exception ex)
             {
-                return ResponseMessages.UserNotCreated;
+                throw new Exception(ex.Message);
             }
+            
+            //if (result.Succeeded)
+            //{
+            //    return  identityUser.Id;
+            //}
+            //else
+            //{
+            //    return ResponseMessages.UserNotCreated;
+            //}
         }        
 
         /// <summary>
