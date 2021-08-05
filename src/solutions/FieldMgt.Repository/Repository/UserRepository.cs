@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FieldMgt.Repository.Enums;
 using System.Net;
+using FieldMgt.Core.DTOs;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -44,7 +45,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<string> RegisterUserAsync(CreateEmployeeDTO model)
+        public async Task<string> RegisterUserAsync(CreateUserDTO model)
         {
             try
             {
@@ -58,21 +59,19 @@ namespace FieldMgt.Repository.Repository
                     IsDeleted = false
                 };
                 var result = await _userManager.CreateAsync(identityUser, model.Password);
-                return identityUser.Id;
+                if (result.Succeeded)
+                {
+                    return identityUser.Id;
+                }
+                else
+                {
+                    return ResponseMessages.UserNotCreated;
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
-            //if (result.Succeeded)
-            //{
-            //    return  identityUser.Id;
-            //}
-            //else
-            //{
-            //    return ResponseMessages.UserNotCreated;
-            //}
         }        
 
         /// <summary>
@@ -152,11 +151,11 @@ namespace FieldMgt.Repository.Repository
         /// <param name="userName"></param>
         /// <param name="deletedBy"></param>
         /// <returns></returns>
-        public async Task<string> DeleteUser(string userName, string deletedBy)
+        public async Task<string> DeleteUser(string userId, string deletedBy)
         {
             try
             {
-                var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
+                var user = _userManager.Users.FirstOrDefault(x => x.Id == userId);
                 user.IsDeleted = true;
                 user.DeletedBy = deletedBy;
                 user.DeletedOn = System.DateTime.Now;

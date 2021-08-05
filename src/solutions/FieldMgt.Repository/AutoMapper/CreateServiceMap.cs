@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FieldMgt.Core.DomainModels;
+using FieldMgt.Core.DTOs;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.DTOs.Response;
 using System.ComponentModel;
@@ -20,10 +21,10 @@ namespace FieldMgt.Repository.AutoMapper
             CreateMap<LeadContactReponseDTO, LeadContact>().ReverseMap();
             CreateMap<ContactDetail, CreateContactDetailDTO>().ReverseMap();
             CreateMap<AddressDetail, AddressResponseDTO>().ReverseMap();
-            CreateMap<CreateEmployeeDTO, RegistrationDTO>().ReverseMap()
+            CreateMap<CreateEmployeeDTO, CreateUserDTO>().ReverseMap();
+            CreateMap<CreateUserDTO, RegistrationDTO>().ReverseMap()
                  .ForMember(dest => dest.Email, opt => opt.Ignore())
-                .ForMember(dest => dest.Password, opt => opt.Ignore())
-                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore()); ;
+                .ForMember(dest => dest.Password, opt => opt.Ignore()); ;
         }
     }
     public static class IgnoreNoMapExtensions

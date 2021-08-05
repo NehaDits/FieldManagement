@@ -12,6 +12,7 @@ using FieldMgt.Core.DTOs.Request;
 using AutoMapper;
 using FieldMgt.Repository.AutoMapper;
 using FieldMgt.Core.UOW;
+using FieldMgt.Core.DTOs;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -32,11 +33,11 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<Staff> CreateStaffAsync(CreateEmployeeDTO model)
+        public async Task<Staff> CreateStaffAsync(CreateUserDTO model)
         {
             try
             {                 
-                var staff = _mapper.Map<CreateEmployeeDTO, RegistrationDTO>(model);
+                var staff = _mapper.Map<CreateUserDTO, RegistrationDTO>(model);
                 return await CommandAsync<Staff>(StoreProcedures.CreateStaff, staff);
             }
             catch (Exception ex)

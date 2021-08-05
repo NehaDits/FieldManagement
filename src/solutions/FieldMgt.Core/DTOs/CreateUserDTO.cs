@@ -1,13 +1,18 @@
-﻿using System;
+﻿using FieldMgt.Core.DTOs.Request;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace FieldMgt.Core.DTOs.Request
+namespace FieldMgt.Core.DTOs
 {
-    public class RegistrationDTO:BaseRegistration
+    public class CreateUserDTO
     {
+        [NoMap]
+        public string Email { get; set; }
+        [NoMap]
+        public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int? Gender { get; set; }
@@ -31,9 +36,4 @@ namespace FieldMgt.Core.DTOs.Request
         public string CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
     }
-    public class BaseRegistration
-    {
-        //public int? EmployeeId { get; set; }
-    }
 }
-

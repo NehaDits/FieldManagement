@@ -79,8 +79,7 @@ namespace FieldMgt.Repository.Repository
                           }).SingleOrDefault();
             LeadContact leadContactReponse = _mapper.Map<LeadContact>(lead);
             leadContactReponse.AddressDetail=_mapper.Map<AddressDetail>(lead.addressResponseDTO);
-            leadContactReponse.ContactDetail = _mapper.Map<ContactDetail>(lead.leadContactDTO);
-            
+            leadContactReponse.ContactDetail = _mapper.Map<ContactDetail>(lead.leadContactDTO);            
             return leadContactReponse;
         }
         /// <summary>

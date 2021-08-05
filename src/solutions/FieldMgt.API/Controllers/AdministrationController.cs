@@ -10,7 +10,7 @@ namespace FieldMgt.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AdministrationController : BaseController
     {
         private readonly IRoleRepository _roleService;
