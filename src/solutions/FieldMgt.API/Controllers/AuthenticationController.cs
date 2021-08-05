@@ -29,7 +29,7 @@ namespace FieldMgt.Controllers
             _uow = uow;
         }
         [HttpPost]
-        [Route("Create User")]
+        [Route("CreateUser")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody] CreateEmployeeDTO model)
