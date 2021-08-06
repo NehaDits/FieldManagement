@@ -486,15 +486,15 @@ namespace FieldMgt.Core.DomainModels
             });
             modelBuilder.Entity<ServiceProviderLocation>(act =>
             {
-                act.HasOne(field => field.ServiceProviderLocationAddress)
-                .WithMany(fk => fk.ServiceProviderLocationAddress1Id)
-                .HasForeignKey(fk => fk.PermanentAddressId)
-                .HasConstraintName("SPLocationPermaAddress_FK");
+                //act.HasOne(field => field.ServiceProviderLocationAddress)
+                //.WithMany(fk => fk.ServiceProviderLocationAddress1Id)
+                //.HasForeignKey(fk => fk.PermanentAddressId)
+                //.HasConstraintName("SPLocationPermaAddress_FK");
 
-                act.HasOne(field => field.ServiceProviderLocationBillingAddress)
-                .WithMany(fk => fk.ServiceProviderLocationAddress2Id)
-                .HasForeignKey(fk => fk.BillingAddressId)
-                .HasConstraintName("SPLocationBillingAddress_FK");
+                //act.HasOne(field => field.ServiceProviderLocationBillingAddress)
+                //.WithMany(fk => fk.ServiceProviderLocationAddress2Id)
+                //.HasForeignKey(fk => fk.BillingAddressId)
+                //.HasConstraintName("SPLocationBillingAddress_FK");
 
                 act.HasOne(field => field.SPLCreatedBy)
                 .WithMany(fk => fk.Ref60Navigation)

@@ -17,10 +17,10 @@ namespace FieldMgt.Core.DomainModels
         public int LeadId { get; set; }
         [Required]
         [Column(TypeName = "nvarchar(100)")]
-        public string LeadCompanyName { get; set; }        
+        public string LeadCompanyName { get; set; }
         [Column(TypeName = "nvarchar(255)")]
-        public string LeadDescription { get; set; }        
-        public int LeadSource { get; set; }  
+        public string LeadDescription { get; set; }
+        public int LeadSource { get; set; }
         public int LeadStatus { get; set; }
         public int? LeadStage { get; set; }
         [DefaultValue(true)]

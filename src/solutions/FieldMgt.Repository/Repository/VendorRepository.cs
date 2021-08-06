@@ -24,6 +24,7 @@ namespace FieldMgt.Repository.Repository
         private readonly IUnitofWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
@@ -44,6 +45,7 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public IEnumerable<VendorResponseDTO> GetVendorsAsync()
         {
+            string userid=_httpContextAccessor.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             IEnumerable<VendorResponseDTO> vendorDetails = _dbContext.Vendors
                           .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })

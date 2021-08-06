@@ -90,6 +90,7 @@ namespace FieldMgt
             services.AddTransient<IAddressDetailRepository, AddressDetailRepository>();
             services.AddTransient<IContactDetailRepository, ContactDetailRepository>();
             services.AddTransient<IUnitofWork, UnitofWork>();
+            services.AddTransient<ICommonRepository, CommonRepository>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddTransient<IExceptionInterface, ExceptionRepository>();

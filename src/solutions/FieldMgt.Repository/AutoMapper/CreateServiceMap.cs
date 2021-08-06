@@ -22,6 +22,10 @@ namespace FieldMgt.Repository.AutoMapper
             CreateMap<ContactDetail, CreateContactDetailDTO>().ReverseMap();
             CreateMap<AddressDetail, AddressResponseDTO>().ReverseMap();
             CreateMap<CreateEmployeeDTO, CreateUserDTO>().ReverseMap();
+            CreateMap<CreateServiceProviderRequestDTO, CreateServiceProviderDTO>().ReverseMap();
+            CreateMap<UpdateServiceProviderRequestDTO, UpdateServiceProviderDTO>().ReverseMap();
+            CreateMap<CreateServiceProviderLocationRequestDTO, CreateServiceProviderLocationDTO>().ReverseMap();
+            CreateMap<UpdateServiceProviderLocationRequestDTO, UpdateServiceProviderLocationDTO>().ReverseMap();
             CreateMap<CreateUserDTO, RegistrationDTO>().ReverseMap()
                  .ForMember(dest => dest.Email, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.Ignore());

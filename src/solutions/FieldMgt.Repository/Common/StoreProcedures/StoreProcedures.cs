@@ -16,5 +16,7 @@
         public static string SaveClientInfo = "sp_SaveClientInfo";
         public static string SaveLeadContact = "sp_CreateLeadContact";
         public static string UpdateClientInfo = "sp_UpdateClientInfo";
+        public static string CreateServiceProviderLocation = "sp_CreateServiceProviderLocation";
+        public static string UpdateServiceProviderLocation = "sp_UpdateServiceProviderLocation";
     }
 }

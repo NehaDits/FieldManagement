@@ -1,4 +1,5 @@
 ﻿using FieldMgt.Core.DomainModels;
+using FieldMgt.Core.DTOs.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface ICommonRepository
     {
-        IEnumerable<Country> GetCountries();
-        IEnumerable<GlobalCode> GetGlobalCodes();
-        IEnumerable<City> GetCities();
-        IEnumerable<State> GetStates();
+        List<CountryListDTO> GetCountries();
+        List<GlobalCodesListDTO> GetGlobalCodes(int category);
+        List<CityListDTO> GetCities();
+        List<StateListDTO> GetStates();
+        List<GlobalCodeCategoriesListDTO> GetGlobalCodeCategories();
     }
 }

@@ -4,14 +4,16 @@ using FieldMgt.Core.DomainModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FieldMgt.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210729094114_FieldMgtDemo.core.vrer")]
+    partial class FieldMgtDemocorevrer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,9 +185,6 @@ namespace FieldMgt.Core.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LeadId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(255)");
 
@@ -206,8 +205,6 @@ namespace FieldMgt.Core.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("DeletedBy");
-
-                    b.HasIndex("LeadId");
 
                     b.HasIndex("ModifiedBy");
 
@@ -812,6 +809,9 @@ namespace FieldMgt.Core.Migrations
                     b.Property<int>("BillingAddressId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ContactDetailId")
                         .HasColumnType("int");
 
@@ -861,6 +861,8 @@ namespace FieldMgt.Core.Migrations
                     b.HasKey("LeadId");
 
                     b.HasIndex("BillingAddressId");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("ContactDetailId");
 
@@ -1783,6 +1785,9 @@ namespace FieldMgt.Core.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("PermanentAddressId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ServiceProviderId")
                         .HasColumnType("int");
 
@@ -1804,6 +1809,8 @@ namespace FieldMgt.Core.Migrations
                     b.HasIndex("DeletedBy");
 
                     b.HasIndex("ModifiedBy");
+
+                    b.HasIndex("PermanentAddressId");
 
                     b.HasIndex("ServiceProviderId");
 
@@ -2414,12 +2421,6 @@ namespace FieldMgt.Core.Migrations
                         .HasForeignKey("DeletedBy")
                         .HasConstraintName("ClientDeletedBy_FK");
 
-                    b.HasOne("FieldMgt.Core.DomainModels.Lead", "Lead")
-                        .WithMany()
-                        .HasForeignKey("LeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FieldMgt.Core.DomainModels.ApplicationUser", "ClientModifiedBy")
                         .WithMany("Ref70Navigation")
                         .HasForeignKey("ModifiedBy")
@@ -2434,8 +2435,6 @@ namespace FieldMgt.Core.Migrations
                     b.Navigation("ClientModifiedBy");
 
                     b.Navigation("ContactDetail");
-
-                    b.Navigation("Lead");
 
                     b.Navigation("RefSource");
                 });
@@ -2783,6 +2782,10 @@ namespace FieldMgt.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FieldMgt.Core.DomainModels.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
                     b.HasOne("FieldMgt.Core.DomainModels.ContactDetail", "ContactDetail")
                         .WithMany()
                         .HasForeignKey("ContactDetailId")
@@ -2829,6 +2832,8 @@ namespace FieldMgt.Core.Migrations
                         .HasConstraintName("LPermaAddress_FK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Client");
 
                     b.Navigation("ContactDetail");
 
@@ -3376,8 +3381,8 @@ namespace FieldMgt.Core.Migrations
 
             modelBuilder.Entity("FieldMgt.Core.DomainModels.ServiceProviderLocation", b =>
                 {
-                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "AddressDetail")
-                        .WithMany()
+                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", null)
+                        .WithMany("ServiceProviderLocationAddress2Id")
                         .HasForeignKey("AddressDetailId");
 
                     b.HasOne("FieldMgt.Core.DomainModels.ContactDetail", "ContactDetail")
@@ -3399,17 +3404,22 @@ namespace FieldMgt.Core.Migrations
                         .HasForeignKey("ModifiedBy")
                         .HasConstraintName("SPLModifiedBy_FK");
 
+                    b.HasOne("FieldMgt.Core.DomainModels.AddressDetail", "ServiceProviderLocationAddress")
+                        .WithMany("ServiceProviderLocationAddress1Id")
+                        .HasForeignKey("PermanentAddressId")
+                        .HasConstraintName("SPLocationPermaAddress_FK");
+
                     b.HasOne("FieldMgt.Core.DomainModels.ServiceProvider", "ServiceProvider")
                         .WithMany()
                         .HasForeignKey("ServiceProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AddressDetail");
-
                     b.Navigation("ContactDetail");
 
                     b.Navigation("ServiceProvider");
+
+                    b.Navigation("ServiceProviderLocationAddress");
 
                     b.Navigation("SPLCreatedBy");
 
@@ -3666,6 +3676,10 @@ namespace FieldMgt.Core.Migrations
                     b.Navigation("OrderAddress1Id");
 
                     b.Navigation("OrderAddress2Id");
+
+                    b.Navigation("ServiceProviderLocationAddress1Id");
+
+                    b.Navigation("ServiceProviderLocationAddress2Id");
 
                     b.Navigation("StaffAddress1Id");
 
