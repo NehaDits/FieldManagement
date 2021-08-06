@@ -55,7 +55,7 @@ namespace FieldMgt.Controllers
         public async Task<IActionResult> LoginUserAsync([FromBody] LoginViewDTO model) => BaseResult(await _userRepository.LoginUserAsync(model));
 
 
-        [Route("DeleteUser/{userId}")]
+        [Route("DeleteUser/{ByUserId}")]
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int) StatusCodes.Status200OK)]
