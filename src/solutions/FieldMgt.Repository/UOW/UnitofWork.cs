@@ -25,6 +25,7 @@ namespace FieldMgt.Repository.UOW
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);
             ServiceProviderRepositories = new ServiceProviderRepository(_dbContext,this,mapper);
             ClientRepositories = new ClientRepository(_dbContext, this, mapper);
+            CommonRepositories = new CommonRepository(_dbContext, this, mapper);
         }
         public ILeadRepository LeadServices { get; }
         public IUserRepository USerServices { get; }
@@ -36,6 +37,7 @@ namespace FieldMgt.Repository.UOW
         public IContactDetailRepository ContactDetailRepositories { get; }
         public IServiceProviderRepository ServiceProviderRepositories { get; }
         public IClientRepository ClientRepositories { get; }
+        public ICommonRepository CommonRepositories { get; }
         public async Task<int> SaveAsync()
         {
             using (_dbContext.Database.BeginTransaction())
