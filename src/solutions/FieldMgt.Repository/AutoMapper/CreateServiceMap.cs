@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using FieldMgt.Core.DomainModels;
+using FieldMgt.Core.DTOs;
 using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
 using System.ComponentModel;
 
 namespace FieldMgt.Repository.AutoMapper
@@ -16,10 +18,17 @@ namespace FieldMgt.Repository.AutoMapper
             CreateMap<CreateVendorDTO, Vendor>().ReverseMap();
             CreateMap<CreateContactDetailDTO, ContactDetail>().ReverseMap();
             CreateMap<CreateContactDetailDTO, CreateVendorDTO>().ReverseMap();
-            CreateMap<CreateEmployeeDTO, RegistrationDTO>().ReverseMap()
+            CreateMap<LeadContactReponseDTO, LeadContact>().ReverseMap();
+            CreateMap<ContactDetail, CreateContactDetailDTO>().ReverseMap();
+            CreateMap<AddressDetail, AddressResponseDTO>().ReverseMap();
+            CreateMap<CreateEmployeeDTO, CreateUserDTO>().ReverseMap();
+            CreateMap<CreateServiceProviderRequestDTO, CreateServiceProviderDTO>().ReverseMap();
+            CreateMap<UpdateServiceProviderRequestDTO, UpdateServiceProviderDTO>().ReverseMap();
+            CreateMap<CreateServiceProviderLocationRequestDTO, CreateServiceProviderLocationDTO>().ReverseMap();
+            CreateMap<UpdateServiceProviderLocationRequestDTO, UpdateServiceProviderLocationDTO>().ReverseMap();
+            CreateMap<CreateUserDTO, RegistrationDTO>().ReverseMap()
                  .ForMember(dest => dest.Email, opt => opt.Ignore())
-                .ForMember(dest => dest.Password, opt => opt.Ignore())
-                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore()); ;
+                .ForMember(dest => dest.Password, opt => opt.Ignore()); ;
         }
     }
     public static class IgnoreNoMapExtensions

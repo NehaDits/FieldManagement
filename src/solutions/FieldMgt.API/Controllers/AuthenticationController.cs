@@ -8,6 +8,7 @@ using FieldMgt.API.Controllers;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using System;
+using FieldMgt.Core.DTOs;
 
 namespace FieldMgt.Controllers
 {
@@ -28,18 +29,19 @@ namespace FieldMgt.Controllers
             _uow = uow;
         }
         [HttpPost]
-        [Route("Register")]
+        [Route("CreateUser")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody] CreateEmployeeDTO model)
         {
             try
-            {                
-                model.CreatedBy =GetUserId();
-                model.CreatedOn = System.DateTime.Now;
-                var result = await _userRepository.RegisterUserAsync(model);
-                model.UserId = result;
-                return BaseResult(await _uow.StaffRepositories.CreateStaffAsync(model));
+            {
+                var user = _mapper.Map<CreateEmployeeDTO, CreateUserDTO>(model);
+                user.CreatedBy =GetUserId();
+                user.CreatedOn = System.DateTime.Now;
+                var result = await _userRepository.RegisterUserAsync(user);
+                user.UserId = result;
+                return BaseResult(await _uow.StaffRepositories.CreateStaffAsync(user));
             }
             catch (Exception ex)
             {
@@ -53,14 +55,14 @@ namespace FieldMgt.Controllers
         public async Task<IActionResult> LoginUserAsync([FromBody] LoginViewDTO model) => BaseResult(await _userRepository.LoginUserAsync(model));
 
 
-        [Route("DeleteUser")]
-        [HttpDelete]
+        [Route("DeleteUser/{ByUserId}")]
+        [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int) StatusCodes.Status200OK)]
-        public async Task DeleteUser(string userName)
+        public async Task DeleteUser(string userId)
         {
-            var deletedBy = GetUserId();            
-            var resultUser = await _userRepository.DeleteUser(userName, deletedBy);
+            var deletedBy = GetUserId();             
+            var resultUser = await _userRepository.DeleteUser(userId, deletedBy);
             _uow.StaffRepositories.DeleteStaffAsUser(resultUser, deletedBy);
              await _uow.SaveAsync();
         }

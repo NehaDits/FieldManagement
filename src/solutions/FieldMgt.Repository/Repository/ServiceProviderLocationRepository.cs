@@ -28,11 +28,11 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ServiceProviderLocation> CreateServiceProviderLocationAsync(CreateServiceProviderLocationDTO model)
+        public async Task<int> CreateServiceProviderLocationAsync(CreateServiceProviderLocationDTO model)
         {
             try
             {
-                return await CommandAsync<ServiceProviderLocation>(StoreProcedures.CreateServiceProviderLocation, model);
+                return await CommandAsync<int>(StoreProcedures.CreateServiceProviderLocation, model);
             }
             catch (Exception ex)
             {
@@ -58,6 +58,7 @@ namespace FieldMgt.Repository.Repository
                             ServiceProviderLocationName = m.s.a.p.ServiceProviderLocationName,
                             ServiceProviderLocationIncharge = m.s.a.p.ServiceProviderLocationIncharge,
                             ServiceProviderLocationID = m.s.a.p.ServiceProviderLocationId,
+                            ServiceProviderId = m.s.a.p.ServiceProviderId,
                             AlternateEmail = m.s.ad.AlternateEmail,
                             PrimaryEmail = m.s.ad.PrimaryEmail,
                             AlternatePhone = m.s.ad.AlternatePhone,
@@ -90,6 +91,7 @@ namespace FieldMgt.Repository.Repository
                             ServiceProviderLocationName = m.s.a.p.ServiceProviderLocationName,
                             ServiceProviderLocationIncharge = m.s.a.p.ServiceProviderLocationIncharge,
                             ServiceProviderLocationID = m.s.a.p.ServiceProviderLocationId,
+                            ServiceProviderId = m.s.a.p.ServiceProviderId,
                             AlternateEmail = m.s.ad.AlternateEmail,
                             PrimaryEmail = m.s.ad.PrimaryEmail,
                             AlternatePhone = m.s.ad.AlternatePhone,

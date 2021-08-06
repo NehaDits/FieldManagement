@@ -15,7 +15,7 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
             string FolderPath = pathProvider.MapPath("Logs");
             if (!string.IsNullOrEmpty(FolderPath))
             {
-                string FileName = string.Concat(DateTime.Now.ToString("MMMM_dd_YYYY"), ".txt");
+                string FileName = string.Concat(DateTime.Now.ToString("MMMM_dd_yyyy"), ".txt");
                 string FilePath = Path.Combine(FolderPath, FileName);
                 if (!File.Exists(FilePath))
                     File.Create(FilePath);
@@ -28,7 +28,7 @@ namespace FieldMgt.API.Infrastructure.Factories.LogFiles
         public static void Log(IPathProvider pathProvider, string message,string errordetails)
         {
             string FolderPath = pathProvider.MapPath("Logs");
-            string FileName = string.Concat(DateTime.Now.ToString("MMMM_dd_YYYY"), ".txt");
+            string FileName = string.Concat(DateTime.Now.ToString("MMMM_dd_yyyy"), ".txt");
             string FilePath = Path.Combine(FolderPath, FileName);
 
             using (StreamWriter writer = File.AppendText(FilePath))

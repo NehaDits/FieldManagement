@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FieldMgt.Core.DTOs.Request
 {
-    public class CreateServiceProviderLocationDTO
+    public class UpdateServiceProviderRequestDTO:BaseUpdateServiceProviderModel
     {
-        public string ServiceProviderLocationName { get; set; }
-        public string ServiceProviderLocationIncharge { get; set; }        
-        [StringLength(100, MinimumLength = 5)]
+        public string ServiceProviderName { get; set; }
+        public string ServiceProviderIncharge { get; set; }
         public string Address { get; set; }
         public int City { get; set; }
         public int State { get; set; }
@@ -21,8 +19,10 @@ namespace FieldMgt.Core.DTOs.Request
         public string AlternatePhone { get; set; }
         public string PrimaryEmail { get; set; }
         public string AlternateEmail { get; set; }
+    }
+    public class BaseUpdateServiceProviderModel
+    {
         public int ServiceProviderId { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime? CreatedOn { get; set; }
     }
 }
+

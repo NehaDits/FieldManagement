@@ -608,6 +608,16 @@ namespace FieldMgt.Core.DomainModels
                 .WithMany(fk => fk.ClientSourceRef)
                 .HasForeignKey(fk => fk.ClientSource)
                 .HasConstraintName("ClientSource_FK");
+
+                act.HasOne(field => field.ClientPermanentAddress)
+                .WithMany(fk => fk.ClientPermanentAddress)
+                .HasForeignKey(fk => fk.PermanentAddressId)
+                .HasConstraintName("ClientPermaAddress_FK");
+
+                act.HasOne(field => field.ClientBillingAddress)
+                .WithMany(fk => fk.ClientBillingAddress)
+                .HasForeignKey(fk => fk.BillingAddressId)
+                .HasConstraintName("ClientBillingAddress_FK");
             });
             modelBuilder.Entity<City>(act =>
             {

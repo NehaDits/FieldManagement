@@ -1,4 +1,5 @@
-﻿using FieldMgt.Core.DomainModels;
+﻿using AutoMapper;
+using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.UOW;
@@ -18,50 +19,47 @@ namespace FieldMgt.API.Controllers
     public class ServiceProviderController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public ServiceProviderController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        private readonly IMapper _mapper;
+        public ServiceProviderController(IUnitofWork uow, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
+            _mapper = mapper;
         }
         [HttpPost]
         [Route("AddServiceProvider")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateServiceProvider([FromBody] CreateServiceProviderDTO model)
+        public async Task<IActionResult> CreateServiceProvider([FromBody] CreateServiceProviderRequestDTO model)
         {
-            try
-            {
-                model.CreatedBy =GetUserId();
-                model.CreatedOn = System.DateTime.Now;   
-                return BaseResult(await _uow.ServiceProviderRepositories.CreateServiceProviderAsync(model));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            var serviceProvider = _mapper.Map<CreateServiceProviderRequestDTO, CreateServiceProviderDTO>(model);
+            serviceProvider.CreatedBy =GetUserId();
+            serviceProvider.CreatedOn = System.DateTime.Now;   
+            return BaseResult(await _uow.ServiceProviderRepositories.CreateServiceProviderAsync(serviceProvider));
         }
         [Route("List")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<ServiceProviderListDTO>), StatusCodes.Status200OK)]
         public IEnumerable<ServiceProviderListDTO> GetServiceProvider() => _uow.ServiceProviderRepositories.GetServiceProvider();
-        [Route("ById/{id}")]
+        [Route("ByServiceProviderId/{serviceProviderId}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ServiceProviderListDTO), StatusCodes.Status200OK)]
-        public ServiceProviderListDTO GetServiceProviderbyId(int id)
+        public ServiceProviderListDTO GetServiceProviderbyId(int serviceProviderId)
         {
-            var result = _uow.ServiceProviderRepositories.GetServiceProviderbyId(id);
+            var result = _uow.ServiceProviderRepositories.GetServiceProviderbyId(serviceProviderId);
             return result;
         }
         [Route("UpdateServiceProvider")]
         [HttpPatch]
         [ProducesResponseType(typeof(ServiceProvider), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task UpdateServiceProviderAsync(UpdateServiceProviderDTO model)
+        public async Task UpdateServiceProviderAsync(UpdateServiceProviderRequestDTO model)
         {
-            model.ModifiedBy = GetUserId();
-            model.ModifiedOn = System.DateTime.Now;
-            await _uow.ServiceProviderRepositories.UpdateServiceProviderAsync(model);            
+            var serviceProvider = _mapper.Map<UpdateServiceProviderRequestDTO, UpdateServiceProviderDTO>(model);
+            serviceProvider.ModifiedBy = GetUserId();
+            serviceProvider.ModifiedOn = System.DateTime.Now;
+            await _uow.ServiceProviderRepositories.UpdateServiceProviderAsync(serviceProvider);            
         }
         [Route("Delete/{serviceProviderId}")]
         [HttpPatch]

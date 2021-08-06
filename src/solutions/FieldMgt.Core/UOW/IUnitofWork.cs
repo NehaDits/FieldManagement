@@ -17,6 +17,7 @@ namespace FieldMgt.Core.UOW
         IContactDetailRepository ContactDetailRepositories { get; }
         IServiceProviderRepository ServiceProviderRepositories { get; }
         IClientRepository ClientRepositories { get; }
+        ICommonRepository CommonRepositories { get; }
         IServiceProviderLocationRepository ServiceProviderLocationRepositories { get; }
         Task<int> SaveAsync();
     }

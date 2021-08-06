@@ -12,6 +12,7 @@ using FieldMgt.Core.DTOs.Request;
 using AutoMapper;
 using FieldMgt.Repository.AutoMapper;
 using FieldMgt.Core.UOW;
+using FieldMgt.Core.DTOs;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -30,13 +31,13 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Create the staff
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
-        public async Task<Staff> CreateStaffAsync(CreateEmployeeDTO model)
+        public async Task<Staff> CreateStaffAsync(CreateUserDTO model)
         {
             try
             {                 
-                var staff = _mapper.Map<CreateEmployeeDTO, RegistrationDTO>(model);
+                var staff = _mapper.Map<CreateUserDTO, RegistrationDTO>(model);
                 return await CommandAsync<Staff>(StoreProcedures.CreateStaff, staff);
             }
             catch (Exception ex)
@@ -48,7 +49,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Get the particular staff by his id
         /// </summary>
-        /// <param name="id"></param>
+        /// <paramname="id"></param>
         /// <returns></returns>
         public StaffListDTO GetStaffbyId(int id)
         {
@@ -114,7 +115,7 @@ namespace FieldMgt.Repository.Repository
             }           
         }
         /// <summary>
-        /// Get lsit of staff
+        /// Gets list of staff
         /// </summary>
         /// <returns></returns>        
         public IEnumerable<StaffListDTO> GetStaff() 
@@ -159,8 +160,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// soft delete staff when deleting User Account by User Id
         /// </summary>
-        /// <param name="userID"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="userID"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public Staff DeleteStaffAsUser(string  userID, string deletedBy)
         {
@@ -186,8 +187,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// soft delete staff details when deleting by StaffId
         /// </summary>
-        /// <param name="staffId"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="staffId"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public Staff DeleteStaff(int staffId, string deletedBy)
         {
@@ -211,9 +212,9 @@ namespace FieldMgt.Repository.Repository
             }            
         }
         /// <summary>
-        /// update the staff detail
+        /// updates the staff detail
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task UpdateStaffAsync(UpdateStaffDTO model) 
         { 

@@ -11,7 +11,7 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface IServiceProviderLocationRepository
     {
-        Task<ServiceProviderLocation> CreateServiceProviderLocationAsync(CreateServiceProviderLocationDTO model);
+        Task<int> CreateServiceProviderLocationAsync(CreateServiceProviderLocationDTO model);
         IEnumerable<ServiceProviderLocationListDTO> GetServiceProviderLocation(int serviceProviderId);
         ServiceProviderLocationListDTO GetServiceProviderLocationbyId(int Id);        
         Task UpdateServiceProviderLocationAsync(UpdateServiceProviderLocationDTO model);

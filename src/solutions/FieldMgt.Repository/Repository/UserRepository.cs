@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FieldMgt.Repository.Enums;
 using System.Net;
+using FieldMgt.Core.DTOs;
 
 namespace FieldMgt.Repository.Repository
 {
@@ -44,25 +45,32 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<string> RegisterUserAsync(CreateEmployeeDTO model)
-        {  
-            var identityUser = new ApplicationUser
+        public async Task<string> RegisterUserAsync(CreateUserDTO model)
+        {
+            try
             {
-                Email = model.Email,
-                UserName = model.Email,
-                CreatedBy = model.CreatedBy,
-                CreatedOn = model.CreatedOn,
-                IsActive = true,
-                IsDeleted = false
-            };
-            var result = await _userManager.CreateAsync(identityUser, model.Password);
-            if (result.Succeeded)
-            {
-                return  identityUser.Id;
+                var identityUser = new ApplicationUser
+                {
+                    Email = model.Email,
+                    UserName = model.Email,
+                    CreatedBy = model.CreatedBy,
+                    CreatedOn = model.CreatedOn,
+                    IsActive = true,
+                    IsDeleted = false
+                };
+                var result = await _userManager.CreateAsync(identityUser, model.Password);
+                if (result.Succeeded)
+                {
+                    return identityUser.Id;
+                }
+                else
+                {
+                    return ResponseMessages.UserNotCreated;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return ResponseMessages.UserNotCreated;
+                throw new Exception(ex.Message);
             }
         }        
 
@@ -143,11 +151,11 @@ namespace FieldMgt.Repository.Repository
         /// <param name="userName"></param>
         /// <param name="deletedBy"></param>
         /// <returns></returns>
-        public async Task<string> DeleteUser(string userName, string deletedBy)
+        public async Task<string> DeleteUser(string userId, string deletedBy)
         {
             try
             {
-                var user = _userManager.Users.FirstOrDefault(x => x.UserName == userName);
+                var user = _userManager.Users.FirstOrDefault(x => x.Id == userId);
                 user.IsDeleted = true;
                 user.DeletedBy = deletedBy;
                 user.DeletedOn = System.DateTime.Now;

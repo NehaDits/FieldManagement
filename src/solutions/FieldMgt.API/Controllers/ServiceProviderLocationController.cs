@@ -1,4 +1,5 @@
-﻿using FieldMgt.Core.DomainModels;
+﻿using AutoMapper;
+using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
 using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.UOW;
@@ -18,21 +19,24 @@ namespace FieldMgt.API.Controllers
     public class ServiceProviderLocationController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public ServiceProviderLocationController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        private readonly IMapper _mapper;
+        public ServiceProviderLocationController(IUnitofWork uow, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
+            _mapper = mapper;
         }
         [HttpPost]
         [Route("AddServiceProviderLocation")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateServiceProviderLocation([FromBody] CreateServiceProviderLocationDTO model)
+        public async Task<IActionResult> CreateServiceProviderLocation([FromBody] CreateServiceProviderLocationRequestDTO model)
         {
             try
             {
-                model.CreatedBy = GetUserId();
-                model.CreatedOn = System.DateTime.Now;
-                return BaseResult(await _uow.ServiceProviderLocationRepositories.CreateServiceProviderLocationAsync(model));
+                var serviceProviderLocation = _mapper.Map<CreateServiceProviderLocationRequestDTO, CreateServiceProviderLocationDTO>(model);
+                serviceProviderLocation.CreatedBy = GetUserId();
+                serviceProviderLocation.CreatedOn = System.DateTime.Now;
+                return BaseResult(await _uow.ServiceProviderLocationRepositories.CreateServiceProviderLocationAsync(serviceProviderLocation));
             }
             catch (Exception ex)
             {
@@ -44,33 +48,34 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(IEnumerable<ServiceProviderLocationListDTO>), StatusCodes.Status200OK)]
         public IEnumerable<ServiceProviderLocationListDTO> GetServiceProviderLocation(int serviceProviderId) => _uow.ServiceProviderLocationRepositories.GetServiceProviderLocation(serviceProviderId);
-        [Route("ByLocationId/{id}")]
+        [Route("ListByServiceProviderLocationId/{serviceProviderLocationId}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ServiceProviderLocationListDTO), StatusCodes.Status200OK)]
-        public ServiceProviderLocationListDTO GetServiceProviderLocationbyId(int id)
+        public ServiceProviderLocationListDTO GetServiceProviderLocationbyId(int serviceProviderLocationId)
         {
-            var result = _uow.ServiceProviderLocationRepositories.GetServiceProviderLocationbyId(id);
+            var result = _uow.ServiceProviderLocationRepositories.GetServiceProviderLocationbyId(serviceProviderLocationId);
             return result;
         }
         [Route("UpdateServiceProviderLocation")]
         [HttpPatch]
         [ProducesResponseType(typeof(ServiceProviderLocation), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task UpdateServiceProviderAsync(UpdateServiceProviderLocationDTO model)
+        public async Task UpdateServiceProviderAsync(UpdateServiceProviderLocationRequestDTO model)
         {
-            model.ModifiedBy = GetUserId();
-            model.ModifiedOn = System.DateTime.Now;
-            await _uow.ServiceProviderLocationRepositories.UpdateServiceProviderLocationAsync(model);
+            var serviceProviderLocation = _mapper.Map<UpdateServiceProviderLocationRequestDTO, UpdateServiceProviderLocationDTO>(model);
+            serviceProviderLocation.ModifiedBy = GetUserId();
+            serviceProviderLocation.ModifiedOn = System.DateTime.Now;
+            await _uow.ServiceProviderLocationRepositories.UpdateServiceProviderLocationAsync(serviceProviderLocation);
         }
-        [Route("Delete/{Id}")]
+        [Route("Delete/{serviceProviderLocationId}")]
         [HttpPatch]
         [ProducesResponseType(typeof(ServiceProviderLocation), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> DeleteServiceProviderLocation(int Id)
+        public async Task<IActionResult> DeleteServiceProviderLocation(int serviceProviderLocationId)
         {
             var deletedBy = GetUserId();
-            var serviceProvider = _uow.ServiceProviderLocationRepositories.DeleteServiceProviderLocation(Id, deletedBy);
+            var serviceProvider = _uow.ServiceProviderLocationRepositories.DeleteServiceProviderLocation(serviceProviderLocationId, deletedBy);
             var result = await _uow.SaveAsync();
             if (result > 0)
             {
@@ -82,14 +87,14 @@ namespace FieldMgt.API.Controllers
             }
 
         }
-        [Route("DeleteByServiceProvider/{Id}")]
+        [Route("DeleteByServiceProvider/{serviceProviderId}")]
         [HttpPatch]
         [ProducesResponseType(typeof(ServiceProviderLocation), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> DeleteServiceProviderLocationByServiceProvider(int Id)
+        public async Task<IActionResult> DeleteServiceProviderLocationByServiceProvider(int serviceProviderId)
         {
             var deletedBy = GetUserId();
-            _uow.ServiceProviderLocationRepositories.DeleteServiceProviderLocationByServiceProvider(Id, deletedBy);
+            _uow.ServiceProviderLocationRepositories.DeleteServiceProviderLocationByServiceProvider(serviceProviderId, deletedBy);
             var result = await _uow.SaveAsync();
             if (result > 0)
             {

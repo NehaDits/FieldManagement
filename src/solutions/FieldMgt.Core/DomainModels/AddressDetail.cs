@@ -24,6 +24,8 @@ namespace FieldMgt.Core.DomainModels
             VendorAddress2Id = new HashSet<Vendor>();
             StaffAddress1Id = new HashSet<Staff>();
             StaffAddress2Id = new HashSet<Staff>();
+            ClientPermanentAddress = new HashSet<Client>();
+            ClientBillingAddress = new HashSet<Client>();
         }
 
         [Key]
@@ -71,5 +73,7 @@ namespace FieldMgt.Core.DomainModels
         public ICollection<Vendor> VendorAddress2Id { get; set; }
         public ICollection<Staff> StaffAddress1Id { get; set; }
         public ICollection<Staff> StaffAddress2Id { get; set; }
+        public ICollection<Client> ClientPermanentAddress { get; set; }
+        public ICollection<Client> ClientBillingAddress { get; set; }
     }
 }

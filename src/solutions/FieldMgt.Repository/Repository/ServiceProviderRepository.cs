@@ -54,7 +54,7 @@ namespace FieldMgt.Repository.Repository
                 IEnumerable<ServiceProviderListDTO> serviceProviderDetails = _dbContext.ServiceProviders
                         .Join(_dbContext.AddressDetails, p => p.AddressDetailId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                         .Join(_dbContext.ContactDetails, a => a.p.ContactDetailId, ad => ad.ContactDetailId, (a, ad) => new { a, ad })
-                        .Where(x => x.a.p.IsDeleted == false)
+                        .Where(x => x.a.p.IsDeleted !=true)
                         .Select(m => new ServiceProviderListDTO
                         {
                             ServiceProviderName = m.a.p.ServiceProviderName,

@@ -14,6 +14,8 @@
         public static string UpdateLead = "sp_UpdateLead";
         public static string UpdateLeadStatus = "sp_UpdateLeadStatus";
         public static string SaveClientInfo = "sp_SaveClientInfo";
+        public static string SaveLeadContact = "sp_CreateLeadContact";
+        public static string UpdateClientInfo = "sp_UpdateClientInfo";
         public static string CreateServiceProviderLocation = "sp_CreateServiceProviderLocation";
         public static string UpdateServiceProviderLocation = "sp_UpdateServiceProviderLocation";
     }

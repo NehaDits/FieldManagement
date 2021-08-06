@@ -18,7 +18,8 @@ using Excepticon.Extensions;
 using Excepticon.AspNetCore;
 using FieldMgt.Repository.Repository.Exceptions;
 using Microsoft.AspNetCore.Http;
-using System;
+using FieldMgt.Repository.AutoMapper;
+using AutoMapper;
 
 namespace FieldMgt
 {
@@ -54,11 +55,17 @@ namespace FieldMgt
             services.AddTransient<IAddressDetailRepository, AddressDetailRepository>();
             services.AddTransient<IContactDetailRepository, ContactDetailRepository>();
             services.AddTransient<IUnitofWork, UnitofWork>();
+            services.AddTransient<ICommonRepository, CommonRepository>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddTransient<IExceptionInterface, ExceptionRepository>();
-            services.AddAutoMapper(typeof(Startup));
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddAutoMapper(typeof(Startup));
+            MapperConfiguration mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new CreateServiceMap());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

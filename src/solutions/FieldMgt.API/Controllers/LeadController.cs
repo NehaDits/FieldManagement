@@ -63,10 +63,11 @@ namespace FieldMgt.Controllers
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<Lead> UpdateLeadStatus(int Id,int Status) //=> await _uow.LeadServices.UpdateLeadStatus(Id,Status,modifiedBy);
+        public async Task<IActionResult> UpdateLeadStatus(int Id,int Status) //=> await _uow.LeadServices.UpdateLeadStatus(Id,Status,modifiedBy);
         {
             string modifiedBy = GetUserId(); 
-            return await _uow.LeadServices.UpdateLeadStatus(Id, Status, modifiedBy);
+            _uow.LeadServices.UpdateLeadStatus(Id, Status, modifiedBy);
+            return BaseResult(await _uow.SaveAsync());
         }
     }
 }

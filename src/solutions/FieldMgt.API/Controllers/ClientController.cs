@@ -1,5 +1,6 @@
 ﻿using FieldMgt.Core.DomainModels;
 using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.UOW;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,26 +67,28 @@ namespace FieldMgt.API.Controllers
         [Route("Update/{ClientId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Client), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<Client>> UpdateClientStatusAsync(CreateClientDTO Client, int Clientid)
+        public async Task<IEnumerable<Client>> UpdateClientStatusAsync(ClientResponseDTO Client, int Clientid)
         {
-            Client.ClientSource = Clientid;
-            Client.CreatedBy = GetUserId();
+            Client.ClientId = Clientid;
+            Client.ModifiedBy = GetUserId();
+            Client.ModifiedOn = System.DateTime.Now;
             var ClientDetail = await _uow.ClientRepositories.UpdateClientStatusAsync(Client);
             return ClientDetail;
         }
         //=> BaseResult<Client>(await _uow.ClientRepositories.UpdateClientStatusAsync(Client));
 
         /// <summary>
-        /// Soft delete Client 
+        /// 
         /// </summary>
         /// <param name="ClientId"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("DeleteClient/{Id}")]
-        public Client DeleteClient(int Id)
+        public async Task<IActionResult> DeleteClient(int Id)
         {
             var deletedBy = GetUserId();
-            return _uow.ClientRepositories.DeleteClient(Id, deletedBy);
+            _uow.ClientRepositories.DeleteClient(Id, deletedBy);
+            return BaseResult(await _uow.SaveAsync());
         }
     }
 }

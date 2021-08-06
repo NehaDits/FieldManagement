@@ -25,12 +25,11 @@ namespace FieldMgt.Repository.Repository
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(dbContext)
+        public VendorRepository(ApplicationDbContext dbContext, IUnitofWork unitOfWork, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -76,7 +75,10 @@ namespace FieldMgt.Repository.Repository
                               PermanentAddress = m.cd.ad.Address,
                               PermanentCity = m.cd.ad.CityId,
                               PermanentCountry = m.cd.ad.CountryId,
-                              PermanentState = m.cd.ad.StateId
+                              PermanentState = m.cd.ad.StateId,
+                              CreatedBy=m.cd.a.p.CreatedBy,
+                              CreatedOn= m.cd.a.p.CreatedOn,
+                              IsActive= m.cd.a.p.IsActive
                           });
             return vendorDetails;
         }
