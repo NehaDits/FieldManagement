@@ -20,6 +20,8 @@ using FieldMgt.Repository.Repository.Exceptions;
 using Microsoft.AspNetCore.Http;
 using FieldMgt.Repository.AutoMapper;
 using AutoMapper;
+using System.Collections.Generic;
+using FieldMgt.Core;
 
 namespace FieldMgt
 {
@@ -37,14 +39,47 @@ namespace FieldMgt
             //services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase(databaseName: "MockDb"));
             services.AddControllers();
             services.AddHttpClient();
-            services.AddSwaggerGen(c =>
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            if (appSettings.EnableSwagger)
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                // Register the Swagger generator, defining 1 or more Swagger documents
+                services.AddSwaggerGen(c =>
                 {
-                    Version = "v1",
-                    Title = "Lead Management",
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Lead Management",
+                    });
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "bearer"
+                    });
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                    {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                    Reference = new OpenApiReference
+                        {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+                    },
+                    new List<string>()
+                    }
+                    });
                 });
-            });
+            }
             services.AddIdentity(Configuration);
             services.AddExcepticon();
             services.AddBrowserDetection();
@@ -78,7 +113,7 @@ namespace FieldMgt
             app.UseRouting();            
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseCors();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
