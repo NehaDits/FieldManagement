@@ -24,7 +24,8 @@ namespace FieldMgt.Repository.AutoMapper
             CreateMap<CreateEmployeeDTO, CreateUserDTO>().ReverseMap();
             CreateMap<CreateUserDTO, RegistrationDTO>().ReverseMap()
                  .ForMember(dest => dest.Email, opt => opt.Ignore())
-                .ForMember(dest => dest.Password, opt => opt.Ignore()); ;
+                .ForMember(dest => dest.Password, opt => opt.Ignore());
+            CreateMap<CreateVendorDTO, AddVendorDTO>().ReverseMap();
         }
     }
     public static class IgnoreNoMapExtensions
