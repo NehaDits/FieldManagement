@@ -45,7 +45,7 @@ namespace FieldMgt.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ServiceProviderListDTO), StatusCodes.Status200OK)]
-        public ServiceProviderListDTO GetServiceProviderbyId(int serviceProviderId)
+        public ServiceProviderListDTO GetServiceProviderById(int serviceProviderId)
         {
             var result = _uow.ServiceProviderRepositories.GetServiceProviderbyId(serviceProviderId);
             return result;
@@ -69,16 +69,7 @@ namespace FieldMgt.API.Controllers
         {
             var deletedBy = GetUserId();
             var serviceProvider = _uow.ServiceProviderRepositories.DeleteServiceProvider(serviceProviderId, deletedBy);
-            var result = await _uow.SaveAsync();
-            if (result > 0)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(ResponseMessages.ServiceProviderNotDeleted);
-            }
-
+            return BaseResult(await _uow.SaveAsync());
         }
     }
 }

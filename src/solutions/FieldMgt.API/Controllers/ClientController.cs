@@ -24,8 +24,8 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// Use to create Client
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="cancellationToken"></param>
+        /// <paramname="model"></param>
+        /// <paramname="cancellationToken"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("Create")]
@@ -48,7 +48,7 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// Pass Client id and returns single record of Client
         /// </summary>
-        /// <param name="id"></param>
+        /// <paramname="id"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("ById/{id}")]
@@ -60,8 +60,8 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// Update the Client details
         /// </summary>
-        /// <param name="Client"></param>
-        /// <param name="cancellationToken"></param>
+        /// <paramname="Client"></param>
+        /// <paramname="cancellationToken"></param>
         /// <returns></returns>
         [HttpPatch]
         [Route("Update/{ClientId}")]
@@ -80,7 +80,7 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="ClientId"></param>
+        /// <paramname="ClientId"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("DeleteClient/{Id}")]

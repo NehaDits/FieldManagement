@@ -21,15 +21,15 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// To save the contact details
         /// </summary>
-        /// <param name="addressDetail"></param>
+        /// <paramname="addressDetail"></param>
         /// <returns></returns>
         public async Task<ContactDetail> SaveContactDetails(CreateContactDetailDTO addressDetail) => await SingleAsync<ContactDetail>(StoreProcedures.SaveContactDetail, addressDetail);
 
         /// <summary>
         /// Delete the contact details from Contact detail table
         /// </summary>
-        /// <param name="contactId"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="contactId"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public void DeleteContact(int contactId, string deletedBy)
         {

@@ -94,6 +94,12 @@ namespace FieldMgt
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddTransient<IExceptionInterface, ExceptionRepository>();
+            services.AddCors(options => options.AddPolicy("ApiCorsPolicy", build =>
+            {
+                build.WithOrigins("http://localhost:4200")
+                     .AllowAnyMethod()
+                     .AllowAnyHeader();
+            }));
             //services.AddAutoMapper(typeof(Startup));
             MapperConfiguration mappingConfig = new MapperConfiguration(mc =>
             {
@@ -111,7 +117,8 @@ namespace FieldMgt
             }
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseExcepticon();
-            app.UseRouting();            
+            app.UseRouting();
+            app.UseCors("ApiCorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors();

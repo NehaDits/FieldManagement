@@ -26,7 +26,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// To Create lead 
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task<Lead> CreateLeadAsync(CreateLeadDTO model) //=> await InsertAsync(model);
         {
@@ -86,7 +86,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Get the single records of lead
         /// </summary>
-        /// <param name="id"></param>
+        /// <paramname="id"></param>
         /// <returns></returns>
         public LeadResponseDTO GetLeadbyIdAsync(int id)
         {
@@ -132,15 +132,15 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Update the single records of leads
         /// </summary>
-        /// <param name="lead"></param>
+        /// <paramname="lead"></param>
         /// <returns></returns>
         public async Task UpdateLeadStatusAsync(UpdateLeadDTO lead)=>await CollectionsAsync<Task>(StoreProcedures.UpdateLead, lead);
 
         /// <summary>
         /// Update the lead status as client
         /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="Status"></param>
+        /// <paramname="Id"></param>
+        /// <paramname="Status"></param>
         /// <returns></returns>
         public void UpdateLeadStatus(int Id, int Status, string modifiedBy) {
             try

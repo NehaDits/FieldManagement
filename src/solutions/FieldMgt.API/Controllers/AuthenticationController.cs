@@ -59,12 +59,12 @@ namespace FieldMgt.Controllers
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int) StatusCodes.Status200OK)]
-        public async Task DeleteUser(string userId)
+        public async Task<IActionResult> DeleteUser(string userId)
         {
             var deletedBy = GetUserId();             
             var resultUser = await _userRepository.DeleteUser(userId, deletedBy);
             _uow.StaffRepositories.DeleteStaffAsUser(resultUser, deletedBy);
-             await _uow.SaveAsync();
+            return BaseResult(await _uow.SaveAsync());
         }
     }
 }

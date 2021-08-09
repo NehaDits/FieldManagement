@@ -28,7 +28,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Create the Service Provider
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task<ServiceProvider> CreateServiceProviderAsync(CreateServiceProviderDTO model)
         {
@@ -149,8 +149,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// soft delete ServiceProvider details 
         /// </summary>
-        /// <param name="serviceProviderId"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="serviceProviderId"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public ServiceProvider DeleteServiceProvider(int serviceProviderId, string deletedBy)
         {

@@ -10,7 +10,7 @@ namespace FieldMgt.API.Infrastructure.Factories.PathProvider
         /// <summary>
         /// Give comment details
         /// </summary>
-        /// <param name="path"></param>
+        /// <paramname="path"></param>
         /// <returns></returns>
         string MapPath(string path);
     }

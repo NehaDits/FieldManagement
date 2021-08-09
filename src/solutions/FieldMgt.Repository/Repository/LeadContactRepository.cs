@@ -26,7 +26,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Create lead contact
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task<LeadContact> CreateLeadContactAsync(CreateLeadContactDTO model) //=> await InsertAsync(model);
         {
@@ -42,7 +42,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Get particular record of lead contact
         /// </summary>
-        /// <param name="id"></param>
+        /// <paramname="id"></param>
         /// <returns></returns>
         public LeadContact GetLeadContactbyIdAsync(int id) //=> GetById(id);
         {
@@ -127,7 +127,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Update the single record of lead contact
         /// </summary>
-        /// <param name="leadContact"></param>
+        /// <paramname="leadContact"></param>
         /// <returns></returns>
         public LeadContact UpdateLeadContactStatusAsync(LeadContact leadContact) => Update(leadContact);
     }

@@ -24,8 +24,8 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// Use to create vendor
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="cancellationToken"></param>
+        /// <paramname="model"></param>
+        /// <paramname="cancellationToken"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("Create")]
@@ -55,7 +55,7 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// Pass vendor id and returns single record of vendor
         /// </summary>
-        /// <param name="id"></param>
+        /// <paramname="id"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("ById/{id}")]
@@ -67,8 +67,8 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// Update the vendor details
         /// </summary>
-        /// <param name="vendor"></param>
-        /// <param name="cancellationToken"></param>
+        /// <paramname="vendor"></param>
+        /// <paramname="cancellationToken"></param>
         /// <returns></returns>
         [HttpPatch]
         [Route("Update/{VendorId}")]
@@ -86,7 +86,7 @@ namespace FieldMgt.API.Controllers
         /// <summary>
         /// Soft delete vendor 
         /// </summary>
-        /// <param name="vendorId"></param>
+        /// <paramname="vendorId"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("DeleteVendor/{VendorId}")]
