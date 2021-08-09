@@ -280,7 +280,7 @@ namespace FieldMgt.Core.DomainModels
             {
                 act.HasOne(field => field.RequirementCreatedBy)
                 .WithMany(fk => fk.Ref23Navigation)
-                .HasForeignKey(fk => fk.RequirementGatheredBy)
+                .HasForeignKey(fk => fk.CreatedBy)
                 .HasConstraintName("RequirementCreatedBy_FK");
 
                 act.HasOne(field => field.RequirementModifiedBy)

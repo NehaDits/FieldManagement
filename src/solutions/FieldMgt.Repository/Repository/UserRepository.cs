@@ -29,9 +29,9 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userManager"></param>
-        /// <param name="dbcontext"></param>
-        /// <param name="configuration"></param>
+        /// <paramname="userManager"></param>
+        /// <paramname="dbcontext"></param>
+        /// <paramname="configuration"></param>
         public UserRepository(UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IConfiguration configuration)
         {
             _userManager = userManager;
@@ -43,7 +43,7 @@ namespace FieldMgt.Repository.Repository
         /// Create a User with given UserName and Password
         /// To use for user registeration
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task<string> RegisterUserAsync(CreateUserDTO model)
         {
@@ -78,7 +78,7 @@ namespace FieldMgt.Repository.Repository
         /// Logins a user and Generates a JWT authentication Token
         /// Use for login
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns>JWT Token</returns>
         public async Task<LoginManagerResponse> LoginUserAsync(LoginViewDTO model)
         {
@@ -148,8 +148,8 @@ namespace FieldMgt.Repository.Repository
         /// Soft delete a User
         /// soft delete user 
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="userName"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public async Task<string> DeleteUser(string userId, string deletedBy)
         {

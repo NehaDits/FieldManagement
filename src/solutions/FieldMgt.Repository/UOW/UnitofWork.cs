@@ -16,7 +16,6 @@ namespace FieldMgt.Repository.UOW
         public UnitofWork(ApplicationDbContext dbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
-
             LeadServices = new LeadRepository(_dbContext, mapper);
             LeadContactRepositories = new LeadContactRepository(_dbContext,mapper);
             VendorRepositories = new VendorRepository(_dbContext, this,mapper);
@@ -27,6 +26,8 @@ namespace FieldMgt.Repository.UOW
             ClientRepositories = new ClientRepository(_dbContext, this, mapper);
             CommonRepositories = new CommonRepository(_dbContext, this, mapper);
             ServiceProviderLocationRepositories = new ServiceProviderLocationRepository(_dbContext, this);
+            JobOrderRepositories = new JobOrderRepository(_dbContext, this, mapper);
+            JobOrderRequirementRepositories = new JobOrderRequirementRepository(_dbContext, this, mapper);
         }
         public ILeadRepository LeadServices { get; }
         public IUserRepository USerServices { get; }
@@ -40,6 +41,8 @@ namespace FieldMgt.Repository.UOW
         public IClientRepository ClientRepositories { get; }
         public ICommonRepository CommonRepositories { get; }
         public IServiceProviderLocationRepository ServiceProviderLocationRepositories { get; }
+        public IJobOrderRepository JobOrderRepositories { get; }
+        public IJobOrderRequirementRepository JobOrderRequirementRepositories { get; }
         public async Task<int> SaveAsync()
         {
             using (_dbContext.Database.BeginTransaction())

@@ -25,7 +25,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Save Address for Vendor, Staff Member, Service Providers
         /// </summary>
-        /// <param name="model">typeof CreateAddressDTO</param>
+        /// <paramname="model">typeof CreateAddressDTO</param>
         /// <returns>It is returning AdressDetail object</returns>
         public async Task<AddressDetail> SaveAddressAsync(CreateVendorDTO model)
         {
@@ -36,8 +36,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Soft delete vendor address
         /// </summary>
-        /// <param name="addressId">addressId</param>
-        /// <param name="deletedBy">deletedBy</param>
+        /// <paramname="addressId">addressId</param>
+        /// <paramname="deletedBy">deletedBy</param>
         /// <returns>AddressDetail object</returns>
         public void DeleteAddress(int addressId, string deletedBy)
         {
@@ -61,7 +61,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task<int>Save(CreateVendorDTO model)
         {

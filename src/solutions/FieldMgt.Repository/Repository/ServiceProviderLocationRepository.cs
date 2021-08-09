@@ -26,7 +26,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// Creates the Service Provider Location for a Service Provider
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task<int> CreateServiceProviderLocationAsync(CreateServiceProviderLocationDTO model)
         {
@@ -129,8 +129,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// soft delete ServiceProvider Location details by using ServicePRoviderLocationId
         /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="Id"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public ServiceProviderLocation DeleteServiceProviderLocation(int Id, string deletedBy)
         {
@@ -154,8 +154,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// soft delete ServiceProvider Location details by using ServicePRoviderLocationId
         /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="Id"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public void DeleteServiceProviderLocationByServiceProvider(int serviceProviderId, string deletedBy)
         {

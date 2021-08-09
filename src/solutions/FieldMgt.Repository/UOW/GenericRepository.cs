@@ -130,9 +130,9 @@ namespace FieldMgt.Repository.UOW
         /// <summary>
         /// Return the collection of T type
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sql"></param>
-        /// <param name="parameters"></param>
+        /// <typeparamname="T"></typeparam>
+        /// <paramname="sql"></param>
+        /// <paramname="parameters"></param>
         /// <returns></returns>
         protected async Task<IEnumerable<T>> CollectionsAsync<T>(string sql, object parameters = null)
         {
@@ -153,9 +153,9 @@ namespace FieldMgt.Repository.UOW
         /// <summary>
         /// Return the single row
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sql"></param>
-        /// <param name="parameters"></param>
+        /// <typeparamname="T"></typeparam>
+        /// <paramname="sql"></param>
+        /// <paramname="parameters"></param>
         /// <returns></returns>
         protected async Task<T> SingleAsync<T>(string sql, object parameters = null)
         {
@@ -175,9 +175,9 @@ namespace FieldMgt.Repository.UOW
         /// <summary>
         /// Used to perform insert, update, delete
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sql"></param>
-        /// <param name="parameters"></param>
+        /// <typeparamname="T"></typeparam>
+        /// <paramname="sql"></param>
+        /// <paramname="parameters"></param>
         /// <returns></returns>
         protected async Task<T> CommandAsync<T>(string sql, object parameters = null)
         {

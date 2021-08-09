@@ -35,7 +35,7 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// To save the vendor details
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         //public async Task CreateVendorAsync(Vendor model) => await SingleAsync<Vendor>(StoreProcedures.SaveVendorDetail, model); //=> await InsertAsync(model);
 
@@ -86,21 +86,21 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// To get the sibgle records
         /// </summary>
-        /// <param name="id"></param>
+        /// <paramname="id"></param>
         /// <returns></returns>
         public Vendor GetVendorbyIdAsync(int id) => _dbContext.Vendors.FirstOrDefault(l => l.VendorId == id);
 
         /// <summary>
         /// To update the vendor details
         /// </summary>
-        /// <param name="vendor"></param>
+        /// <paramname="vendor"></param>
         /// <returns></returns>
         public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor) => await CollectionsAsync<Vendor>(StoreProcedures.UpdateVendorDetail, vendor);
 
         /// <summary>
         /// To save the vendor details
         /// </summary>
-        /// <param name="model"></param>
+        /// <paramname="model"></param>
         /// <returns></returns>
         public async Task<Vendor> Save(CreateVendorDTO model)
         {
@@ -117,8 +117,8 @@ namespace FieldMgt.Repository.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vendorId"></param>
-        /// <param name="deletedBy"></param>
+        /// <paramname="vendorId"></param>
+        /// <paramname="deletedBy"></param>
         /// <returns></returns>
         public Vendor DeleteVendor(int vendorId, string deletedBy)
         {
