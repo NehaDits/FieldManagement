@@ -25,7 +25,11 @@ namespace FieldMgt.Repository.Repository
             _mapper = mapper;
             _uow = uow;
         }
-
+        /// <summary>
+        /// Create the Job Order Requirement
+        /// </summary>
+        /// <paramname="model"></param>
+        /// <returns></returns>
         public async Task CreateJobOrderRequirement(CreateJobOrderRequirementDTO model)
         {
             try
@@ -35,6 +39,8 @@ namespace FieldMgt.Repository.Repository
                 jobOrderRequirement.CreatedOn = System.DateTime.Now;
                 if (jobOrderRequirement.JobOrderId == 0)
                     jobOrderRequirement.JobOrderId = null;
+                if (jobOrderRequirement.RequirementGatheredBy == 0)
+                    jobOrderRequirement.RequirementGatheredBy = null;
                 await InsertAsync(jobOrderRequirement);
             }
             catch (Exception ex)
@@ -42,25 +48,105 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
-        public JobOrderRequirementResponseDTO DeleteJobOrderRequirement(int jobOrderId, string deletedBy)
+        /// <summary>
+        /// Soft deletes the details of Job Order Requirements
+        /// </summary>
+        /// <paramname>jobOrderId</paramname>
+        /// <paramname>deletedBy</paramname>
+        /// <returns></returns>
+        public void DeleteJobOrderRequirementByJobOrder(int jobOrderId, string deletedBy)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var jobOrder = _dbContext.JobOrderRequirements.SingleOrDefault(a => a.JobOrderId == jobOrderId);
+                if(jobOrder!=null)
+                {
+                    jobOrder.IsDeleted = true;
+                    jobOrder.DeletedBy = deletedBy;
+                    jobOrder.DeletedOn = System.DateTime.Now;
+                    var job = Update(jobOrder);
+                    var jobUpdated = _mapper.Map<JobOrderRequirement, JobOrderRequirementResponseDTO>(job);
+                }                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-
+        /// <summary>
+        /// Soft deletes the details of Job Order Requirements
+        /// </summary>
+        /// <paramname>jobOrderRequirementId</paramname>
+        /// <paramname>deletedBy</paramname>
+        /// <returns></returns>
+        public JobOrderRequirementResponseDTO DeleteJobOrderRequirement(int jobOrderRequirementId, string deletedBy)
+        {
+            try
+            {
+                var jobOrder = _dbContext.JobOrderRequirements.SingleOrDefault(a => a.JobOrderRequirementId == jobOrderRequirementId);
+                jobOrder.IsDeleted = true;
+                jobOrder.DeletedBy = deletedBy;
+                jobOrder.DeletedOn = System.DateTime.Now;
+                var job = Update(jobOrder);
+                var jobUpdated = _mapper.Map<JobOrderRequirement, JobOrderRequirementResponseDTO>(job);
+                return jobUpdated;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Get the list of Job Order Requirements
+        /// </summary>
+        /// <paramname></paramname>
+        /// <returns></returns>
         public IEnumerable<JobOrderRequirementResponseDTO> GetJobOrderRequirementAsync()
         {
-            throw new NotImplementedException();
+            var jobOrderRequirement = _dbContext.JobOrderRequirements.Where(x => x.IsDeleted != true);
+            //var jobOrderRequirement = GetAll();
+            foreach (var j in jobOrderRequirement)
+            {
+                var jobOrderRequirementResponse = _mapper.Map<JobOrderRequirement, JobOrderRequirementResponseDTO>(j);
+                yield return jobOrderRequirementResponse;
+            }
         }
-
-        public JobOrderRequirementResponseDTO GetJobOrderRequirementbyIdAsync(int id)
+        /// <summary>
+        /// Get the details of Job Order Requirements for a specific Job Order
+        /// </summary>
+        /// <paramname>jobOrderId</paramname>
+        /// <returns></returns>
+        public JobOrderRequirementResponseDTO GetJobOrderRequirementbyIdAsync(int jobOrderId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = _dbContext.JobOrderRequirements.FirstOrDefault(l => l.JobOrderId == jobOrderId);
+                var jobOrderResponse = _mapper.Map<JobOrderRequirement, JobOrderRequirementResponseDTO>(result);
+                return jobOrderResponse;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-
+        /// <summary>
+        /// Updates the details of Job Order Requirements 
+        /// </summary>
+        /// <paramname>model</paramname>
+        /// <returns></returns>
         public JobOrderRequirementResponseDTO UpdateJobOrderRequirementAsync(UpdateJobOrderRequirementDTO jobOrderUpdate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var jobOrder = _mapper.Map<UpdateJobOrderRequirementDTO, JobOrderRequirement>(jobOrderUpdate);
+                var job = Update(jobOrder);
+                var jobUpdated = _mapper.Map<JobOrderRequirement, JobOrderRequirementResponseDTO>(job);
+                return jobUpdated;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

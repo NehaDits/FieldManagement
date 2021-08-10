@@ -16,7 +16,7 @@ namespace FieldMgt.Core.DomainModels
         public int? JobOrderId { get; set; }
         public JobOrder JobOrder { get; set; }
         [Column(TypeName = "nvarchar(255)")]
-        public int RequirementGatheredBy { get; set; }
+        public int? RequirementGatheredBy { get; set; }
         public Staff Staff { get; set; }
         [DefaultValue(true)]
         public bool? IsActive { get; set; }

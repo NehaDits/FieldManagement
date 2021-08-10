@@ -13,8 +13,9 @@ namespace FieldMgt.Core.Interfaces
     {
         Task CreateJobOrderRequirement(CreateJobOrderRequirementDTO model);
         IEnumerable<JobOrderRequirementResponseDTO> GetJobOrderRequirementAsync();
-        JobOrderRequirementResponseDTO GetJobOrderRequirementbyIdAsync(int id);
+        JobOrderRequirementResponseDTO GetJobOrderRequirementbyIdAsync(int jobOrderId);
         JobOrderRequirementResponseDTO UpdateJobOrderRequirementAsync(UpdateJobOrderRequirementDTO jobOrderUpdate);
-        JobOrderRequirementResponseDTO DeleteJobOrderRequirement(int jobOrderId, string deletedBy);
+        void DeleteJobOrderRequirementByJobOrder(int jobOrderId, string deletedBy);
+        JobOrderRequirementResponseDTO DeleteJobOrderRequirement(int jobOrderRequirementId, string deletedBy);
     }
 }

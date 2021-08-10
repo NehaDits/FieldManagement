@@ -23,16 +23,16 @@ namespace FieldMgt.API.Controllers
             _uow = uow;
             _mapper = mapper;
         }
-        //[HttpPost]
-        //[Route("AddJobOrderRequirement")]
-        //[ProducesResponseType((int)HttpStatusCode.OK)]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //public async Task<IActionResult> CreateJobOrder(CreateJobOrderRequirementRequestDTO model)
-        //{
-        //    //var jobOrder = _mapper.Map<CreateJobOrderRequirementRequestDTO, CreateJobOrderRequirementDTO>(model);
-        //    //jobOrder.CreatedBy = GetUserId();
-        //    //await _uow.JobOrderRepositories.CreateJobOrder(jobOrder);
-        //    //return BaseResult(await _uow.SaveAsync());
-        //}
+        [HttpPost]
+        [Route("AddJobOrderRequirement")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateJobOrder(CreateJobOrderRequirementRequestDTO model)
+        {
+            var jobOrder = _mapper.Map<CreateJobOrderRequirementRequestDTO, CreateJobOrderRequirementDTO>(model);
+            jobOrder.CreatedBy = GetUserId();
+            await _uow.JobOrderRequirementRepositories.CreateJobOrderRequirement(jobOrder);
+            return BaseResult(await _uow.SaveAsync());
+        }
     }
 }

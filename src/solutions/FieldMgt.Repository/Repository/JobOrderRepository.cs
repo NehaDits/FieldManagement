@@ -45,8 +45,9 @@ namespace FieldMgt.Repository.Repository
         }
         public IEnumerable<JobOrderResponseDTO> GetJobOrderAsync()
         {
-            var jobOrder= GetAll();
-            foreach(var j in jobOrder)
+            //var jobOrder= GetAll();
+            var jobOrder = _dbContext.JobOrders.Where(x => x.IsDeleted != true);
+            foreach (var j in jobOrder)
             {
                 var jobOrderResponse = _mapper.Map<JobOrder, JobOrderResponseDTO>(j);
                 yield return jobOrderResponse;
@@ -92,7 +93,8 @@ namespace FieldMgt.Repository.Repository
                 var jobOrder = _dbContext.JobOrders.SingleOrDefault(a => a.JobOrderId == jobOrderId);
                 jobOrder.IsDeleted = true;
                 jobOrder.DeletedBy = deletedBy;
-                jobOrder.DeletedOn = System.DateTime.Now;
+                jobOrder.DeletedOn = System.DateTime.Now;                
+                _uow.JobOrderRequirementRepositories.DeleteJobOrderRequirementByJobOrder(jobOrderId, deletedBy);
                 var job = Update(jobOrder);
                 var jobUpdated = _mapper.Map<JobOrder, JobOrderResponseDTO>(job);
                 return jobUpdated;

@@ -31,6 +31,9 @@ namespace FieldMgt.Repository.AutoMapper
             CreateMap<JobOrder, JobOrderResponseDTO>().ReverseMap();
             CreateMap<UpdateJobOrderDTO, JobOrder>().ReverseMap();
             CreateMap<CreateJobOrderRequirementDTO, JobOrderRequirement>().ReverseMap();
+            CreateMap<CreateJobOrderRequirementRequestDTO, CreateJobOrderRequirementDTO>().ReverseMap();
+            CreateMap<JobOrderRequirement, JobOrderRequirementResponseDTO>().ReverseMap();
+            CreateMap<UpdateJobOrderRequirementDTO, JobOrderRequirement>().ReverseMap();
             CreateMap<CreateUserDTO, RegistrationDTO>().ReverseMap()
                  .ForMember(dest => dest.Email, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.Ignore()); ;
