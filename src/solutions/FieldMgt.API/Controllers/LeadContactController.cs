@@ -61,10 +61,13 @@ namespace FieldMgt.API.Controllers
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task UpdateLeadStatusAsync(LeadContact leadContact)
+        public async Task UpdateLeadStatusAsync(UpdateLeadContacts leadContact)
         {
-            var updated = _uow.LeadContactRepositories.UpdateLeadContactStatusAsync(leadContact);
-            await _uow.SaveAsync();
+            var addClientContact = _mapper.Map<UpdateLeadContacts, UpdateLeadContact>(leadContact);
+            addClientContact.ModifiedBy = GetUserId();
+            addClientContact.ModifiedOn = System.DateTime.Now;
+            addClientContact.IsActive = true;
+            await _uow.LeadContactRepositories.UpdateLeadContactStatusAsync(addClientContact);
         }
         [Route("Delete/{Id}")]
         [HttpDelete]
