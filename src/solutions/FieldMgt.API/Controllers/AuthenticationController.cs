@@ -21,12 +21,14 @@ namespace FieldMgt.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IUnitofWork _uow;
+        private readonly IRoleRepository _roleService;
 
-        public AuthenticationController(IUserRepository userRepository, IUnitofWork uow, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public AuthenticationController(IUserRepository userRepository, IUnitofWork uow, IRoleRepository roleService, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _uow = uow;
+            _roleService = roleService;
         }
         [HttpPost]
         [Route("CreateUser")]
@@ -41,6 +43,7 @@ namespace FieldMgt.Controllers
                 user.CreatedOn = System.DateTime.Now;
                 var result = await _userRepository.RegisterUserAsync(user);
                 user.UserId = result;
+                await _roleService.EditUserRoles(model.Email, model.Role);
                 return BaseResult(await _uow.StaffRepositories.CreateStaffAsync(user));
             }
             catch (Exception ex)

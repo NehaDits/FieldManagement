@@ -63,7 +63,7 @@ namespace FieldMgt.API.Controllers
         }
         [Route("Delete/{serviceProviderId}")]
         [HttpPatch]
-        [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceProvider), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteServiceProvider(int serviceProviderId)
         {

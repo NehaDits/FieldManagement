@@ -13,6 +13,7 @@ namespace FieldMgt.Core.DTOs.Request
         public string Email { get; set; }
         [NoMap]
         public string Password { get; set; }
+        public string Role { get; set; }
         public string FirstName { get; set; }        
         public string LastName { get; set; }
         public int? Gender { get; set; }

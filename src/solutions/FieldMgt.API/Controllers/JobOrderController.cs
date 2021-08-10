@@ -39,15 +39,15 @@ namespace FieldMgt.API.Controllers
         [Route("ListJobOrders")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(IEnumerable<ServiceProviderListDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<JobOrderResponseDTO>), StatusCodes.Status200OK)]
         public IEnumerable<JobOrderResponseDTO> GetJobOrderAsync()
         {
             return _uow.JobOrderRepositories.GetJobOrderAsync();
         }
-        [Route("ByJobOrderId/{jobOrderId}")]
+        [Route("ByJobOrderId/{JobOrderId}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ServiceProviderListDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(JobOrderResponseDTO), StatusCodes.Status200OK)]
         public JobOrderResponseDTO GetJobOrderById(int jobOrderId)
         {
             var result = _uow.JobOrderRepositories.GetJobOrderbyIdAsync(jobOrderId);
@@ -55,7 +55,7 @@ namespace FieldMgt.API.Controllers
         }
         [Route("UpdateJobOrder")]
         [HttpPatch]
-        [ProducesResponseType(typeof(ServiceProvider), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(JobOrderResponseDTO), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public JobOrderResponseDTO UpdateJobOrder(UpdateJobOrderRequestDTO model)
         {
@@ -66,7 +66,7 @@ namespace FieldMgt.API.Controllers
         }
         [Route("Delete/{jobOrderId}")]
         [HttpPatch]
-        [ProducesResponseType(typeof(Staff), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(JobOrder), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteJobOrder(int jobOrderId)
         {

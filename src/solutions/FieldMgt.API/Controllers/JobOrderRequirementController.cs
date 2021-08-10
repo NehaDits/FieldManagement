@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FieldMgt.Core.DTOs;
 using FieldMgt.Core.DTOs.Request;
+using FieldMgt.Core.DTOs.Response;
 using FieldMgt.Core.UOW;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,23 @@ namespace FieldMgt.API.Controllers
             jobOrder.CreatedBy = GetUserId();
             await _uow.JobOrderRequirementRepositories.CreateJobOrderRequirement(jobOrder);
             return BaseResult(await _uow.SaveAsync());
+        }
+        [Route("ListJobOrderRequirements")]
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<JobOrderRequirementResponseDTO>), StatusCodes.Status200OK)]
+        public IEnumerable<JobOrderRequirementResponseDTO> GetJobOrderRequirements()
+        {
+            return _uow.JobOrderRequirementRepositories.GetJobOrderRequirement();
+        }
+        [Route("ByJobOrderId/{JobOrderId}")]
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(JobOrderRequirementResponseDTO), StatusCodes.Status200OK)]
+        public JobOrderRequirementResponseDTO GetJobOrderById(int jobOrderId)
+        {
+            var result = _uow.JobOrderRequirementRepositories.GetJobOrderRequirementbyJobOrderId(jobOrderId);
+            return result;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace FieldMgt.API.Infrastructure.Extensions
         }
     }
     /// <summary>
-    /// Give meaningfull name and add comment details
+    /// 
     /// </summary>
     public static class AuthorizationPolicyBuilderExtensions
     { 

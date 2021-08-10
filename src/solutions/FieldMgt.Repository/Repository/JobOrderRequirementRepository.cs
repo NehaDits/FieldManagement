@@ -101,7 +101,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname></paramname>
         /// <returns></returns>
-        public IEnumerable<JobOrderRequirementResponseDTO> GetJobOrderRequirementAsync()
+        public IEnumerable<JobOrderRequirementResponseDTO> GetJobOrderRequirement()
         {
             var jobOrderRequirement = _dbContext.JobOrderRequirements.Where(x => x.IsDeleted != true);
             //var jobOrderRequirement = GetAll();
@@ -116,7 +116,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname>jobOrderId</paramname>
         /// <returns></returns>
-        public JobOrderRequirementResponseDTO GetJobOrderRequirementbyIdAsync(int jobOrderId)
+        public JobOrderRequirementResponseDTO GetJobOrderRequirementbyJobOrderId(int jobOrderId)
         {
             try
             {

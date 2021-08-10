@@ -13,6 +13,8 @@ namespace FieldMgt.Core.DomainModels
         public int JobOrderId { get; set; }
         [Column(TypeName = "nvarchar(200)")]
         public string JobOrderDescription { get; set; }
+        public int? AddressDetailId { get; set; }
+        public AddressDetail AddressDetail { get; set; }
         public int? LeadId { get; set; }
         public Lead Lead { get; set; }
         public int? ClientId { get; set; }
