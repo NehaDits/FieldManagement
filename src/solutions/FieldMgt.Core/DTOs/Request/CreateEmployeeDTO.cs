@@ -14,6 +14,7 @@ namespace FieldMgt.Core.DTOs.Request
         [NoMap]
         public string Password { get; set; }
         public string Role { get; set; }
+        public int? StaffOrganizationId { get; set; }
         public string FirstName { get; set; }        
         public string LastName { get; set; }
         public int? Gender { get; set; }

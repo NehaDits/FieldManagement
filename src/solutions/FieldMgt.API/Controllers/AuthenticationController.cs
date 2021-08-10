@@ -22,7 +22,6 @@ namespace FieldMgt.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitofWork _uow;
         private readonly IRoleRepository _roleService;
-
         public AuthenticationController(IUserRepository userRepository, IUnitofWork uow, IRoleRepository roleService, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _userRepository = userRepository;
@@ -34,7 +33,7 @@ namespace FieldMgt.Controllers
         [Route("CreateUser")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> RegisterAsync([FromBody] CreateEmployeeDTO model)
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateEmployeeDTO model)
         {
             try
             {
@@ -56,8 +55,6 @@ namespace FieldMgt.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> LoginUserAsync([FromBody] LoginViewDTO model) => BaseResult(await _userRepository.LoginUserAsync(model));
-
-
         [Route("DeleteUser/{ByUserId}")]
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]

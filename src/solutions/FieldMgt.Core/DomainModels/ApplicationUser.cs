@@ -109,7 +109,12 @@ namespace FieldMgt.Core.DomainModels
             Ref96Navigation = new HashSet<ServiceProvider>();
             Ref97Navigation = new HashSet<ServiceProvider>();
             Ref98Navigation = new HashSet<ServiceProvider>();
+            Ref99Navigation = new HashSet<StaffOrganization>();
+            Ref100Navigation = new HashSet<StaffOrganization>();
+            Ref101Navigation = new HashSet<StaffOrganization>();
         }
+        public int? StaffOrganizationId { get; set; }
+        public StaffOrganization StaffOrganization { get; set; }
         [DefaultValue(true)]
         public bool IsActive { get; set; }
         [DefaultValue(false)]
@@ -220,5 +225,8 @@ namespace FieldMgt.Core.DomainModels
         public ICollection<ServiceProvider> Ref96Navigation { get; set; }
         public ICollection<ServiceProvider> Ref97Navigation { get; set; }
         public ICollection<ServiceProvider> Ref98Navigation { get; set; }
+        public ICollection<StaffOrganization> Ref99Navigation { get; set; }
+        public ICollection<StaffOrganization> Ref100Navigation { get; set; }
+        public ICollection<StaffOrganization> Ref101Navigation { get; set; }
     }
 }

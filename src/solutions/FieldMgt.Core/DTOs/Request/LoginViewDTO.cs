@@ -14,5 +14,6 @@ namespace FieldMgt.Core.DTOs.Request
         [Required]
         [StringLength(50, MinimumLength = 5)]
         public string Password { get; set; }
+        public int? StaffOrganizationId { get; set; }
     }
 }
