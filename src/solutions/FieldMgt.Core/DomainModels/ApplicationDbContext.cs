@@ -48,11 +48,15 @@ namespace FieldMgt.Core.DomainModels
         public DbSet<OrderImplementationDetail> OrderImplementationDetails { get; set; }
         public DbSet<VendorProducts> VendorProducts { get; set; }
         public DbSet<StaffOrganization> StaffOrganizations { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<PermissionType> PermissionTypes { get; set; }
+        //public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         protected virtual void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         {
             OnModelCreating(modelBuilder);
            
             modelBuilder.Entity<ApplicationUser>().HasKey(m => m.Id);
+            //modelBuilder.Entity<ApplicationRole>().HasKey(m => m.Id);
             modelBuilder.Entity<Lead>().Property(s => s.LeadId).HasDatabaseGeneratedOption
 (DatabaseGeneratedOption.Identity); ;
             modelBuilder.Entity<Staff>().Property(s => s.StaffId).HasDatabaseGeneratedOption
