@@ -1826,7 +1826,7 @@ namespace FieldMgt.Core.Migrations
                     RequirementDescription = table.Column<string>(type: "nvarchar(455)", nullable: true),
                     RequirementGatheredOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     JobOrderId = table.Column<int>(type: "int", nullable: false),
-                    RequirementGatheredBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    RequirementGatheredBy = table.Column<int>(type: "int", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -1847,7 +1847,7 @@ namespace FieldMgt.Core.Migrations
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "RequirementCreatedBy_FK",
-                        column: x => x.RequirementGatheredBy,
+                        column: x => x.CreatedBy,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
