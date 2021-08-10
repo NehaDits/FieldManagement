@@ -28,9 +28,8 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname="model"></param>
         /// <returns></returns>
-        public async Task<Lead> CreateLeadAsync(CreateLeadDTO model) //=> await InsertAsync(model);
+        public async Task<Lead> CreateLeadAsync(AddLeadDTO model) //=> await InsertAsync(model);
         {
-            Lead detail = _mapper.Map<CreateLeadDTO, Lead>(model);
             try
             {
                 return await CommandAsync<Lead>(StoreProcedures.CreateLead, model);
@@ -120,10 +119,7 @@ namespace FieldMgt.Repository.Repository
                               CreatedOn = m.cd.a.p.CreatedOn,
                               ModifiedOn = m.cd.a.p.ModifiedOn,
                               CreatedBy = m.cd.a.p.CreatedBy,
-                              ModifiedBy = m.cd.a.p.ModifiedBy,
-                              countries=_dbContext.Country.ToList(),
-                              states=_dbContext.State.ToList(),
-                              cities=_dbContext.City.ToList()
+                              ModifiedBy = m.cd.a.p.ModifiedBy
                           }).SingleOrDefault();
 
             return lead;
@@ -134,7 +130,17 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname="lead"></param>
         /// <returns></returns>
-        public async Task UpdateLeadStatusAsync(UpdateLeadDTO lead)=>await CollectionsAsync<Task>(StoreProcedures.UpdateLead, lead);
+        public async Task UpdateLeadAsync(UpdateLeadDTO lead)//=>await CollectionsAsync<Task>(StoreProcedures.UpdateLead, lead);
+        {
+            try
+            {
+                await CollectionsAsync<Task>(StoreProcedures.UpdateLead, lead);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Update the lead status as client

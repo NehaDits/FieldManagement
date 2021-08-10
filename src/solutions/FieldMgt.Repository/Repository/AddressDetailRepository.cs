@@ -57,23 +57,5 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception (ex.Message);
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <paramname="model"></param>
-        /// <returns></returns>
-        public async Task<int>Save(CreateVendorDTO model)
-        {
-            CreateContactDetailDTO createContactDetailDTO = _mapper.Map<CreateVendorDTO, CreateContactDetailDTO>(model);
-            Vendor vendor = _mapper.Map<CreateVendorDTO, Vendor>(model);
-
-            var addressResponse = await _unitOfWork.AddressRepositories.SaveAddressAsync(model);
-            var conteactDetailResponse = await _unitOfWork.ContactDetailRepositories.SaveContactDetails(createContactDetailDTO);
-            vendor.PermanentAddressId = addressResponse.AddressDetailId;
-            vendor.ContactDetailId = conteactDetailResponse.ContactDetailId;
-            //await _unitOfWork.VendorRepositories.Save(vendor);
-            return await _unitOfWork.SaveAsync();        
-        }  
     }
 }

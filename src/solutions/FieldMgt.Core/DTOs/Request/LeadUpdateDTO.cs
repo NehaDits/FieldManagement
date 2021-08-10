@@ -1,19 +1,23 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FieldMgt.Core.DTOs.Request
 {
-    public class CreateLeadDTO
+   public class LeadUpdateDTO
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int Gender { get; set; }
-        public string LeadCompanyName { get; set; }    
-        public string LeadDescription { get; set; }       
+        public int? LeadId { get; set; }
+        public string LeadCompanyName { get; set; }
+        public string LeadDescription { get; set; }
         public int LeadSource { get; set; }
         public int LeadStatus { get; set; }
         public int LeadStage { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Gender { get; set; }
         [StringLength(100, MinimumLength = 5)]
         public string PermanentAddress { get; set; }
         public int PermanentCity { get; set; }
@@ -32,12 +36,5 @@ namespace FieldMgt.Core.DTOs.Request
         public string PrimaryEmail { get; set; }
         [StringLength(100, MinimumLength = 8)]
         public string AlternateEmail { get; set; }
-        //public string FirstName { get; set; }
-        //public string LastName { get; set; }
-        //public int Gender { get; set; }
-        //[DefaultValue(true)]
-        //public bool IsActive { get; set; }     
-        //public string CreatedBy { get; set; }
-        //public DateTime? CreatedOn { get; set; }
     }
 }

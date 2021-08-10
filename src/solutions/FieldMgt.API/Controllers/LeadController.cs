@@ -29,7 +29,14 @@ namespace FieldMgt.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model)=> BaseResult(await _uow.LeadServices.CreateLeadAsync(model));
+        public async Task<IActionResult> CreateLeadAsync(CreateLeadDTO model)//=> BaseResult(await _uow.LeadServices.CreateLeadAsync(model));
+        {
+            var addClientContact = _mapper.Map<CreateLeadDTO, AddLeadDTO>(model);
+            addClientContact.CreatedBy = GetUserId();
+            addClientContact.CreatedOn = System.DateTime.Now;
+            addClientContact.IsActive = true;
+            return BaseResult(await _uow.LeadServices.CreateLeadAsync(addClientContact));
+        }
 
         [Route("GetList")]
         [HttpGet]
@@ -57,17 +64,26 @@ namespace FieldMgt.Controllers
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task UpdateLeadStatusAsync(UpdateLeadDTO lead)=>  await _uow.LeadServices.UpdateLeadStatusAsync(lead);
+        public async Task UpdateLeadStatusAsync(LeadUpdateDTO lead)
+        {
+            var addClientContact = _mapper.Map<LeadUpdateDTO, UpdateLeadDTO>(lead);
+            addClientContact.ModifiedBy = GetUserId();
+            addClientContact.ModifiedOn = System.DateTime.Now;
+            addClientContact.IsActive = true;
+            await _uow.LeadServices.UpdateLeadAsync(addClientContact);
+        }
 
         [Route("UpdateLeadStatus/{Id}/{Status}")]
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateLeadStatus(int Id,int Status) //=> await _uow.LeadServices.UpdateLeadStatus(Id,Status,modifiedBy);
+        public async Task<IActionResult> UpdateLeadStatus(int Id,int Status)
         {
             string modifiedBy = GetUserId(); 
             _uow.LeadServices.UpdateLeadStatus(Id, Status, modifiedBy);
             return BaseResult(await _uow.SaveAsync());
         }
+
+
     }
 }
