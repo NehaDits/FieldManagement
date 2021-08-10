@@ -28,6 +28,7 @@ namespace FieldMgt.Repository.UOW
             ServiceProviderLocationRepositories = new ServiceProviderLocationRepository(_dbContext, this);
             JobOrderRepositories = new JobOrderRepository(_dbContext, this, mapper);
             JobOrderRequirementRepositories = new JobOrderRequirementRepository(_dbContext, this, mapper);
+            ClientContactRepositories = new ClientContactRepository(_dbContext, mapper,this);
         }
         public ILeadRepository LeadServices { get; }
         public IUserRepository USerServices { get; }
@@ -43,6 +44,7 @@ namespace FieldMgt.Repository.UOW
         public IServiceProviderLocationRepository ServiceProviderLocationRepositories { get; }
         public IJobOrderRepository JobOrderRepositories { get; }
         public IJobOrderRequirementRepository JobOrderRequirementRepositories { get; }
+        public IClientContactRepository ClientContactRepositories { get; }
         public async Task<int> SaveAsync()
         {
             using (_dbContext.Database.BeginTransaction())

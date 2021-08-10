@@ -21,6 +21,8 @@ namespace FieldMgt.Core.UOW
         IServiceProviderLocationRepository ServiceProviderLocationRepositories { get; }
         IJobOrderRepository JobOrderRepositories { get; }
         IJobOrderRequirementRepository JobOrderRequirementRepositories { get; }
+        IClientContactRepository ClientContactRepositories { get; }
+
         Task<int> SaveAsync();
     }
 }

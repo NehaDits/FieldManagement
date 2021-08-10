@@ -32,7 +32,6 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateVendorAsync([FromBody] CreateVendorDTO model)
-        //=> BaseResult(await _uow.VendorRepositories.Save(model));
         {
             var user = _mapper.Map<CreateVendorDTO, AddVendorDTO>(model);
             user.CreatedBy = GetUserId();
@@ -71,12 +70,12 @@ namespace FieldMgt.API.Controllers
         /// <paramname="cancellationToken"></param>
         /// <returns></returns>
         [HttpPatch]
-        [Route("Update/{VendorId}")]
+        [Route("Update/{Id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Vendor), StatusCodes.Status200OK)]
         public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor, int Vendorid)
         {
-            var user = _mapper.Map<CreateVendorDTO, AddVendorDTO>(vendor);
+            var user = _mapper.Map<CreateVendorDTO, UpdateVendorDTO>(vendor);
             user.CreatedBy = GetUserId();
             user.CreatedOn = System.DateTime.Now;
             var vendorDetail = await _uow.VendorRepositories.UpdateVendorStatusAsync(user);

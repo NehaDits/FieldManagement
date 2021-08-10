@@ -34,8 +34,5 @@ namespace FieldMgt.Core.DTOs.Response
         public DateTime? CreatedOn { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
-        public IEnumerable<Country> countries { get; set; }
-        public IEnumerable<State> states { get; set; }
-        public IEnumerable<City> cities { get; set; }
     }
 }

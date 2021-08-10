@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FieldMgt.Core.DTOs.Request
 {
-    public class UpdateLeadDTO:BaseUpdateLeadDTO
+    public class UpdateVendorDTO
     {
-        public string LeadCompanyName { get; set; }
-        public string LeadDescription { get; set; }
-        public int LeadSource { get; set; }
-        public int LeadStatus { get; set; }
-        public int LeadStage { get; set; }
+        public int VendorId { get; set; }
+        public string VendorCompanyName { get; set; }
+        public string VendorOwnerorMD { get; set; }
+        public string VendorContactPersonName { get; set; }
+        public string VendorGSTNumber { get; set; }
+        public string VendorAccountNumber { get; set; }
+        public string VendorIFSCCode { get; set; }
+        public string VendorBankName { get; set; }
+        public string VendorBankBranch { get; set; }
         [StringLength(100, MinimumLength = 5)]
         public string PermanentAddress { get; set; }
         public int PermanentCity { get; set; }
@@ -30,11 +36,9 @@ namespace FieldMgt.Core.DTOs.Request
         public string PrimaryEmail { get; set; }
         [StringLength(100, MinimumLength = 8)]
         public string AlternateEmail { get; set; }
-        public string ModifiedBy { get; set; }
-        public DateTime? ModifiedOn { get; set; }
-    }
-    public class BaseUpdateLeadDTO
-    {
-        public int? LeadId { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+
     }
 }

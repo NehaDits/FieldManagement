@@ -9,10 +9,10 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface ILeadRepository
     {
-        Task<Lead> CreateLeadAsync(CreateLeadDTO model);
+        Task<Lead> CreateLeadAsync(AddLeadDTO model);
         IEnumerable<LeadResponseDTO> GetLeadsAsync();
         LeadResponseDTO GetLeadbyIdAsync(int id);
-        Task UpdateLeadStatusAsync(UpdateLeadDTO lead);
+        Task UpdateLeadAsync(UpdateLeadDTO lead);
         void UpdateLeadStatus(int Id, int Status, string modifiedBy);
     }
 }
