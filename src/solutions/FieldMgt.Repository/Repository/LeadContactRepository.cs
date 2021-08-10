@@ -18,17 +18,19 @@ namespace FieldMgt.Repository.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public LeadContactRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext)
+        private readonly UnitofWork _uow;
+        public LeadContactRepository(ApplicationDbContext dbContext, IMapper mapper,UnitofWork uow) : base(dbContext)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _uow = uow;
         }
         /// <summary>
         /// Create lead contact
         /// </summary>
         /// <paramname="model"></param>
         /// <returns></returns>
-        public async Task<LeadContact> CreateLeadContactAsync(CreateLeadContactDTO model) //=> await InsertAsync(model);
+        public async Task<LeadContact> CreateLeadContactAsync(AddLeadContactDTO model) //=> await InsertAsync(model);
         {
             try
             {
@@ -44,91 +46,105 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname="id"></param>
         /// <returns></returns>
-        public LeadContact GetLeadContactbyIdAsync(int id) //=> GetById(id);
+        public LeadContactReponseDTO GetLeadContactbyIdAsync(int id) //=> GetById(id);
         {
-            //var leadContact=_dbContext.LeadContacts.FirstOrDefault(x => x.LeadContactId==id);
-            //return leadContact;
-            var lead = _dbContext.LeadContacts
-                          .Join(_dbContext.Leads,  l=>l.LeadId , lead => lead.LeadId, (l, lead) => new { l, lead })
+            var leadContactReponse = _dbContext.LeadContacts
+                          .Join(_dbContext.Leads, l => l.LeadId, lead => lead.LeadId, (l, lead) => new { l, lead })
                           .Join(_dbContext.AddressDetails, p => p.l.AddressDetailId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.ContactDetails, cd => cd.p.l.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
                           .Where(x => x.cd.p.l.LeadContactId == id)
                           .Select(m => new LeadContactReponseDTO
                           {
                               LeadId = m.cd.p.l.LeadId,
-                              FirstName=m.cd.p.l.FirstName,
-                              LastName=m.cd.p.l.LastName,
-                              Gender= (int)(m.cd.p.l.Gender==0?0:m.cd.p.l.Gender),
-                              leadContactDTO = new CreateContactDetailDTO
-                              {
-                                  AlternateEmail = m.c.AlternateEmail,
-                                  PrimaryEmail = m.c.PrimaryEmail,
-                                  AlternatePhone = m.c.AlternatePhone,
-                                  PrimaryPhone = m.c.PrimaryPhone,
-                              },
-                              addressResponseDTO = new AddressResponseDTO
-                              {
-                                  ZipCode = m.cd.pc.ZipCode,
-                                  Address = m.cd.pc.Address,
-                                  CityId = m.cd.pc.CityId,
-                                  CountryId = m.cd.pc.CountryId,
-                                  StateId = m.cd.pc.StateId
-                              },
+                              FirstName = m.cd.p.l.FirstName,
+                              LastName = m.cd.p.l.LastName,
+                              Gender = (int)(m.cd.p.l.Gender == 0 ? 0 : m.cd.p.l.Gender),
+                              AlternateEmail = m.c.AlternateEmail,
+                              PrimaryEmail = m.c.PrimaryEmail,
+                              AlternatePhone = m.c.AlternatePhone,
+                              PrimaryPhone = m.c.PrimaryPhone,
+                              ZipCode = m.cd.pc.ZipCode,
+                              Address = m.cd.pc.Address,
+                              CityId = m.cd.pc.CityId,
+                              CountryId = m.cd.pc.CountryId,
+                              StateId = m.cd.pc.StateId,
                               CreatedOn = m.cd.p.l.CreatedOn,
                               CreatedBy = m.cd.p.l.CreatedBy
                           }).SingleOrDefault();
-            LeadContact leadContactReponse = _mapper.Map<LeadContact>(lead);
-            leadContactReponse.AddressDetail=_mapper.Map<AddressDetail>(lead.addressResponseDTO);
-            leadContactReponse.ContactDetail = _mapper.Map<ContactDetail>(lead.leadContactDTO);            
             return leadContactReponse;
         }
         /// <summary>
         /// Get the list of leadcontacts
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<LeadContact> GetLeadsAsync() //=> GetAll();
+        public IEnumerable<LeadContactReponseDTO> GetLeadsAsync() //=> GetAll();
         {
-            IEnumerable<LeadContactReponseDTO> leadContactList = _dbContext.LeadContacts
+            var leadContactList = _dbContext.LeadContacts
                           .Join(_dbContext.Leads, l => l.LeadId, lead => lead.LeadId, (l, lead) => new { l, lead })
                           .Join(_dbContext.AddressDetails, p => p.l.AddressDetailId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.ContactDetails, cd => cd.p.l.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
                           .Where(x => x.cd.p.l.IsActive == true)
                           .Select(m => new LeadContactReponseDTO
                           {
-                              LeadContactId=m.cd.p.l.LeadContactId,
+                              LeadContactId = m.cd.p.l.LeadContactId,
                               LeadId = m.cd.p.l.LeadId,
                               FirstName = m.cd.p.l.FirstName,
                               LastName = m.cd.p.l.LastName,
                               Gender = (int)(m.cd.p.l.Gender == 0 ? 0 : m.cd.p.l.Gender),
-                              leadContactDTO = new CreateContactDetailDTO
-                              {
-                                  AlternateEmail = m.c.AlternateEmail,
-                                  PrimaryEmail = m.c.PrimaryEmail,
-                                  AlternatePhone = m.c.AlternatePhone,
-                                  PrimaryPhone = m.c.PrimaryPhone,
-                              },
-                              addressResponseDTO=new AddressResponseDTO
-                              {
-                                  ZipCode = m.cd.pc.ZipCode,
-                                  Address = m.cd.pc.Address,
-                                  CityId = m.cd.pc.CityId,
-                                  CountryId = m.cd.pc.CountryId,
-                                  StateId = m.cd.pc.StateId
-                              },
+                              AlternateEmail = m.c.AlternateEmail,
+                              PrimaryEmail = m.c.PrimaryEmail,
+                              AlternatePhone = m.c.AlternatePhone,
+                              PrimaryPhone = m.c.PrimaryPhone,
+                              ZipCode = m.cd.pc.ZipCode,
+                              Address = m.cd.pc.Address,
+                              CityId = m.cd.pc.CityId,
+                              CountryId = m.cd.pc.CountryId,
+                              StateId = m.cd.pc.StateId,
                               CreatedOn = m.cd.p.l.CreatedOn,
-                              CreatedBy = m.cd.p.l.CreatedBy,
-                              country=_dbContext.Country.ToList(),
-                              state=_dbContext.State.ToList(),
-                              city = _dbContext.City.ToList()
+                              CreatedBy = m.cd.p.l.CreatedBy
                           });
-            var attachments = _mapper.Map<IEnumerable<LeadContact>>(leadContactList);
-            return attachments;
+            return leadContactList;
         }
         /// <summary>
         /// Update the single record of lead contact
         /// </summary>
         /// <paramname="leadContact"></param>
         /// <returns></returns>
-        public LeadContact UpdateLeadContactStatusAsync(LeadContact leadContact) => Update(leadContact);
+        public async Task UpdateLeadContactStatusAsync(LeadContact leadContact) //=> Update(leadContact);
+        {
+            try
+            {
+                await CollectionsAsync<Task>(StoreProcedures.UpdateLead, leadContact);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Delete lead contact
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
+        public LeadContact DeleteLeadContact(int id, string deletedBy)
+        {
+            try
+            {
+                var currentLead = _dbContext.LeadContacts.SingleOrDefault(a => a.LeadContactId == id);
+                currentLead.IsDeleted = true;
+                currentLead.DeletedBy = deletedBy;
+                currentLead.DeletedOn = System.DateTime.Now;
+                int permanentAddress = (int)currentLead.AddressDetailId;
+                int contactDetail = (int)currentLead.ContactDetailId;
+                _uow.AddressRepositories.DeleteAddress(permanentAddress, deletedBy);
+                _uow.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
+                return Update(currentLead);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -95,7 +95,7 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname="vendor"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(AddVendorDTO vendor) => await CollectionsAsync<Vendor>(StoreProcedures.UpdateVendorDetail, vendor);
+        public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(UpdateVendorDTO vendor) => await CollectionsAsync<Vendor>(StoreProcedures.UpdateVendorDetail, vendor);
 
         /// <summary>
         /// To save the vendor details

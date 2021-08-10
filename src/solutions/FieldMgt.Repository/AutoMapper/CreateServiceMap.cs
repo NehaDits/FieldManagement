@@ -38,6 +38,13 @@ namespace FieldMgt.Repository.AutoMapper
                  .ForMember(dest => dest.Email, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
             CreateMap<CreateVendorDTO, AddVendorDTO>().ReverseMap();
+            CreateMap<CreateVendorDTO, UpdateVendorDTO>().ReverseMap();
+            CreateMap<CreateClientContactDTO, AddClientContactDTO>().ReverseMap();
+            CreateMap<CreateClientContactDTO, UpdateClientContactDTO>().ReverseMap();
+            CreateMap<UpdateVendorDTO, AddVendorDTO>().ReverseMap();
+            CreateMap<AddLeadDTO, CreateLeadDTO>().ReverseMap();
+            CreateMap<UpdateLeadDTO, LeadUpdateDTO>().ReverseMap();
+            CreateMap<AddLeadContactDTO, CreateLeadContactDTO>().ReverseMap();
         }
     }
     public static class IgnoreNoMapExtensions

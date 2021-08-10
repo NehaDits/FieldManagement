@@ -8,6 +8,8 @@ using System.Threading;
 using FieldMgt.Repository.Enums;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using FieldMgt.Core.DTOs.Response;
+using System.Threading.Tasks;
 
 namespace FieldMgt.API.Controllers
 {
@@ -26,16 +28,19 @@ namespace FieldMgt.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CreateLeadContactAsync(CreateLeadContactDTO model)
+        public async Task<IActionResult> CreateLeadContactAsync(CreateLeadContactDTO model)
         {
-            model.CreatedBy = GetUserId();
-            return BaseResult(_uow.LeadContactRepositories.CreateLeadContactAsync(model));
+            var addClientContact = _mapper.Map<CreateLeadContactDTO, AddLeadContactDTO>(model);
+            addClientContact.CreatedBy = GetUserId();
+            addClientContact.CreatedOn = System.DateTime.Now;
+            addClientContact.IsActive = true;
+            return BaseResult(await _uow.LeadContactRepositories.CreateLeadContactAsync(addClientContact));
         }
-        [Route("List")]
+        [Route("GetList")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IEnumerable<LeadContact> GetLeadContactsAsync()
+        public IEnumerable<LeadContactReponseDTO> GetLeadContactsAsync()
         {
             return _uow.LeadContactRepositories.GetLeadsAsync();
         }
@@ -56,11 +61,20 @@ namespace FieldMgt.API.Controllers
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public LeadContact UpdateLeadStatusAsync(LeadContact leadContact)
+        public async Task UpdateLeadStatusAsync(LeadContact leadContact)
         {
             var updated = _uow.LeadContactRepositories.UpdateLeadContactStatusAsync(leadContact);
-            _uow.SaveAsync();
-            return updated;
+            await _uow.SaveAsync();
+        }
+        [Route("Delete/{Id}")]
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> DeleteLead(int Id)
+        {
+            string deletedBy = GetUserId();
+            _uow.LeadContactRepositories.DeleteLeadContact(Id, deletedBy);
+            return BaseResult(await _uow.SaveAsync());
         }
     }
 }
