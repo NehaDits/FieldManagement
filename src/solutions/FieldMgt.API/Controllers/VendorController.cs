@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FieldMgt.Core.DTOs.Request;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using AutoMapper;
 
 namespace FieldMgt.API.Controllers
 {
@@ -14,9 +15,11 @@ namespace FieldMgt.API.Controllers
     public class VendorController : BaseController
     {
         private readonly IUnitofWork _uow;
-        public VendorController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        private readonly IMapper _mapper;
+        public VendorController(IUnitofWork uow, IHttpContextAccessor httpContextAccessor, IMapper mapper) : base(httpContextAccessor)
         {
             _uow = uow;
+            _mapper = mapper;
         }
         /// <summary>
         /// Use to create vendor
@@ -29,7 +32,15 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateVendorAsync([FromBody] CreateVendorDTO model)
-        => BaseResult(await _uow.VendorRepositories.Save(model));
+        //=> BaseResult(await _uow.VendorRepositories.Save(model));
+        {
+            var user = _mapper.Map<CreateVendorDTO, AddVendorDTO>(model);
+            user.CreatedBy = GetUserId();
+            user.CreatedOn = System.DateTime.Now;
+            user.IsActive= true;
+            return BaseResult(await _uow.VendorRepositories.Save(user));
+        }
+
         /// <summary>
         /// Get vendor detail list
         /// </summary>
@@ -65,9 +76,10 @@ namespace FieldMgt.API.Controllers
         [ProducesResponseType(typeof(Vendor), StatusCodes.Status200OK)]
         public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor, int Vendorid)
         {
-            vendor.VendorId = Vendorid;
-            vendor.CreatedBy = GetUserId();
-            var vendorDetail = await _uow.VendorRepositories.UpdateVendorStatusAsync(vendor);
+            var user = _mapper.Map<CreateVendorDTO, AddVendorDTO>(vendor);
+            user.CreatedBy = GetUserId();
+            user.CreatedOn = System.DateTime.Now;
+            var vendorDetail = await _uow.VendorRepositories.UpdateVendorStatusAsync(user);
             return vendorDetail;
         }
 

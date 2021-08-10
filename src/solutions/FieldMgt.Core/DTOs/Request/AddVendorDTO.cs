@@ -1,10 +1,13 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FieldMgt.Core.DTOs.Request
 {
-    public class CreateVendorDTO
+    public class AddVendorDTO
     {
         public string VendorCompanyName { get; set; }
         public string VendorOwnerorMD { get; set; }
@@ -32,5 +35,8 @@ namespace FieldMgt.Core.DTOs.Request
         public string PrimaryEmail { get; set; }
         [StringLength(100, MinimumLength = 8)]
         public string AlternateEmail { get; set; }
+        public bool IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

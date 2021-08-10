@@ -95,19 +95,18 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname="vendor"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(CreateVendorDTO vendor) => await CollectionsAsync<Vendor>(StoreProcedures.UpdateVendorDetail, vendor);
+        public async Task<IEnumerable<Vendor>> UpdateVendorStatusAsync(AddVendorDTO vendor) => await CollectionsAsync<Vendor>(StoreProcedures.UpdateVendorDetail, vendor);
 
         /// <summary>
         /// To save the vendor details
         /// </summary>
         /// <paramname="model"></param>
         /// <returns></returns>
-        public async Task<Vendor> Save(CreateVendorDTO model)
+        public async Task<Vendor> Save(AddVendorDTO model)
         {
-            Vendor detail = _mapper.Map<CreateVendorDTO, Vendor>(model);
             try
             {
-                return await CommandAsync<Vendor>(StoreProcedures.UpdateVendorDetail, detail);
+                return await CommandAsync<Vendor>(StoreProcedures.SaveVendorDetail, model);
             }
             catch (Exception ex)
             {
