@@ -18,21 +18,23 @@ namespace FieldMgt.Repository.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public LeadContactRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext)
+        private readonly UnitofWork _uow;
+        public LeadContactRepository(ApplicationDbContext dbContext, IMapper mapper,UnitofWork uow) : base(dbContext)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _uow = uow;
         }
         /// <summary>
         /// Create lead contact
         /// </summary>
         /// <paramname="model"></param>
         /// <returns></returns>
-        public async Task<AddLeadContactDTO> CreateLeadContactAsync(AddLeadContactDTO model) //=> await InsertAsync(model);
+        public async Task<LeadContact> CreateLeadContactAsync(AddLeadContactDTO model) //=> await InsertAsync(model);
         {
             try
             {
-                return await CommandAsync<AddLeadContactDTO>(StoreProcedures.SaveLeadContact, model);
+                return await CommandAsync<LeadContact>(StoreProcedures.SaveLeadContact, model);
             }
             catch (Exception ex)
             {
@@ -113,6 +115,31 @@ namespace FieldMgt.Repository.Repository
             try
             {
                 await CollectionsAsync<Task>(StoreProcedures.UpdateLead, leadContact);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Delete lead contact
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
+        public LeadContact DeleteLeadContact(int id, string deletedBy)
+        {
+            try
+            {
+                var currentLead = _dbContext.LeadContacts.SingleOrDefault(a => a.LeadContactId == id);
+                currentLead.IsDeleted = true;
+                currentLead.DeletedBy = deletedBy;
+                currentLead.DeletedOn = System.DateTime.Now;
+                int permanentAddress = (int)currentLead.AddressDetailId;
+                int contactDetail = (int)currentLead.ContactDetailId;
+                _uow.AddressRepositories.DeleteAddress(permanentAddress, deletedBy);
+                _uow.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
+                return Update(currentLead);
             }
             catch (Exception ex)
             {
