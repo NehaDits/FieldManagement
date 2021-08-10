@@ -15,7 +15,7 @@ namespace FieldMgt.Core.Interfaces
         Task<LeadContact> CreateLeadContactAsync(AddLeadContactDTO model);
         IEnumerable<LeadContactReponseDTO> GetLeadsAsync();
         LeadContactReponseDTO GetLeadContactbyIdAsync(int id);
-        Task UpdateLeadContactStatusAsync(LeadContact lead);
+        Task UpdateLeadContactStatusAsync(UpdateLeadContact lead);
         LeadContact DeleteLeadContact(int Id, string deletedBy);
     }
 }

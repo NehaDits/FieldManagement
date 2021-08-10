@@ -110,11 +110,11 @@ namespace FieldMgt.Repository.Repository
         /// </summary>
         /// <paramname="leadContact"></param>
         /// <returns></returns>
-        public async Task UpdateLeadContactStatusAsync(LeadContact leadContact) //=> Update(leadContact);
+        public async Task UpdateLeadContactStatusAsync(UpdateLeadContact leadContact) //=> Update(leadContact);
         {
             try
             {
-                await CollectionsAsync<Task>(StoreProcedures.UpdateLead, leadContact);
+                await CollectionsAsync<Task>(StoreProcedures.UpdateLeadContact, leadContact);
             }
             catch (Exception ex)
             {
