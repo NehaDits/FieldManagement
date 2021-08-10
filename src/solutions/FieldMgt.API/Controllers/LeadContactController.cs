@@ -28,13 +28,13 @@ namespace FieldMgt.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public IActionResult CreateLeadContactAsync(CreateLeadContactDTO model)
+        public async Task<IActionResult> CreateLeadContactAsync(CreateLeadContactDTO model)
         {
             var addClientContact = _mapper.Map<CreateLeadContactDTO, AddLeadContactDTO>(model);
             addClientContact.CreatedBy = GetUserId();
             addClientContact.CreatedOn = System.DateTime.Now;
             addClientContact.IsActive = true;
-            return BaseResult(_uow.LeadContactRepositories.CreateLeadContactAsync(addClientContact));
+            return BaseResult(await _uow.LeadContactRepositories.CreateLeadContactAsync(addClientContact));
         }
         [Route("GetList")]
         [HttpGet]
@@ -65,6 +65,16 @@ namespace FieldMgt.API.Controllers
         {
             var updated = _uow.LeadContactRepositories.UpdateLeadContactStatusAsync(leadContact);
             await _uow.SaveAsync();
+        }
+        [Route("Delete/{Id}")]
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> DeleteLead(int Id)
+        {
+            string deletedBy = GetUserId();
+            _uow.LeadContactRepositories.DeleteLeadContact(Id, deletedBy);
+            return BaseResult(await _uow.SaveAsync());
         }
     }
 }

@@ -14,5 +14,7 @@ namespace FieldMgt.Core.Interfaces
         LeadResponseDTO GetLeadbyIdAsync(int id);
         Task UpdateLeadAsync(UpdateLeadDTO lead);
         void UpdateLeadStatus(int Id, int Status, string modifiedBy);
+        Lead DeleteLead(int Id, string deletedBy);
+        Lead UpdateLeadStage(int Id, int Status, string modifiedBy);
     }
 }

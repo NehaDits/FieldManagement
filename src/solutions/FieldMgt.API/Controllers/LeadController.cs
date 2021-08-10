@@ -15,12 +15,12 @@ using Microsoft.AspNetCore.Http;
 namespace FieldMgt.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]    
+    [Route("api/[controller]")]
     public class LeadController : BaseController
     {
         private readonly IUnitofWork _uow;
         private readonly IMapper _mapper;
-        public LeadController(IUnitofWork uow, IMapper mapper,IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public LeadController(IUnitofWork uow, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _uow = uow;
             _mapper = mapper;
@@ -53,7 +53,7 @@ namespace FieldMgt.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult GetLeadByIdAsync(int id)
         {
-            var result= _uow.LeadServices.GetLeadbyIdAsync(id);
+            var result = _uow.LeadServices.GetLeadbyIdAsync(id);
             if (result == null)
             {
                 return BadRequest(ResponseMessages.LeadNotFound);
@@ -77,13 +77,32 @@ namespace FieldMgt.Controllers
         [HttpPatch]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateLeadStatus(int Id,int Status)
+        public async Task<IActionResult> UpdateLeadStatus(int Id, int Status)
         {
-            string modifiedBy = GetUserId(); 
+            string modifiedBy = GetUserId();
             _uow.LeadServices.UpdateLeadStatus(Id, Status, modifiedBy);
             return BaseResult(await _uow.SaveAsync());
         }
 
-
+        [Route("Delete/{Id}")]
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> DeleteLead(int Id)
+        {
+            var deletedBy = GetUserId();
+            _uow.LeadServices.DeleteLead(Id, deletedBy);
+            return BaseResult(await _uow.SaveAsync());
+        }
+        [Route("UpdateLeadStage/{Id}/{Stage}")]
+        [HttpPatch]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateLeadStage(int Id, int Stage)
+        {
+            string modifiedBy = GetUserId();
+            _uow.LeadServices.UpdateLeadStage(Id, Stage, modifiedBy);
+            return BaseResult(await _uow.SaveAsync());
+        }
     }
 }

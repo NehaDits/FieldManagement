@@ -12,9 +12,10 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface ILeadContactRepository
     {
-        Task<AddLeadContactDTO> CreateLeadContactAsync(AddLeadContactDTO model);
+        Task<LeadContact> CreateLeadContactAsync(AddLeadContactDTO model);
         IEnumerable<LeadContactReponseDTO> GetLeadsAsync();
         LeadContactReponseDTO GetLeadContactbyIdAsync(int id);
         Task UpdateLeadContactStatusAsync(LeadContact lead);
+        LeadContact DeleteLeadContact(int Id, string deletedBy);
     }
 }

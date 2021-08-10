@@ -4,7 +4,6 @@ using FieldMgt.Core.Interfaces;
 using FieldMgt.Core.DomainModels;
 using FieldMgt.Repository.UOW;
 using System.Threading.Tasks;
-using System.Threading;
 using FieldMgt.Core.DTOs.Request;
 using AutoMapper;
 using FieldMgt.Repository.Common.StoreProcedures;
@@ -17,10 +16,12 @@ namespace FieldMgt.Repository.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public LeadRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext)
+        private readonly UnitofWork _unitofWork;
+        public LeadRepository(ApplicationDbContext dbContext, IMapper mapper, UnitofWork unitofWork) : base(dbContext)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _unitofWork = unitofWork;
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace FieldMgt.Repository.Repository
                           .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
                           .Join(_dbContext.ContactDetails, cd => cd.a.p.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
-                          .Where(x => x.cd.a.p.IsActive == true)
+                          .Where(x => x.cd.a.p.IsActive == true && x.cd.a.p.IsDeleted != true)
                           .Select(m => new LeadResponseDTO
                           {
                               LeadId=m.cd.a.p.LeadId,
@@ -93,7 +94,7 @@ namespace FieldMgt.Repository.Repository
                           .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
                           .Join(_dbContext.ContactDetails, cd => cd.a.p.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
-                          .Where(x => x.cd.a.p.LeadId == id)
+                          .Where(x => x.cd.a.p.LeadId == id && x.cd.a.p.IsActive==true && x.cd.a.p.IsDeleted!=true)
                           .Select(m => new LeadResponseDTO
                           {
                               LeadId = m.cd.a.p.LeadId,
@@ -161,6 +162,48 @@ namespace FieldMgt.Repository.Repository
             {
                 throw new Exception(ex.Message);
             }            
+        }
+        /// <summary>
+        /// Delete lead from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="deletedBy"></param>
+        /// <returns></returns>
+        public Lead DeleteLead(int id,string deletedBy)
+        {
+            try
+            {
+                var currentLead = _dbContext.Leads.SingleOrDefault(a => a.LeadId == id);
+                currentLead.IsDeleted = true;
+                currentLead.DeletedBy = deletedBy;
+                currentLead.DeletedOn = System.DateTime.Now;
+                int permanentAddress = (int)currentLead.PermanentAddressId;
+                int correspondenceAddress = (int)currentLead.BillingAddressId;
+                int contactDetail = (int)currentLead.ContactDetailId;
+                _unitofWork.AddressRepositories.DeleteAddress(permanentAddress, deletedBy);
+                _unitofWork.AddressRepositories.DeleteAddress(correspondenceAddress, deletedBy);
+                _unitofWork.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
+                return Update(currentLead);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public Lead UpdateLeadStage(int Id, int Stage, string modifiedBy)
+        {
+            try
+            {
+                Lead lead = _dbContext.Leads.FirstOrDefault(a => a.LeadId == Id);
+                lead.LeadStage = Stage;
+                lead.ModifiedBy = modifiedBy;
+                lead.ModifiedOn = DateTime.Now;
+                return Update(lead);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
