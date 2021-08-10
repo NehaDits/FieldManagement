@@ -22,10 +22,8 @@ namespace FieldMgt.Repository.Repository
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
-
         private IConfiguration _configuration;
         private ApplicationDbContext _dbContext;
-
         /// <summary>
         /// 
         /// </summary>
@@ -38,7 +36,6 @@ namespace FieldMgt.Repository.Repository
             _configuration = configuration;
             _dbContext = dbcontext;
         }
-
         /// <summary>
         /// Create a User with given UserName and Password
         /// To use for user registeration
@@ -53,6 +50,7 @@ namespace FieldMgt.Repository.Repository
                 {
                     Email = model.Email,
                     UserName = model.Email,
+                    StaffOrganizationId=model.StaffOrganizationId,
                     CreatedBy = model.CreatedBy,
                     CreatedOn = model.CreatedOn,
                     IsActive = true,
@@ -73,7 +71,6 @@ namespace FieldMgt.Repository.Repository
                 throw new Exception(ex.Message);
             }
         }        
-
         /// <summary>
         /// Logins a user and Generates a JWT authentication Token
         /// Use for login
@@ -91,7 +88,7 @@ namespace FieldMgt.Repository.Repository
                     IsSuccess = false
                 };
             }
-            else if (!user.IsActive)
+            else if (!user.IsActive || user.StaffOrganizationId != model.StaffOrganizationId)
             {
                 return new LoginManagerResponse
                 {
@@ -99,6 +96,7 @@ namespace FieldMgt.Repository.Repository
                     IsSuccess = false
                 };
             }
+            
             var result = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!result)
                 return new LoginManagerResponse
@@ -106,7 +104,6 @@ namespace FieldMgt.Repository.Repository
                     Message = ResponseMessages.InvalidPassword,
                     IsSuccess = false
                 };
-
             IList<string> role = await _userManager.GetRolesAsync(user);
             string userrole = role.FirstOrDefault();
             if (userrole == null)
@@ -123,7 +120,7 @@ namespace FieldMgt.Repository.Repository
                 new Claim(ClaimTypes.NameIdentifier,user.Id),
                 new Claim(ClaimTypes.Role,userrole),
                 new Claim("UserName",user.UserName)
-        };
+            };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
             var token = new JwtSecurityToken(
                 issuer: _configuration["AuthSettings:Issuer"],
@@ -132,7 +129,6 @@ namespace FieldMgt.Repository.Repository
                 expires: DateTime.Now.AddDays(30),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
             string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
-
             var flag = await _userManager.IsInRoleAsync(user, "Admin");
             return new LoginManagerResponse
             {
@@ -143,7 +139,6 @@ namespace FieldMgt.Repository.Repository
                 Role = userrole
             };
         }
-
         /// <summary>
         /// Soft delete a User
         /// soft delete user 

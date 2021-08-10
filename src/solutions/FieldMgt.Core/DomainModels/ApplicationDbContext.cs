@@ -47,6 +47,7 @@ namespace FieldMgt.Core.DomainModels
         public DbSet<JobOrder> JobOrders { get; set; }
         public DbSet<OrderImplementationDetail> OrderImplementationDetails { get; set; }
         public DbSet<VendorProducts> VendorProducts { get; set; }
+        public DbSet<StaffOrganization> StaffOrganizations { get; set; }
         protected virtual void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         {
             OnModelCreating(modelBuilder);
@@ -768,6 +769,23 @@ namespace FieldMgt.Core.DomainModels
                 .WithMany(fk => fk.Ref92Navigation)
                 .HasForeignKey(fk => fk.DeletedBy)
                 .HasConstraintName("VPDeletedBy_FK");
+            });
+            modelBuilder.Entity<StaffOrganization>(act =>
+            {
+                act.HasOne(field => field.StaffOrganizationCreatedBy)
+                .WithMany(fk => fk.Ref99Navigation)
+                .HasForeignKey(fk => fk.CreatedBy)
+                .HasConstraintName("SOCreatedBy_FK");
+
+                act.HasOne(field => field.StaffOrganizationModifiedBy)
+                .WithMany(fk => fk.Ref100Navigation)
+                .HasForeignKey(fk => fk.ModifiedBy)
+                .HasConstraintName("SOModifiedBy_FK");
+
+                act.HasOne(field => field.StaffOrganizationDeletedBy)
+                .WithMany(fk => fk.Ref101Navigation)
+                .HasForeignKey(fk => fk.DeletedBy)
+                .HasConstraintName("SODeletedBy_FK");
             });
             modelBuilder.Entity<Notes>(act =>
             {
