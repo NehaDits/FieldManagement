@@ -38,12 +38,12 @@ namespace FieldMgt.API.Controllers
         /// Get Client detail list
         /// </summary>
         /// <returns></returns>
-        //[HttpGet]
-        //[Route("GetList")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(IEnumerable<Client>), StatusCodes.Status200OK)]
-        //public IActionResult GetClientAsync()
-        //    => Ok(_uow.ClientRepositories.GetClientsAsync());
+        [HttpGet]
+        [Route("GetList")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(IEnumerable<Client>), StatusCodes.Status200OK)]
+        public IActionResult GetClientAsync()
+            => Ok(_uow.ClientRepositories.GetClientsAsync());
 
         /// <summary>
         /// Pass Client id and returns single record of Client
