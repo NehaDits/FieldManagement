@@ -16,12 +16,12 @@ namespace FieldMgt.Core.UOW
         IAddressDetailRepository AddressRepositories { get; }
         IContactDetailRepository ContactDetailRepositories { get; }
         IServiceProviderRepository ServiceProviderRepositories { get; }
-        //IClientRepository ClientRepositories { get; }
+        IClientRepository ClientRepositories { get; }
         ICommonRepository CommonRepositories { get; }
         IServiceProviderLocationRepository ServiceProviderLocationRepositories { get; }
         IJobOrderRepository JobOrderRepositories { get; }
         IJobOrderRequirementRepository JobOrderRequirementRepositories { get; }
-        //IClientContactRepository ClientContactRepositories { get; }
+        IClientContactRepository ClientContactRepositories { get; }
         IEstimationRepository EstimationRepositories{get;}
         Task<int> SaveAsync();
     }
