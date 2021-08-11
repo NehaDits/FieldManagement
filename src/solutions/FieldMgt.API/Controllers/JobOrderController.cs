@@ -33,8 +33,8 @@ namespace FieldMgt.API.Controllers
         {
             var jobOrder = _mapper.Map<CreateJobOrderRequestDTO, CreateJobOrderDTO>(model);
             jobOrder.CreatedBy = GetUserId();
-            await _uow.JobOrderRepositories.CreateJobOrder(jobOrder);
-            return BaseResult(await _uow.SaveAsync());
+            return BaseResult(await _uow.JobOrderRepositories.CreateJobOrder(jobOrder));
+            //return BaseResult(await _uow.SaveAsync());
         }
         [Route("ListJobOrders")]
         [HttpGet]
@@ -44,7 +44,7 @@ namespace FieldMgt.API.Controllers
         {
             return _uow.JobOrderRepositories.GetJobOrderAsync();
         }
-        [Route("ByJobOrderId/{JobOrderId}")]
+        [Route("ByJobOrderId/{jobOrderId}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(JobOrderResponseDTO), StatusCodes.Status200OK)]
@@ -57,12 +57,12 @@ namespace FieldMgt.API.Controllers
         [HttpPatch]
         [ProducesResponseType(typeof(JobOrderResponseDTO), StatusCodes.Status200OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public JobOrderResponseDTO UpdateJobOrder(UpdateJobOrderRequestDTO model)
+        public async Task UpdateJobOrder(UpdateJobOrderRequestDTO model)
         {
             var jobOrder = _mapper.Map<UpdateJobOrderRequestDTO, UpdateJobOrderDTO>(model);
             jobOrder.ModifiedBy = GetUserId();
             jobOrder.ModifiedOn = System.DateTime.Now;
-            return _uow.JobOrderRepositories.UpdateJobOrderAsync(jobOrder);
+            await _uow.JobOrderRepositories.UpdateJobOrderAsync(jobOrder);
         }
         [Route("Delete/{jobOrderId}")]
         [HttpPatch]

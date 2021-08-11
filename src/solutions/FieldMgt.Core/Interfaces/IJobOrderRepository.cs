@@ -12,10 +12,10 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface IJobOrderRepository
     {
-        Task CreateJobOrder(CreateJobOrderDTO model);
+        Task<JobOrder> CreateJobOrder(CreateJobOrderDTO model);
         IEnumerable<JobOrderResponseDTO> GetJobOrderAsync();
         JobOrderResponseDTO GetJobOrderbyIdAsync(int id);
-        JobOrderResponseDTO UpdateJobOrderAsync(UpdateJobOrderDTO jobOrderUpdate);
+        Task UpdateJobOrderAsync(UpdateJobOrderDTO jobOrderUpdate);
         JobOrderResponseDTO DeleteJobOrder(int jobOrderId, string deletedBy);
     }
 }
