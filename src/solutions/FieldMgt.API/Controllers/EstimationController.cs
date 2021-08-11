@@ -23,51 +23,52 @@ namespace FieldMgt.API.Controllers
             _mapper = mapper;
         }
         [HttpPost]
-        [Route("Create")]
+        [Route("AddEstimation")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateClienttContactAsync(CreateClientContactDTO model)
+        public async Task<IActionResult> CreateEstimationOrder(CreateEstimationDTO model)
         {
-            var addClientContact = _mapper.Map<CreateClientContactDTO, AddClientContactDTO>(model);
-            addClientContact.CreatedBy = GetUserId();
-            addClientContact.CreatedOn = System.DateTime.Now;
-            addClientContact.IsActive = true;
-            return BaseResult(await _uow.ClientContactRepositories.CreateClientContactAsync(addClientContact));
+            var Estimation = _mapper.Map<CreateEstimationDTO, SaveEstimationDTO>(model);
+            Estimation.CreatedBy = GetUserId();
+            await _uow.EstimationRepositories.CreateEstimation(Estimation);
+            return BaseResult(await _uow.SaveAsync());
         }
-
+        [Route("List")]
         [HttpGet]
-        [Route("GetList")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(IEnumerable<ClientContact>), StatusCodes.Status200OK)]
-        public IActionResult GetClientContactAsync()
-            => Ok(_uow.ClientContactRepositories.GetClientContactList());
-
-        [HttpGet]
-        [Route("ById/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ClientContact), StatusCodes.Status200OK)]
-        public IActionResult GetClientContactByIdAsync(int id)
-            => BaseResult<ClientContactResponseDTO>(_uow.ClientContactRepositories.GetClientContactbyIdAsync(id));
-
+        [ProducesResponseType(typeof(IEnumerable<EstimationSaveDTO>), StatusCodes.Status200OK)]
+        public IEnumerable<EstimationSaveDTO> GetEstimationAsync()
+        {
+            return _uow.EstimationRepositories.GetEstimationAsync();
+        }
+        [Route("ById/{Id}")]
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(EstimationSaveDTO), StatusCodes.Status200OK)]
+        public EstimationSaveDTO GetEstimationById(int EstimationId)
+        {
+            var result = _uow.EstimationRepositories.GetEstimationbyIdAsync(EstimationId);
+            return result;
+        }
+        [Route("UpdateEstimation")]
         [HttpPatch]
-        [Route("Update/{Id}")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ClientContact), StatusCodes.Status200OK)]
-        public async Task UpdateClientStatusAsync(CreateClientContactDTO clientContact, int Id)
+        [ProducesResponseType(typeof(EstimationSaveDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public EstimationSaveDTO UpdateEstimation(UpdateEstimationDTO model)
         {
-            var user = _mapper.Map<CreateClientContactDTO, UpdateClientContactDTO>(clientContact);
-            user.ClientContactId = Id;
-            user.ModifiedBy = GetUserId();
-            user.ModifiedOn = System.DateTime.Now;
-            await _uow.ClientContactRepositories.UpdateClientContact(user);
+            var Estimation = _mapper.Map<UpdateEstimationDTO, UpdateEstimationsDTO>(model);
+            Estimation.ModifiedBy = GetUserId();
+            Estimation.ModifiedOn = System.DateTime.Now;
+            return _uow.EstimationRepositories.UpdateEstimationAsync(Estimation);
         }
-
-        [HttpDelete]
-        [Route("DeleteEstimation/{Id}")]
-        public async Task<IActionResult> DeleteClientContact(int clientContactId)
+        [Route("Delete/{Id}")]
+        [HttpPatch]
+        [ProducesResponseType(typeof(Estimation), StatusCodes.Status200OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> DeleteEstimation(int EstimationId)
         {
             var deletedBy = GetUserId();
-            _uow.ClientContactRepositories.DeleteClientContact(clientContactId, deletedBy);
+            var Estimation = _uow.EstimationRepositories.DeleteEstimation(EstimationId, deletedBy);
             return BaseResult(await _uow.SaveAsync());
         }
     }

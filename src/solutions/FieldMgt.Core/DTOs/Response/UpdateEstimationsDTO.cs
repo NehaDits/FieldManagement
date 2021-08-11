@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FieldMgt.Core.DTOs.Request
+namespace FieldMgt.Core.DTOs.Response
 {
-    public class SaveEstimationDTO
+   public class UpdateEstimationsDTO
     {
+        public int EstimationId { get; set; }
         public decimal? EstimationAmount { get; set; }
         public int JobOrderID { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime? CreatedOn { get; set; }
-        //public bool IsActive { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

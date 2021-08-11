@@ -8,10 +8,10 @@ namespace FieldMgt.Core.Interfaces
 {
     public interface IEstimationRepository
     {
-        Task<ClientContact> CreateClientContactAsync(AddClientContactDTO model);
-        IEnumerable<ClientContactResponseDTO> GetClientContactList();
-        ClientContactResponseDTO GetClientContactbyIdAsync(int id);
-        Task UpdateClientContact(UpdateClientContactDTO clientContact);
-        Estimation DeleteClientContact(int clientContactId, string deletedBy);
+        Task CreateEstimation(SaveEstimationDTO model);
+        IEnumerable<EstimationSaveDTO> GetEstimationAsync();
+        EstimationSaveDTO GetEstimationbyIdAsync(int id);
+        EstimationSaveDTO UpdateEstimationAsync(UpdateEstimationsDTO jobOrderUpdate);
+        EstimationSaveDTO DeleteEstimation(int jobOrderId, string deletedBy);
     }
 }
