@@ -17,7 +17,7 @@ namespace FieldMgt.Core.DomainModels
         public DbSet<Lead> Leads { get; set; }
         public DbSet<LeadContact> LeadContacts { get; set; }
         public DbSet<City> City { get; set; }
-       // public DbSet<Client> Clients { get; set; }
+        public DbSet<Client> Clients { get; set; }
         public DbSet<Country> Country { get; set; }
         public DbSet<State> State { get; set; }
         public DbSet<Notes> Notes { get; set; }

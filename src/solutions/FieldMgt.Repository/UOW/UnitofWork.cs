@@ -23,12 +23,12 @@ namespace FieldMgt.Repository.UOW
             AddressRepositories = new AddressDetailRepository(_dbContext, this, mapper);
             ContactDetailRepositories = new ContactDetailRepository(_dbContext);
             ServiceProviderRepositories = new ServiceProviderRepository(_dbContext,this,mapper);
-            //ClientRepositories = new ClientRepository(_dbContext, this, mapper);
+            ClientRepositories = new ClientRepository(_dbContext, this, mapper);
             CommonRepositories = new CommonRepository(_dbContext, this, mapper);
             ServiceProviderLocationRepositories = new ServiceProviderLocationRepository(_dbContext, this);
             JobOrderRepositories = new JobOrderRepository(_dbContext, this, mapper);
             JobOrderRequirementRepositories = new JobOrderRequirementRepository(_dbContext, this, mapper);
-           //ClientContactRepositories = new ClientContactRepository(_dbContext, mapper,this);
+            ClientContactRepositories = new ClientContactRepository(_dbContext, mapper,this);
             EstimationRepositories=new EstimationRepository(_dbContext, mapper, this);
         }
         public ILeadRepository LeadServices { get; }
@@ -40,12 +40,12 @@ namespace FieldMgt.Repository.UOW
         public IAddressDetailRepository AddressRepositories { get; }  
         public IContactDetailRepository ContactDetailRepositories { get; }
         public IServiceProviderRepository ServiceProviderRepositories { get; }
-        //public IClientRepository ClientRepositories { get; }
+        public IClientRepository ClientRepositories { get; }
         public ICommonRepository CommonRepositories { get; }
         public IServiceProviderLocationRepository ServiceProviderLocationRepositories { get; }
         public IJobOrderRepository JobOrderRepositories { get; }
         public IJobOrderRequirementRepository JobOrderRequirementRepositories { get; }
-        //public IClientContactRepository ClientContactRepositories { get; }
+        public IClientContactRepository ClientContactRepositories { get; }
         public IEstimationRepository EstimationRepositories { get; }
         public async Task<int> SaveAsync()
         {
