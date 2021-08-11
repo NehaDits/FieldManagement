@@ -21,5 +21,7 @@
         public static string SaveClientContact = "sp_CreateClientContact";
         public static string UpdateClientContact = "sp_UpdateClientContact";
         public static string UpdateLeadContact = "sp_UpdateLeadContact";
+        public static string CreateJobOrder = "sp_CreateJobOrder";
+        public static string UpdateJobOrder = "sp_UpdateJobOrder";
     }
 }

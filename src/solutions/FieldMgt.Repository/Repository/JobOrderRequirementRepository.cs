@@ -103,6 +103,7 @@ namespace FieldMgt.Repository.Repository
         /// <returns></returns>
         public IEnumerable<JobOrderRequirementResponseDTO> GetJobOrderRequirement()
         {
+           
             var jobOrderRequirement = _dbContext.JobOrderRequirements.Where(x => x.IsDeleted != true);
             //var jobOrderRequirement = GetAll();
             foreach (var j in jobOrderRequirement)

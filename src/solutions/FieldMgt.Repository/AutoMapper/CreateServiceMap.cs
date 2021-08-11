@@ -30,6 +30,7 @@ namespace FieldMgt.Repository.AutoMapper
             CreateMap<CreateJobOrderDTO, JobOrder>().ReverseMap();
             CreateMap<JobOrder, JobOrderResponseDTO>().ReverseMap();
             CreateMap<UpdateJobOrderDTO, JobOrder>().ReverseMap();
+            CreateMap<UpdateJobOrderRequestDTO, UpdateJobOrderDTO>().ReverseMap();
             CreateMap<CreateJobOrderRequirementDTO, JobOrderRequirement>().ReverseMap();
             CreateMap<CreateJobOrderRequirementRequestDTO, CreateJobOrderRequirementDTO>().ReverseMap();
             CreateMap<JobOrderRequirement, JobOrderRequirementResponseDTO>().ReverseMap();
