@@ -9,5 +9,6 @@ namespace FieldMgt.Core.DTOs.Request
     public class CreateEstimationDTO
     {
         public decimal? EstimationAmount { get; set; }
+        public int JobOrderId { get; set; }
     }
 }

@@ -24,100 +24,75 @@ namespace FieldMgt.Repository.Repository
             _mapper = mapper;
             _uow = uow;
         }
-        public async Task<ClientContact> CreateClientContactAsync(AddClientContactDTO model)
+        public async Task CreateEstimation(SaveEstimationDTO model)
         {
             try
             {
-                return await CommandAsync<ClientContact>(StoreProcedures.SaveClientContact, model);
+                var estimation = _mapper.Map<SaveEstimationDTO, Estimation>(model);
+                //estimation.IsActive = true;
+                estimation.CreatedOn = System.DateTime.Now;
+                if (estimation.EstimationId == 0)
+                    estimation.EstimationId = 0;
+                await InsertAsync(estimation);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
-        public ClientContactResponseDTO GetClientContactbyIdAsync(int id)
+        public IEnumerable<EstimationSaveDTO> GetEstimationAsync()
         {
-            var clientContact = _dbContext.ClientContacts
-                          .Join(_dbContext.Clients, l => l.ClientId, client => client.ClientId, (l, client) => new { l, client })
-                          .Join(_dbContext.AddressDetails, p => p.l.AddressDetailId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
-              .Join(_dbContext.ContactDetails, cd => cd.p.l.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
-              .Where(x => x.cd.p.l.ClientContactId == id)
-              .Select(m => new ClientContactResponseDTO
-              {
-                  ClientContactId = m.cd.p.l.ClientContactId,
-                  ClientId = (int)(m.cd.p.l.ClientId == 0 ? 0 : m.cd.p.l.ClientId),
-                  FirstName = m.cd.p.l.FirstName,
-                  LastName = m.cd.p.l.LastName,
-                  Gender = (int)(m.cd.p.l.Gender == 0 ? 0 : m.cd.p.l.Gender),
-                  AlternateEmail = m.c.AlternateEmail,
-                  PrimaryEmail = m.c.PrimaryEmail,
-                  AlternatePhone = m.c.AlternatePhone,
-                  PrimaryPhone = m.c.PrimaryPhone,
-                  PermanentZipCode = m.cd.pc.ZipCode,
-                  PermanentAddress = m.cd.pc.Address,
-                  PermanentCity = m.cd.pc.CityId,
-                  PermanentCountry = m.cd.pc.CountryId,
-                  PermanentState = m.cd.pc.StateId,
-                  CreatedOn = m.cd.p.l.CreatedOn,
-                  CreatedBy = m.cd.p.l.CreatedBy
-              }).SingleOrDefault();
-            return clientContact;
+            var estimation = _dbContext.Estimations.Where(x => x.IsDeleted != true);// && x.IsActive==true);
+            foreach (var j in estimation)
+            {
+                var estimationResponse = _mapper.Map<Estimation, EstimationSaveDTO>(j);
+                yield return estimationResponse;
+            }
         }
-
-        public IEnumerable<ClientContactResponseDTO> GetClientContactList()
-        {
-            var clientContactList = _dbContext.ClientContacts
-                          .Join(_dbContext.Clients, l => l.ClientId, client => client.ClientId, (l, client) => new { l, client })
-                          .Join(_dbContext.AddressDetails, p => p.l.AddressDetailId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
-                          .Join(_dbContext.ContactDetails, cd => cd.p.l.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
-                          .Where(x => x.cd.p.l.IsActive == true)
-                          .Select(m => new ClientContactResponseDTO
-                          {
-                              ClientContactId = m.cd.p.l.ClientContactId,
-                              ClientId = (int)(m.cd.p.l.ClientId == 0 ? 0 : m.cd.p.l.ClientId),
-                              FirstName = m.cd.p.l.FirstName,
-                              LastName = m.cd.p.l.LastName,
-                              Gender = (int)(m.cd.p.l.Gender == 0 ? 0 : m.cd.p.l.Gender),
-                              AlternateEmail = m.c.AlternateEmail,
-                              PrimaryEmail = m.c.PrimaryEmail,
-                              AlternatePhone = m.c.AlternatePhone,
-                              PrimaryPhone = m.c.PrimaryPhone,
-                              PermanentZipCode = m.cd.pc.ZipCode,
-                              PermanentAddress = m.cd.pc.Address,
-                              PermanentCity = m.cd.pc.CityId,
-                              PermanentCountry = m.cd.pc.CountryId,
-                              PermanentState = m.cd.pc.StateId,
-                              CreatedOn = m.cd.p.l.CreatedOn,
-                              CreatedBy = m.cd.p.l.CreatedBy
-                          });
-            return clientContactList;
-        }
-
-        public async Task UpdateClientContact(UpdateClientContactDTO clientContact)
+        public EstimationSaveDTO GetEstimationbyIdAsync(int id)
         {
             try
             {
-                await CollectionsAsync<Task>(StoreProcedures.UpdateLeadContact, clientContact);
+                var result = _dbContext.Estimations.FirstOrDefault(l => l.EstimationId == id);
+                var estimationResponse = _mapper.Map<Estimation, EstimationSaveDTO>(result);
+                return estimationResponse;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public Estimation DeleteClientContact(int EstimationId, string deletedBy)
+        public EstimationSaveDTO UpdateEstimationAsync(UpdateEstimationsDTO estimationUpdate)
         {
             try
             {
-                var clientContact = _dbContext.Estimations.SingleOrDefault(a => a.EstimationId == EstimationId);
-                clientContact.IsDeleted = true;
-                clientContact.DeletedBy = deletedBy;
-                clientContact.DeletedOn = System.DateTime.Now;
-                //int Address = (int)clientContact.AddressDetailId;
-                //int contactDetail = (int)clientContact.ContactDetailId;
-                //_uow.AddressRepositories.DeleteAddress(Address, deletedBy);
-                //_uow.ContactDetailRepositories.DeleteContact(contactDetail, deletedBy);
-                return Update(clientContact);
+                var estimation = _mapper.Map<UpdateEstimationsDTO, Estimation>(estimationUpdate);
+                var estimate = Update(estimation);
+                var estimateUpdated = _mapper.Map<Estimation, EstimationSaveDTO>(estimate);
+                return estimateUpdated;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
+        /// soft delete ServiceProvider details 
+        /// </summary>
+        /// <paramname="serviceProviderId"></param>
+        /// <paramname="deletedBy"></param>
+        /// <returns></returns>
+        public EstimationSaveDTO DeleteEstimation(int estimationId, string deletedBy)
+        {
+            try
+            {
+                var estimation = _dbContext.Estimations.SingleOrDefault(a => a.EstimationId == estimationId);
+                estimation.IsDeleted = true;
+                estimation.DeletedBy = deletedBy;
+                estimation.DeletedOn = System.DateTime.Now;
+                var job = Update(estimation);
+                var jobUpdated = _mapper.Map<Estimation, EstimationSaveDTO>(job);
+                return jobUpdated;
             }
             catch (Exception ex)
             {

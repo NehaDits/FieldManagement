@@ -46,6 +46,11 @@ namespace FieldMgt.Repository.AutoMapper
             CreateMap<UpdateLeadDTO, LeadUpdateDTO>().ReverseMap();
             CreateMap<AddLeadContactDTO, CreateLeadContactDTO>().ReverseMap();
             CreateMap<UpdateLeadContact, UpdateLeadContacts>().ReverseMap();
+            CreateMap<CreateEstimationDTO, SaveEstimationDTO>().ReverseMap();
+            CreateMap<UpdateEstimationDTO, UpdateEstimationsDTO>().ReverseMap();
+            CreateMap<SaveEstimationDTO, Estimation>().ReverseMap();
+            CreateMap<Estimation, EstimationSaveDTO>().ReverseMap();
+            CreateMap<UpdateEstimationsDTO, Estimation>().ReverseMap();
         }
     }
     public static class IgnoreNoMapExtensions

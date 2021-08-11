@@ -401,6 +401,9 @@ namespace FieldMgt.Core.Migrations
                     b.Property<decimal?>("EstimationAmount")
                         .HasColumnType("decimal(16,2)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
