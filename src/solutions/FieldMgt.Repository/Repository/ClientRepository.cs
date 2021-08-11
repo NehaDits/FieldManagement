@@ -38,6 +38,7 @@ namespace FieldMgt.Repository.Repository
                               ClientDescription = m.cd.a.p.ClientDescription,
                               ClientSource = m.cd.a.p.ClientSource,
                               ClientId = m.cd.a.p.ClientId,
+                              LeadId = m.cd.a.p.LeadId,
                               CorrespondenceAddress = m.cd.ad.Address,
                               CorrespondenceCity = m.cd.ad.CityId,
                               CorrespondenceCountry = m.cd.ad.CountryId,
@@ -48,29 +49,28 @@ namespace FieldMgt.Repository.Repository
                               PermanentCity = m.cd.ad.CityId,
                               PermanentCountry = m.cd.ad.CountryId,
                               PermanentState = m.cd.ad.StateId,
-                              ContactDTO = new ContactResponseDTO
-                              {
-                                  AlternateEmail = m.c.AlternateEmail,
-                                  PrimaryEmail = m.c.PrimaryEmail,
-                                  AlternatePhone = m.c.AlternatePhone,
-                                  PrimaryPhone = m.c.PrimaryPhone,
-                              }
+                              AlternateEmail = m.c.AlternateEmail,
+                              PrimaryEmail = m.c.PrimaryEmail,
+                              AlternatePhone = m.c.AlternatePhone,
+                              PrimaryPhone = m.c.PrimaryPhone,
+                              IsActive=(bool)m.cd.a.p.IsActive
                           });
             return response;
         }
         public ClientResponseDTO GetClientbyIdAsync(int id)
         {
-            var response =_dbContext.Clients
+            var response = _dbContext.Clients
                 .Join(_dbContext.AddressDetails, p => p.PermanentAddressId, pc => pc.AddressDetailId, (p, pc) => new { p, pc })
                           .Join(_dbContext.AddressDetails, a => a.p.BillingAddressId, ad => ad.AddressDetailId, (a, ad) => new { a, ad })
                           .Join(_dbContext.ContactDetails, cd => cd.a.p.ContactDetailId, c => c.ContactDetailId, (cd, c) => new { cd, c })
-                          .Where(x => x.cd.a.p.IsActive == true && x.cd.a.p.ClientId==id)
+                          .Where(x => x.cd.a.p.IsActive == true && x.cd.a.p.ClientId == id)
                           .Select(m => new ClientResponseDTO
                           {
                               ClienyCompanyName = m.cd.a.p.ClientCompanyName,
                               ClientDescription = m.cd.a.p.ClientDescription,
                               ClientSource = m.cd.a.p.ClientSource,
                               ClientId = m.cd.a.p.ClientId,
+                              LeadId = m.cd.a.p.LeadId,
                               CorrespondenceAddress = m.cd.ad.Address,
                               CorrespondenceCity = m.cd.ad.CityId,
                               CorrespondenceCountry = m.cd.ad.CountryId,
@@ -81,13 +81,11 @@ namespace FieldMgt.Repository.Repository
                               PermanentCity = m.cd.ad.CityId,
                               PermanentCountry = m.cd.ad.CountryId,
                               PermanentState = m.cd.ad.StateId,
-                              ContactDTO = new ContactResponseDTO
-                              {
-                                  AlternateEmail = m.c.AlternateEmail,
-                                  PrimaryEmail = m.c.PrimaryEmail,
-                                  AlternatePhone = m.c.AlternatePhone,
-                                  PrimaryPhone = m.c.PrimaryPhone,
-                              }
+                              AlternateEmail = m.c.AlternateEmail,
+                              PrimaryEmail = m.c.PrimaryEmail,
+                              AlternatePhone = m.c.AlternatePhone,
+                              PrimaryPhone = m.c.PrimaryPhone,
+                              IsActive = (bool)m.cd.a.p.IsActive
                           }).FirstOrDefault();
             return response;
         }

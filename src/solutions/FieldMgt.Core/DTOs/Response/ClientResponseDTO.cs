@@ -8,6 +8,7 @@ namespace FieldMgt.Core.DTOs.Response
 {
     public class ClientResponseDTO
     {
+        public int LeadId { get; set; }
         public int ClientId { get; set; }
         public string ClienyCompanyName { get; set; }
         public string ClientDescription { get; set; }
@@ -22,7 +23,11 @@ namespace FieldMgt.Core.DTOs.Response
         public int CorrespondenceState { get; set; }
         public int CorrespondenceCountry { get; set; }
         public string CorrespondenceZipCode { get; set; }
-        public ContactResponseDTO ContactDTO { get; set; }
+        public string PrimaryPhone { get; set; }
+        public string AlternatePhone { get; set; }
+        public string PrimaryEmail { get; set; }
+        public string AlternateEmail { get; set; }
+        //public ContactResponseDTO ContactDTO { get; set; }
         public bool IsActive { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }

@@ -10,6 +10,7 @@ namespace FieldMgt.Core.DTOs.Request
 {
    public class CreateClientDTO
     {
+        public int LeadId { get; set; }
         public string ClientCompanyName { get; set; }
         public string ClientDescription { get; set; }
         public int? ClientSource { get; set; }

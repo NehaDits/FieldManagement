@@ -40,5 +40,8 @@ namespace FieldMgt.Core.DomainModels
         public ApplicationUser ClientDeletedBy { get; set; }
         public AddressDetail ClientPermanentAddress { get; set; }
         public AddressDetail ClientBillingAddress { get; set; }
+        public int LeadId { get; set; }
+        [ForeignKey("LeadId")]
+        public Lead Lead { get; set; }
     }
 }
